@@ -1,0 +1,8 @@
+D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\bin\Debug\TutorialRoom.exe.config
+D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\bin\Debug\TutorialRoom.exe
+D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\bin\Debug\TutorialRoom.pdb
+D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.csproj.AssemblyReference.cache
+D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.csproj.SuggestedBindingRedirects.cache
+D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.csproj.CoreCompileInputs.cache
+D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.exe
+D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.pdb
