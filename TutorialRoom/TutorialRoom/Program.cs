@@ -17,7 +17,6 @@ namespace TutorialRoom
             Console.WriteLine(@"Statok:
                                                                             Életerő: 100
                                                                             Erő: 2
-                                                                            Gyorsaság: 5
                                                                             Józanság: 50
                                                                             Védekezés: 3");
 
@@ -129,7 +128,6 @@ __ejm\___/________dwb`---`____________________________________________");
  >> Gyanús macska a szoba sarkában
  >> Popcorn-t csináló popcorn-gép");
 
-         
         }
     }
 }

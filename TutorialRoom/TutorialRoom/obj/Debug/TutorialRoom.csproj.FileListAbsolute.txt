@@ -6,3 +6,10 @@ D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.csproj
 D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.csproj.CoreCompileInputs.cache
 D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.exe
 D:\Nerd shit\Neumann\IKT\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.pdb
+G:\Tutorial szoba Age\Agoraphobia\TutorialRoom\TutorialRoom\bin\Debug\TutorialRoom.exe.config
+G:\Tutorial szoba Age\Agoraphobia\TutorialRoom\TutorialRoom\bin\Debug\TutorialRoom.exe
+G:\Tutorial szoba Age\Agoraphobia\TutorialRoom\TutorialRoom\bin\Debug\TutorialRoom.pdb
+G:\Tutorial szoba Age\Agoraphobia\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.csproj.AssemblyReference.cache
+G:\Tutorial szoba Age\Agoraphobia\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.csproj.CoreCompileInputs.cache
+G:\Tutorial szoba Age\Agoraphobia\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.exe
+G:\Tutorial szoba Age\Agoraphobia\TutorialRoom\TutorialRoom\obj\Debug\TutorialRoom.pdb
