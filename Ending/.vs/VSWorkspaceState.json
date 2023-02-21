@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\TutorialRoom"
   ],
-  "SelectedNode": "\\TutorialRoom.sln",
+  "SelectedNode": "\\TutorialRoom\\Program.cs",
   "PreviewInSolutionExplorer": false
 }
