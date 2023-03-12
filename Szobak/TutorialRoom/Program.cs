@@ -15,11 +15,11 @@ namespace TutorialRoom
             Console.SetCursorPosition(75, 25);
 
             Console.WriteLine(@"Statok:
-                                                                            Életerő: 100
-                                                                            Erő: 2
-                                                                            Józanság: 50
-                                                                            Védekezés: 3
-                                                                            Energia: 3");
+                                                                            Életerő: 80
+                                                                            Erő: 3
+                                                                            Józanság: 70
+                                                                            Védekezés: 6
+                                                                            Energia: 2");
 
             Console.SetCursorPosition(72, 0);
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -69,36 +69,6 @@ namespace TutorialRoom
 
             Console.WriteLine("? megvizsgál | + használ | - eldob");
 
-            Console.SetCursorPosition(25, 1);
-
-            Console.WriteLine(@"    -------
-                            |* * *  |
-                            |  *  * |
-                            |*  ** *|
-                            | * * **|
-                             -------
-                            |popcorn|
-                            |\_____/|
-                            |_______|
-                    ");
-
-            Console.SetCursorPosition(2, 1);
-
-            Console.WriteLine(@"         \    /\
-            )  ( ')
-            (  /  )
-             \(__)|");
-
-
-            Console.SetCursorPosition(60, 12);
-
-            Console.WriteLine(@"    /
-                                                               /
-                                                              /
-                                                             /
-                                                            /
-");
-
             Console.SetCursorPosition(2, 13);
 
             Console.WriteLine(@"__
@@ -119,15 +89,13 @@ __ejm\___/________dwb`---`____________________________________________");
 
             Console.SetCursorPosition(1, 25);
 
-            Console.WriteLine(@"John Merta, világszerte ismert író. Egy teljesen átlagos éjszakán
- miután álomra húnyta szemeit, John egy üres szobában találta magát.
+            Console.WriteLine(@"A következő három ötlet jut eszedbe
 
- >> Körbenéz
-
- Ezt látod:
- >> Könyv és bot a földön
- >> Gyanús macska a szoba sarkában
- >> Popcorn-t csináló popcorn-gép");
+ >> Egy poros pince ahol egy csontvár (nagyon veszélyes) ül a sarokban.
+ >> Körbenézel a falak homokból vannak és egy szarkofág (? veszélyes)
+    van előtted.
+ >> A falak ki vannak matracozva és egy megkötözött ember (?) 
+    van a szobába rajtad kívül.");
 
         }
     }

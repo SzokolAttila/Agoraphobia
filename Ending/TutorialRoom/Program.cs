@@ -15,11 +15,11 @@ namespace TutorialRoom
             Console.SetCursorPosition(75, 25);
 
             Console.WriteLine(@"Statok:
-                                                                            Életerő: 100
-                                                                            Erő: 2
-                                                                            Józanság: 50
-                                                                            Védekezés: 3
-                                                                            Energia: 3");
+                                                                            Életerő: 56
+                                                                            Erő: 10
+                                                                            Józanság: 100
+                                                                            Védekezés: 12
+                                                                            Energia:5");
 
             Console.SetCursorPosition(72, 0);
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -65,51 +65,40 @@ namespace TutorialRoom
 
             Console.WriteLine("Eszköztár");
 
+            Console.SetCursorPosition(87, 1);
+
+            Console.WriteLine("Fa bot s:2");
+
+            Console.SetCursorPosition(87, 2);
+
+            Console.WriteLine("Excalibur s:10");
+
+            Console.SetCursorPosition(87, 3);
+
+            Console.WriteLine("Mario sapkája v:7 *");
+
             Console.SetCursorPosition(75, 20);
 
             Console.WriteLine("? megvizsgál | + használ | - eldob");
 
             Console.SetCursorPosition(25, 1);
 
-            Console.WriteLine(@"    -------
-                            |* * *  |
-                            |  *  * |
-                            |*  ** *|
-                            | * * **|
-                             -------
-                            |popcorn|
-                            |\_____/|
-                            |_______|
-                    ");
-
-            Console.SetCursorPosition(2, 1);
-
-            Console.WriteLine(@"         \    /\
-            )  ( ')
-            (  /  )
-             \(__)|");
 
 
-            Console.SetCursorPosition(60, 12);
 
-            Console.WriteLine(@"    /
-                                                               /
-                                                              /
-                                                             /
-                                                            /
-");
+
 
             Console.SetCursorPosition(2, 13);
 
-            Console.WriteLine(@"__
- (`/\
- `=\/\ __...--~~~~~-._   _.-~~~~~--...__
-  `=\/\               \ /               \\
-   `=\/                V                 \\
-   //_\___--~~~~~~-._  |  _.-~~~~~~--...__\\
-  //  ) (..----~~~~._\ | /_.~~~~----.....__\\
- ===( INK )==========\\|//====================
-__ejm\___/________dwb`---`____________________________________________");
+            Console.WriteLine(@"
+                    /\_____/\
+                   /  o   o  \
+                  ( ==  ^  == )
+                   )         (
+                  (           )
+                 ( (  )   (  ) )
+                (__(__)___(__)__)
+");
 
 
             Console.SetCursorPosition(0, 23);
@@ -119,15 +108,15 @@ __ejm\___/________dwb`---`____________________________________________");
 
             Console.SetCursorPosition(1, 25);
 
-            Console.WriteLine(@"John Merta, világszerte ismert író. Egy teljesen átlagos éjszakán
- miután álomra húnyta szemeit, John egy üres szobában találta magát.
+            Console.WriteLine(@"A macska újra megjelenik előtted és hozzád szól:
+Gratulálok John sikerült elég inspirációt szerezned,
+most ideje felébredned.
 
- >> Körbenéz
+ >> Így lesz vége?
 
  Ezt látod:
- >> Könyv és bot a földön
- >> Gyanús macska a szoba sarkában
- >> Popcorn-t csináló popcorn-gép");
+ >> Új játék
+ >> Kilépés");
 
         }
     }

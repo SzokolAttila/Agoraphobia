@@ -15,11 +15,11 @@ namespace TutorialRoom
             Console.SetCursorPosition(75, 25);
 
             Console.WriteLine(@"Statok:
-                                                                            Életerő: 100
-                                                                            Erő: 2
+                                                                            Életerő: 60
+                                                                            Erő: 4
                                                                             Józanság: 50
-                                                                            Védekezés: 3
-                                                                            Energia: 3");
+                                                                            Védekezés: 6
+                                                                            Energia: 5");
 
             Console.SetCursorPosition(72, 0);
             Console.ForegroundColor = ConsoleColor.DarkRed;
@@ -65,51 +65,31 @@ namespace TutorialRoom
 
             Console.WriteLine("Eszköztár");
 
+            Console.SetCursorPosition(87, 1);
+
+            Console.WriteLine("fa bot s:2");
+
+            Console.SetCursorPosition(87, 2);
+
+            Console.WriteLine("Kötött sapka v:2 *");
+
             Console.SetCursorPosition(75, 20);
 
             Console.WriteLine("? megvizsgál | + használ | - eldob");
 
-            Console.SetCursorPosition(25, 1);
+            Console.SetCursorPosition(70,7);
 
-            Console.WriteLine(@"    -------
-                            |* * *  |
-                            |  *  * |
-                            |*  ** *|
-                            | * * **|
-                             -------
-                            |popcorn|
-                            |\_____/|
-                            |_______|
+            Console.WriteLine(@" 
+                                    
+                            \    /
+                             \__/
+                           _| .. |_
+                          |   __   |
+                          \__ vv __/
+                          /_|    |_\
+                          V_|\__/|_V
                     ");
 
-            Console.SetCursorPosition(2, 1);
-
-            Console.WriteLine(@"         \    /\
-            )  ( ')
-            (  /  )
-             \(__)|");
-
-
-            Console.SetCursorPosition(60, 12);
-
-            Console.WriteLine(@"    /
-                                                               /
-                                                              /
-                                                             /
-                                                            /
-");
-
-            Console.SetCursorPosition(2, 13);
-
-            Console.WriteLine(@"__
- (`/\
- `=\/\ __...--~~~~~-._   _.-~~~~~--...__
-  `=\/\               \ /               \\
-   `=\/                V                 \\
-   //_\___--~~~~~~-._  |  _.-~~~~~~--...__\\
-  //  ) (..----~~~~._\ | /_.~~~~----.....__\\
- ===( INK )==========\\|//====================
-__ejm\___/________dwb`---`____________________________________________");
 
 
             Console.SetCursorPosition(0, 23);
@@ -119,15 +99,16 @@ __ejm\___/________dwb`---`____________________________________________");
 
             Console.SetCursorPosition(1, 25);
 
-            Console.WriteLine(@"John Merta, világszerte ismert író. Egy teljesen átlagos éjszakán
- miután álomra húnyta szemeit, John egy üres szobában találta magát.
+            Console.WriteLine(@"Vérnyúl Életerő: 20
+Ellenség lépése: sebzés 6
+Mi a következő lépésed?
 
- >> Körbenéz
 
- Ezt látod:
- >> Könyv és bot a földön
- >> Gyanús macska a szoba sarkában
- >> Popcorn-t csináló popcorn-gép");
+ +
+Mit használsz föl?
+ 1
+Wow támadásod 8 sebzést mért az ellenfélre!");
+
 
         }
     }
