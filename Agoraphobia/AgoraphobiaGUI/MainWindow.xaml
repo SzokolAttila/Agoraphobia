@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AgoraphobiaGUI"
         mc:Ignorable="d"
-        Title="MainWindow" MinHeight="500" Width="800">
-    <Grid Background="Black" x:Name="Container">
+        
+        Background="{StaticResource Background}"
+        Title="MainWindow" WindowState="Maximized">
+    <!--ResizeMode="NoResize"-->
+    <Grid x:Name="Container" Margin="100">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -19,11 +22,11 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Center" Foreground="Yellow" VerticalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2" FontSize="30" Text="Agoraphobia"/>
-        <Button BorderThickness="0" Width="200" Height="70" Grid.Row="1" Grid.Column="0" Margin="10 0" HorizontalAlignment="Right">Continue</Button>
-        <Button Width="200" Height="70" Grid.Row="2" Grid.Column="1" Margin="10 0" HorizontalAlignment="Left">New Game</Button>
-        <Button Width="200" Height="70" Grid.Row="3" Grid.Column="0" Margin="10 0" HorizontalAlignment="Right">Tutorial</Button>
-        <Button Width="200" Height="70" Grid.Row="4" Grid.Column="1" Margin="10 0" HorizontalAlignment="Left">Settings</Button>
-        <Button Width="200" Height="70" Grid.Row="5" Grid.Column="0" Margin="10 0" HorizontalAlignment="Right">Credits</Button>
+        <TextBlock HorizontalAlignment="Center" Foreground="DarkRed" VerticalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2" FontSize="30" Text="Agoraphobia"/>
+        <Button Width="200" Height="70" Grid.Row="1" Grid.Column="0" Margin="20 0" HorizontalAlignment="Right">Continue</Button>
+        <Button Width="200" Height="70" Grid.Row="2" Grid.Column="1" Margin="20 0" HorizontalAlignment="Left">New Game</Button>
+        <Button Width="200" Height="70" Grid.Row="3" Grid.Column="0" Margin="20 0" HorizontalAlignment="Right">Tutorial</Button>
+        <Button Width="200" Height="70" Grid.Row="4" Grid.Column="1" Margin="20 0" HorizontalAlignment="Left">Settings</Button>
+        <Button Width="200" Height="70" Grid.Row="5" Grid.Column="0" Margin="20 0" HorizontalAlignment="Right">Credits</Button>
     </Grid>
 </Window>
