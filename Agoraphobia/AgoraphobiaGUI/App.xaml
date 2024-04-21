@@ -24,9 +24,9 @@
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background"  Value="{StaticResource ButtonHoverImage}"/>
                 </Trigger>
-                <Trigger Property="IsFocused" Value="True">
+                <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background"  Value="{StaticResource ButtonClickImage}"/>
-                    <Setter Property="Padding" Value="0 50 0 0"/>
+                    <Setter Property="Margin" Value="0 0 0 10"/>
                 </Trigger>
             </Style.Triggers>
         </Style>

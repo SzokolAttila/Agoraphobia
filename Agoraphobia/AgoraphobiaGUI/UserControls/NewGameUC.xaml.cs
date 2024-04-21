@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,29 +16,29 @@ using System.Windows.Shapes;
 
 namespace AgoraphobiaGUI.UserControls
 {
-    /// <summary>
-    /// Interaction logic for MainMenuUC.xaml
-    /// </summary>
-    public partial class MainMenuUC : UserControl
+    
+    public partial class NewGameUC : UserControl
     {
         Grid container;
-        public MainMenuUC(Grid container)
+        public NewGameUC(Grid container)
         {
             InitializeComponent();
             this.container = container;
         }
 
-        public void ContinueWindow(object sender, RoutedEventArgs e)
+        public void SlotSelect(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new ContinueUC(container));
-            container.Children.Remove(this);
+            if(MessageBox.Show($"Do you really want to overwrite this slot?",
+                "New Game", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                MessageBox.Show($"New game to {Grid.GetRow((UIElement)sender)}. slot");
+            }
         }
 
-        public void NewGameWindow(object sender, RoutedEventArgs e)
+        public void Back(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new NewGameUC(container));
+            container.Children.Add(new MainMenuUC(container));
             container.Children.Remove(this);
         }
-
     }
 }

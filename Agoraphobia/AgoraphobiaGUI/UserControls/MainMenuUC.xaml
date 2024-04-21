@@ -20,7 +20,7 @@
         </Grid.RowDefinitions>
         <TextBlock HorizontalAlignment="Center" Margin="0 20" Foreground="DarkRed" VerticalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2" FontSize="30" Text="Agoraphobia"/>
         <Button Click="ContinueWindow" Width="200" Height="70" Grid.Row="1" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Continue</Button>
-        <Button Width="200" Height="70" Grid.Row="2" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">New Game</Button>
+        <Button Click="NewGameWindow" Width="200" Height="70" Grid.Row="2" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">New Game</Button>
         <Button Width="200" Height="70" Grid.Row="3" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Tutorial</Button>
         <Button Width="200" Height="70" Grid.Row="4" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">Settings</Button>
         <Button Width="200" Height="70" Grid.Row="5" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Credits</Button>
