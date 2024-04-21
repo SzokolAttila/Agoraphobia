@@ -1,5 +1,4 @@
-﻿using AgoraphobiaGUI.UserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,14 +18,22 @@ namespace AgoraphobiaGUI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ContinueWindow : Window
     {
-        public MainWindow()
+        public ContinueWindow()
         {
             InitializeComponent();
-            Container.Children.Add(new MainMenuUC(Container));
         }
 
-        
+        public void SlotSelect(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show($"{Grid.GetRow((UIElement)sender)}. slot selected");
+        }
+
+        public void Back(object sender, RoutedEventArgs e)
+        {
+            new MainWindow().Show();
+            Close();
+        }
     }
 }

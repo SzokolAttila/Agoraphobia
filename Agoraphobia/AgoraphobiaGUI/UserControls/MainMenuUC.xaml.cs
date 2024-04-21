@@ -1,5 +1,4 @@
-﻿using AgoraphobiaGUI.UserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,19 +13,25 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AgoraphobiaGUI
+namespace AgoraphobiaGUI.UserControls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainMenuUC.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainMenuUC : UserControl
     {
-        public MainWindow()
+        Grid container;
+        public MainMenuUC(Grid container)
         {
             InitializeComponent();
-            Container.Children.Add(new MainMenuUC(Container));
+            this.container = container;
         }
 
-        
+        public void ContinueWindow(object sender, RoutedEventArgs e)
+        {
+            container.Children.Add(new ContinueUC(container));
+            container.Children.Remove(this);
+        }
+
     }
 }
