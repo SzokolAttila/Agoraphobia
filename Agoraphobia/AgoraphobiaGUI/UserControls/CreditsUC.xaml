@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="AgoraphobiaGUI.UserControls.MainMenuUC"
+﻿<UserControl x:Class="AgoraphobiaGUI.UserControls.CreditsUC"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -19,12 +19,11 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Viewbox Grid.Row="0" Grid.ColumnSpan="2">
-            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Agoraphobia"/>
+            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Credits"/>
         </Viewbox>
-        <Button Click="ContinueWindow" Grid.Row="1" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Continue</Button>
-        <Button Click="NewGameWindow" Grid.Row="2" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">New Game</Button>
-        <Button Click="TutorialWindow" Grid.Row="3" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Tutorial</Button>
-        <Button Click="SettingsWindow" Grid.Row="4" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">Settings</Button>
-        <Button Click="CreditsWindow" Grid.Row="5" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Credits</Button>
+        <Viewbox Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <Label Padding="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">This game was developed by Attila Szokol and Bálint Kiss</Label>
+        </Viewbox>
+        <Button Click="Back" Grid.Row="2" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Go back</Button>
     </Grid>
 </UserControl>

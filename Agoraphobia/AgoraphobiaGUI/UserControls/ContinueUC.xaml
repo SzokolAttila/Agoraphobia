@@ -11,20 +11,28 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <TextBlock HorizontalAlignment="Center" Margin="0 20" Foreground="DarkRed" VerticalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2" FontSize="30" Text="Select game to continue:"/>
-        <Button Click="SlotSelect" Width="200" Height="70" Grid.Row="1" Grid.Column="0" Margin="20 0" HorizontalAlignment="Right">1st slot</Button>
-        <Label x:Name="firstSlot" Height="70" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center">Last modified:</Label>
-        <Button Click="SlotSelect" Width="200" Height="70" Grid.Row="2" Grid.Column="0" Margin="20 0" HorizontalAlignment="Right">2nd slot</Button>
-        <Label x:Name="secondSlot" Height="70" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center">Last modified:</Label>
-        <Button Click="SlotSelect" Width="200" Height="70" Grid.Row="3" Grid.Column="0" Margin="20 0" HorizontalAlignment="Right">3rd slot</Button>
-        <Label x:Name="thirdSlot" Height="70" Grid.Row="3" Grid.Column="1" HorizontalContentAlignment="Left" VerticalContentAlignment="Center">Last modified:</Label>
-        <Button Click="Back" Width="200" Height="70" Grid.Row="4" Grid.Column="0" Margin="20 0" HorizontalAlignment="Right">Go back</Button>
+        <Viewbox Grid.Row="0" Grid.ColumnSpan="2">
+            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Select game to continue:"/>
+        </Viewbox>
+        <Button Click="SlotSelect" Grid.Row="1" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">1st slot</Button>
+        <Viewbox Grid.Row="1" Grid.Column="1">
+            <Label x:Name="firstSlot"  HorizontalContentAlignment="Left" VerticalContentAlignment="Center">Last modified:</Label>
+        </Viewbox>
+        <Button Click="SlotSelect" Grid.Row="2" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">2nd slot</Button>
+        <Viewbox Grid.Row="2" Grid.Column="1">
+            <Label x:Name="secondSlot" HorizontalContentAlignment="Left" VerticalContentAlignment="Center">Last modified:</Label>
+        </Viewbox>
+        <Button Click="SlotSelect" Grid.Row="3" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">3rd slot</Button>
+        <Viewbox Grid.Row="3" Grid.Column="1">
+            <Label x:Name="thirdSlot" HorizontalContentAlignment="Left" VerticalContentAlignment="Center">Last modified:</Label>
+        </Viewbox>
+        <Button Click="Back" Grid.Row="4" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Go back</Button>
     </Grid>
 </UserControl>

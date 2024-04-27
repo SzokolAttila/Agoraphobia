@@ -39,5 +39,22 @@ namespace AgoraphobiaGUI.UserControls
             container.Children.Remove(this);
         }
 
+        public void SettingsWindow(object sender, RoutedEventArgs e)
+        {
+            container.Children.Add(new SettingsUC(container));
+            container.Children.Remove(this);
+        }
+
+        public void TutorialWindow(object sender, RoutedEventArgs e)
+        {
+            container.Children.Add(new SettingsUC(container));
+            container.Children.Remove(this);
+        }
+
+        public void CreditsWindow(object sender, RoutedEventArgs e)
+        {
+            container.Children.Add(new CreditsUC(container));
+            container.Children.Remove(this);
+        }
     }
 }

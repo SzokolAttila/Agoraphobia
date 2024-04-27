@@ -12,6 +12,7 @@
     <None Remove="Images\Button.png" />
     <None Remove="Images\ButtonClick.png" />
     <None Remove="Images\ButtonHover.png" />
+    <None Remove="Images\Text.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,9 +31,18 @@
     <Resource Include="Images\Button.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\Text.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="UserControls\CreditsUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\SettingsUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\NewGameUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
