@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace AgoraphobiaGUI
 {
@@ -25,6 +27,10 @@ namespace AgoraphobiaGUI
         {
             InitializeComponent();
             Container.Children.Add(new MainMenuUC(Container));
+            SoundPlayer playMedia = new SoundPlayer(Application.GetResourceStream(new Uri(@"pack://application:,,,/Sounds/AgoraphobiaTheme.wav")).Stream);
+            playMedia.LoadAsync();
+            playMedia.PlayLooping();
+            //new Thread(playMedia.PlayLooping).Start();
         }
 
         
