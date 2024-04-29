@@ -35,9 +35,9 @@
     <Resource Include="Images\Text.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Sounds\AgoraphobiaTheme.wav">
+    <Content Include="Sounds\AgoraphobiaTheme.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
