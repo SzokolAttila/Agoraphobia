@@ -23,14 +23,12 @@ namespace AgoraphobiaGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        
         public MainWindow()
         {
             InitializeComponent();
             Container.Children.Add(new MainMenuUC(Container));
-            SoundPlayer playMedia = new SoundPlayer(Application.GetResourceStream(new Uri(@"pack://application:,,,/Sounds/AgoraphobiaTheme.wav")).Stream);
-            playMedia.LoadAsync();
-            playMedia.PlayLooping();
-            //new Thread(playMedia.PlayLooping).Start();
+            
         }
 
         

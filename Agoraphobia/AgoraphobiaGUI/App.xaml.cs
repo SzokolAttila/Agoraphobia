@@ -15,11 +15,27 @@ namespace AgoraphobiaGUI
     /// </summary>
     public partial class App : Application
     {
+        MediaPlayer backgroundMusic = new MediaPlayer();
 
         public App()
         {
             InitializeComponent();
+            StartBackgroundMusic();
         }
 
+        public void StartBackgroundMusic()
+        {
+            backgroundMusic.Open(new Uri(@"Sounds/AgoraphobiaTheme.wav", UriKind.Relative));
+            backgroundMusic.Volume = 80;
+            backgroundMusic.MediaEnded += new EventHandler(EndOfBackgroundMusic);
+            backgroundMusic.Play();
+
+        }
+
+        public void EndOfBackgroundMusic(object sender, EventArgs e)
+        {
+            backgroundMusic.Position = TimeSpan.Zero;
+            backgroundMusic.Play();
+        }
     }
 }
