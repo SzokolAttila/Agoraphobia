@@ -1,19 +1,11 @@
-using System.Data;
 using System.Security.Cryptography;
 using AgoraphobiaLibrary;
-using AgoraphobiaLibrary.Exceptions;
 
 namespace AgoraphobiaTests
 {
     [TestClass]
     public class PasswordTests
     {
-        [TestMethod]
-        public void EmptyPasswordThrowsException()
-        {
-            Assert.ThrowsException<EmptyFieldException>(() => new Password(""));
-        }
-
         [TestMethod]
         public void HashedPasswordCanBeAccessed()
         {
@@ -91,15 +83,6 @@ namespace AgoraphobiaTests
         public void EightCharOrLongerSecurityLevelIs16(int securityValue, string password)
         {
             Assert.AreEqual(securityValue, Password.CheckSecurityLevel(password));
-        }
-
-        [TestMethod]
-        [DataRow("Aeoduh")]
-        [DataRow("Ae3}uh")]
-        [DataRow("Ae{oaeuuh")]
-        public void NotSecurePasswordThrowsException(string password)
-        {
-            Assert.ThrowsException<NotSecurePasswordException>(() => new Password(password));
         }
     }
 }

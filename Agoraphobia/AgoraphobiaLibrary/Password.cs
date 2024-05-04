@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using AgoraphobiaLibrary.Exceptions;
 
 namespace AgoraphobiaLibrary
 {
@@ -8,12 +7,9 @@ namespace AgoraphobiaLibrary
     {
         private readonly string _password;
         private readonly bool _isHashed;
+        public const int MAX_SECURITY_LEVEL = 31;
         public Password(string password, bool isHashed = false)
         {
-            if (password == "")
-                throw new EmptyFieldException();
-            if (CheckSecurityLevel(password) != 31)
-                throw new NotSecurePasswordException();
             _password = password;
             _isHashed = isHashed;
         }
