@@ -56,5 +56,14 @@ namespace AgoraphobiaGUI.UserControls
             container.Children.Add(new CreditsUC(container));
             container.Children.Remove(this);
         }
+
+        public void Quit(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Do you really want to exit the game?", "Quit Confirmation", MessageBoxButton.YesNo)
+                == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
+        }
     }
 }

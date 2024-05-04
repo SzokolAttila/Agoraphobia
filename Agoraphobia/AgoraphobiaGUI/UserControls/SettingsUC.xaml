@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:AgoraphobiaGUI.UserControls"
+             xmlns:local="clr-namespace:AgoraphobiaGUI.UserControls" d:DataContext="{d:DesignInstance Type=local:SettingsUC}"
              mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,9 +21,10 @@
         <Viewbox Grid.Row="0" Grid.ColumnSpan="2">
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Settings"/>
         </Viewbox>
-        <Viewbox Grid.Row="1" Grid.ColumnSpan="2">
-            <Label  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">Nothing to set yet</Label>
+        <Viewbox Grid.Row="1" Grid.Column="0">
+            <Label x:Name="MainVolumeLabel" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="{Binding MainVolume, Mode=OneWay}" ContentStringFormat="Main Volume: {0:P0}"/>
         </Viewbox>
+        <Slider x:Name="MainVolumeSlider" ValueChanged="VolumeChange" Value="{Binding MainVolume, Mode=TwoWay}" Minimum="0" Maximum="1" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" MaxWidth="270"/>
         <Button Click="Back" Grid.Row="2" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Go back</Button>
     </Grid>
 </UserControl>

@@ -16,15 +16,15 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Viewbox Grid.Row="0" Grid.ColumnSpan="2">
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Agoraphobia"/>
         </Viewbox>
         <Button Click="ContinueWindow" Grid.Row="1" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Continue</Button>
-        <Button Click="NewGameWindow" Grid.Row="2" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">New Game</Button>
-        <Button Click="TutorialWindow" Grid.Row="3" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Tutorial</Button>
-        <Button Click="SettingsWindow" Grid.Row="4" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">Settings</Button>
-        <Button Click="CreditsWindow" Grid.Row="5" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Credits</Button>
+        <Button Click="NewGameWindow" Grid.Row="1" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">New Game</Button>
+        <Button Click="TutorialWindow" Grid.Row="2" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Tutorial</Button>
+        <Button Click="SettingsWindow" Grid.Row="2" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">Settings</Button>
+        <Button Click="CreditsWindow" Grid.Row="3" Grid.Column="0" Margin="20 0" HorizontalAlignment="Stretch">Credits</Button>
+        <Button Click="Quit" Grid.Row="3" Grid.Column="1" Margin="20 0" HorizontalAlignment="Stretch">Quit</Button>
     </Grid>
 </UserControl>
