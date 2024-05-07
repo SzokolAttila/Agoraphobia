@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgoraphobiaLibrary", "AgoraphobiaLibrary\AgoraphobiaLibrary.csproj", "{BBFC9103-CA03-4415-B9E4-188BDDFB5F1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgoraphobiaLibrary", "AgoraphobiaLibrary\AgoraphobiaLibrary.csproj", "{BBFC9103-CA03-4415-B9E4-188BDDFB5F1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgoraphobiaGUI", "AgoraphobiaGUI\AgoraphobiaGUI.csproj", "{FAE723B6-4D59-4775-81D5-DF10991D17EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgoraphobiaGUI", "AgoraphobiaGUI\AgoraphobiaGUI.csproj", "{FAE723B6-4D59-4775-81D5-DF10991D17EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgoraphobiaTests", "AgoraphobiaTests\AgoraphobiaTests.csproj", "{A02E9250-9288-4B48-B966-B205084ED793}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgoraphobiaTests", "AgoraphobiaTests\AgoraphobiaTests.csproj", "{A02E9250-9288-4B48-B966-B205084ED793}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgoraphobiaAPI", "AgoraphobiaAPI\AgoraphobiaAPI.csproj", "{61E1D875-8771-454B-B180-CE03DC1F273B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{A02E9250-9288-4B48-B966-B205084ED793}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A02E9250-9288-4B48-B966-B205084ED793}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A02E9250-9288-4B48-B966-B205084ED793}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61E1D875-8771-454B-B180-CE03DC1F273B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61E1D875-8771-454B-B180-CE03DC1F273B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61E1D875-8771-454B-B180-CE03DC1F273B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61E1D875-8771-454B-B180-CE03DC1F273B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
