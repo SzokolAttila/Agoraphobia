@@ -13,7 +13,7 @@ namespace AgoraphobiaLibrary
         {
             var passwd = new Password(password, isPasswordHashed);
             return AccountsList.Find(x => 
-                x.Password.HashedPassword == passwd.HashedPassword
+                x.HashedPassword == passwd.HashedPassword
                 && x.Username == username);
         }
         public IEnumerable<Account> GetAccounts() => AccountsList.Select(x => x);
@@ -30,10 +30,7 @@ namespace AgoraphobiaLibrary
             AccountsList = AccountsList.Select(x =>
             {
                 if (x.Id == account.Id)
-                {
                     x.Username = account.Username;
-                    x.Password = new Password(account.Password.HashedPassword, true);
-                }
                 return x;
             }).ToList();
             return account;

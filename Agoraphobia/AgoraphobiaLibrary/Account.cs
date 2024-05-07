@@ -10,6 +10,7 @@
         }
         public int Id { get; init; }
         public string Username { get; set; }
-        public Password Password { get; set; }
+        public string HashedPassword => Password.HashedPassword;
+        private Password Password { get; set; }
     }
 }

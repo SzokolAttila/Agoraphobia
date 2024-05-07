@@ -1,4 +1,6 @@
+using AgoraphobiaLibrary;
 using Microsoft.OpenApi.Models;
+var accounts = new Accounts(new List<Account>());
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -16,5 +18,11 @@ if (app.Environment.IsDevelopment())
       c.SwaggerEndpoint("/swagger/v1/swagger.json", "Agoraphobia API V1");
    });
 }
+
+app.MapGet("/accounts", () => accounts.GetAccounts());
+app.MapGet("/accounts/{id}", (int id) => accounts.GetAccount(id));
+app.MapPost("/accounts", (Account account) => accounts.CreateAccount(account));
+app.MapPut("/accounts", (Account account) => accounts.UpdateAccount(account));
+app.MapDelete("/accounts/{id}", (int id) => accounts.DeleteAccount(id));
 
 app.Run();

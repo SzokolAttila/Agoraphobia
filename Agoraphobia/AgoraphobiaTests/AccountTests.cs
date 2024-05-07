@@ -26,7 +26,7 @@ namespace AgoraphobiaTests
             });
             var account = accounts.Login("delulu", "Hululu!0");
             Assert.AreEqual("delulu", account!.Username);
-            Assert.AreEqual(Encoding.UTF8.GetString(SHA512.HashData(Encoding.UTF8.GetBytes("Hululu!0"))), account.Password.HashedPassword);
+            Assert.AreEqual(Encoding.UTF8.GetString(SHA512.HashData(Encoding.UTF8.GetBytes("Hululu!0"))), account.HashedPassword);
         }
 
         [TestMethod]
@@ -38,7 +38,7 @@ namespace AgoraphobiaTests
             });
             var account = accounts.Login("delulu", "Hululu!0", true);
             Assert.AreEqual("delulu", account!.Username);
-            Assert.AreEqual("Hululu!0", account.Password.HashedPassword);
+            Assert.AreEqual("Hululu!0", account.HashedPassword);
         }
 
         [TestMethod]
@@ -86,8 +86,8 @@ namespace AgoraphobiaTests
             });
             var account = new Account(2, "brownie", "Hululu!0");
             accounts.UpdateAccount(account);
-            var updated = accounts.GetAccount(2);
-            Assert.AreEqual("brownie", account.Username);
+            var updated = accounts.GetAccount(2)!;
+            Assert.AreEqual("brownie", updated.Username);
         }
         [TestMethod]
         public void AccountsCanBeDeleted()
