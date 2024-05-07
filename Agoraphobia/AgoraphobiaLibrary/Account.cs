@@ -1,6 +1,6 @@
 ﻿namespace AgoraphobiaLibrary
 {
-    public class Account
+    public record Account
     {
         public Account(int id, string username, string password, bool isPasswordHashed = false)
         {
@@ -9,7 +9,7 @@
             Id = id;
         }
         public int Id { get; init; }
-        public string Username { get; private set; }
-        public Password Password { get; private set; }
+        public string Username { get; set; }
+        public Password Password { get; set; }
     }
 }
