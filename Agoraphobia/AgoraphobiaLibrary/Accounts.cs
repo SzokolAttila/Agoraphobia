@@ -14,7 +14,7 @@ namespace AgoraphobiaLibrary
             var passwd = new Password(password, isPasswordHashed);
             var account = AccountsList.Find(x => 
                 x.Username == username
-                && x.Password.HashedPassword == passwd.HashedPassword);
+                && x.HashedPassword == passwd.HashedPassword);
             if (account is null)
                 throw new InvalidLoginException();
             return account;
@@ -22,8 +22,9 @@ namespace AgoraphobiaLibrary
         public IEnumerable<Account> GetAccounts() => AccountsList.Select(x => x);
         public Account? GetAccount(int id) => AccountsList.SingleOrDefault(x => x.Id == id);
 
-        public Account CreateAccount(Account account)
+        public Account CreateAccount(int id, string username, string password)
         {
+            var account = new Account(id, username, password);
             AccountsList.Add(account);
             return account;
         }

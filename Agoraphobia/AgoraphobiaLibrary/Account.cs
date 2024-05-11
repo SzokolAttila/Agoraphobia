@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using AgoraphobiaLibrary.Exceptions;
+﻿using AgoraphobiaLibrary.Exceptions;
 
 namespace AgoraphobiaLibrary
 {
@@ -20,6 +19,7 @@ namespace AgoraphobiaLibrary
         private const int MAXIMUM_LENGTH = 32;
         public int Id { get; }
         public string Username { get; set; }
-        public Password Password { get; private set; }
+        public string HashedPassword => Password.HashedPassword;
+        private Password Password { get; set; }
     }
 }
