@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.Exceptions;
 
 namespace AgoraphobiaTests
 {
@@ -28,7 +29,7 @@ namespace AgoraphobiaTests
         {
             Assert.AreEqual(0, Password.CheckSecurityLevel(""));
         }
-        
+
         [TestMethod]
         [DataRow("a")]
         [DataRow("aaoeu")]
@@ -84,5 +85,14 @@ namespace AgoraphobiaTests
         {
             Assert.AreEqual(securityValue, Password.CheckSecurityLevel(password));
         }
-    }
+
+        [TestMethod]
+        [DataRow("eohtanueoau")]
+        [DataRow("eohtanA}oau")]
+        [DataRow("5A}oau")]
+        public void NotSecurePasswordThrowsException(string password)
+        {
+            Assert.ThrowsException<NotSecurePasswordException>(() => new Password(password));
+        }
+}
 }
