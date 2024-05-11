@@ -1,4 +1,4 @@
-﻿using System.Xml.XPath;
+﻿using AgoraphobiaLibrary.Exceptions;
 
 namespace AgoraphobiaLibrary
 {
@@ -9,12 +9,15 @@ namespace AgoraphobiaLibrary
         {
             AccountsList = accounts.ToList();
         }
-        public Account? Login(string username, string password, bool isPasswordHashed = false)
+        public Account Login(string username, string password, bool isPasswordHashed = false)
         {
             var passwd = new Password(password, isPasswordHashed);
-            return AccountsList.Find(x => 
-                x.HashedPassword == passwd.HashedPassword
-                && x.Username == username);
+            var account = AccountsList.Find(x => 
+                x.Username == username
+                && x.Password.HashedPassword == passwd.HashedPassword);
+            if (account is null)
+                throw new InvalidLoginException();
+            return account;
         }
         public IEnumerable<Account> GetAccounts() => AccountsList.Select(x => x);
         public Account? GetAccount(int id) => AccountsList.SingleOrDefault(x => x.Id == id);
@@ -30,7 +33,9 @@ namespace AgoraphobiaLibrary
             AccountsList = AccountsList.Select(x =>
             {
                 if (x.Id == account.Id)
+                {
                     x.Username = account.Username;
+                }
                 return x;
             }).ToList();
             return account;

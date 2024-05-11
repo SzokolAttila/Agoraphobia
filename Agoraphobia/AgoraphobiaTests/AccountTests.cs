@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.Exceptions;
 
 namespace AgoraphobiaTests
 {
@@ -8,13 +9,25 @@ namespace AgoraphobiaTests
     public class AccountTests
     {
         [TestMethod]
-        public void LoginFunctionReturnsNullWhenInvalid()
+        public void TooShortUsernameThrowsException()
+        {
+            Assert.ThrowsException<TooShortUsernameException>(() => new Account(3, "eoua", "eohuaeotna"));
+        }
+
+        [TestMethod]
+        public void TooLongUsernameThrowsException()
+        {
+            Assert.ThrowsException<TooLongUsernameException>(() =>
+                new Account(7, "eohaunheoanuheoanthueoanthuehoantuheoantueohnt", "uoaen"));
+        }
+        [TestMethod]
+        public void LoginFunctionThrowsExceptionWhenInvalid()
         {
             var accounts = new Accounts(new List<Account>()
             {
                 new Account(1,"hululu", "Hululu!0")
             });
-            Assert.AreEqual(null, accounts.Login( "delulu", "Hululu!0"));
+            Assert.ThrowsException<InvalidLoginException>(() => accounts.Login( "delulu", "Hululu!0"));
         }
 
         [TestMethod]
@@ -25,8 +38,8 @@ namespace AgoraphobiaTests
                 new Account(1, "delulu", "Hululu!0")
             });
             var account = accounts.Login("delulu", "Hululu!0");
-            Assert.AreEqual("delulu", account!.Username);
-            Assert.AreEqual(Encoding.UTF8.GetString(SHA512.HashData(Encoding.UTF8.GetBytes("Hululu!0"))), account.HashedPassword);
+            Assert.AreEqual("delulu", account.Username);
+            Assert.AreEqual(Encoding.UTF8.GetString(SHA512.HashData(Encoding.UTF8.GetBytes("Hululu!0"))), account.Password.HashedPassword);
         }
 
         [TestMethod]
@@ -37,8 +50,8 @@ namespace AgoraphobiaTests
                 new Account(1, "delulu", "Hululu!0", true)
             });
             var account = accounts.Login("delulu", "Hululu!0", true);
-            Assert.AreEqual("delulu", account!.Username);
-            Assert.AreEqual("Hululu!0", account.HashedPassword);
+            Assert.AreEqual("delulu", account.Username);
+            Assert.AreEqual("Hululu!0", account.Password.HashedPassword);
         }
 
         [TestMethod]
