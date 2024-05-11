@@ -33,17 +33,17 @@ namespace AgoraphobiaLibrary
             return account;
         }
 
-        public Account UpdateAccount(Account account)
+        public Account UpdateAccount(int id, string username)
         {
             AccountsList = AccountsList.Select(x =>
             {
-                if (x.Id == account.Id)
+                if (x.Id == id)
                 {
-                    x.Username = account.Username;
+                    x.Username = username;
                 }
                 return x;
             }).ToList();
-            return account;
+            return GetAccount(id)!;
         }
 
         public void DeleteAccount(int id)

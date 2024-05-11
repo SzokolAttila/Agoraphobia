@@ -119,8 +119,7 @@ namespace AgoraphobiaTests
                 new Account(1, "delulu", "Hululu!0"),
                 new Account(2, "jackie", "Hululu!0")
             });
-            var account = new Account(2, "brownie", "Hululu!0");
-            accounts.UpdateAccount(account);
+            accounts.UpdateAccount(2, "brownie");
             var updated = accounts.GetAccount(2)!;
             Assert.AreEqual("brownie", updated.Username);
         }
