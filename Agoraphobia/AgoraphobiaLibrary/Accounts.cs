@@ -26,6 +26,8 @@ namespace AgoraphobiaLibrary
         {
             if (GetAccount(id) is not null)
                 throw new NonUniqueIdException();
+            if (AccountsList.Exists(x => x.Username == username))
+                throw new NonUniqueUsernameException();
             var account = new Account(id, username, password);
             AccountsList.Add(account);
             return account;
