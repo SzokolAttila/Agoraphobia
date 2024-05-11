@@ -112,18 +112,29 @@ namespace AgoraphobiaTests
             Assert.ThrowsException<NonUniqueUsernameException>(() => accounts.CreateAccount(3, "jackie", "Delulu!0"));
         }
         [TestMethod]
-        public void AccountsCanBeUpdated()
+        public void UsernameCanBeUpdated()
         {
             var accounts = new Accounts(new List<Account>()
             {
                 new Account(1, "delulu", "Hululu!0"),
                 new Account(2, "jackie", "Hululu!0")
             });
-            accounts.UpdateAccount(2, "brownie");
+            accounts.UpdateUsername(2, "brownie");
             var updated = accounts.GetAccount(2)!;
             Assert.AreEqual("brownie", updated.Username);
         }
+
         [TestMethod]
+        public void SameLengthLimitRulesApplyToUpdatedUsernames()
+        {
+            var accounts = new Accounts(new List<Account>()
+            {
+                new Account(1, "delulu", "Hululu!0"),
+                new Account(2, "jackie", "Hululu!0")
+            });
+            Assert.ThrowsException<TooShortUsernameException>(() => accounts.UpdateUsername(2, "aoe"));
+            Assert.ThrowsException<TooLongUsernameException>(() => accounts.UpdateUsername(2, "auaeouhteoanuheroatuhneoahunteoheuntaooe"));
+        }
         public void AccountsCanBeDeleted()
         {
             var accounts = new Accounts(new List<Account>()
