@@ -27,7 +27,6 @@ namespace AgoraphobiaLibrary
                 _username = value;
             }
         }
-        public string HashedPassword => Password.HashedPassword;
         public Password Password { get; }
     }
 }

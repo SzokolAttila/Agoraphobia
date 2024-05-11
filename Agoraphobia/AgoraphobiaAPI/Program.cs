@@ -22,7 +22,8 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/accounts", () => accounts.GetAccounts());
 app.MapGet("/accounts/{id}", (int id) => accounts.GetAccount(id));
 app.MapPost("/accounts", (int id, string username, string password) => accounts.CreateAccount(id, username, password));
-app.MapPut("/accounts", (int id, string username) => accounts.UpdateUsername(id, username));
+app.MapPut("/accounts", (int id, string username, string oldPassword, string newPassword, string newPasswordAgain) => 
+    accounts.UpdateAccount(id, username, oldPassword, newPassword, newPasswordAgain));
 app.MapDelete("/accounts/{id}", (int id) => accounts.DeleteAccount(id));
 
 app.Run();

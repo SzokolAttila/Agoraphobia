@@ -14,7 +14,7 @@ namespace AgoraphobiaLibrary
             var passwd = new Password(password, isPasswordHashed);
             var account = AccountsList.Find(x => 
                 x.Username == username
-                && x.HashedPassword == passwd.HashedPassword);
+                && x.Password.HashedPassword == passwd.HashedPassword);
             if (account is null)
                 throw new InvalidLoginException();
             return account;
@@ -32,14 +32,14 @@ namespace AgoraphobiaLibrary
             AccountsList.Add(account);
             return account;
         }
-
-        public Account UpdateUsername(int id, string username)
+        public Account UpdateAccount(int id, string username, string oldPassword, string newPassword, string newPasswordAgain)
         {
             AccountsList = AccountsList.Select(x =>
             {
                 if (x.Id == id)
                 {
                     x.Username = username;
+                    x.Password.ChangePassword(oldPassword, newPassword, newPasswordAgain);
                 }
                 return x;
             }).ToList();

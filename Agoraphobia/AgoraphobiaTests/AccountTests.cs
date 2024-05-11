@@ -39,7 +39,7 @@ namespace AgoraphobiaTests
             });
             var account = accounts.Login("delulu", "Hululu!0");
             Assert.AreEqual("delulu", account.Username);
-            Assert.AreEqual(Encoding.UTF8.GetString(SHA512.HashData(Encoding.UTF8.GetBytes("Hululu!0"))), account.HashedPassword);
+            Assert.AreEqual(Encoding.UTF8.GetString(SHA512.HashData(Encoding.UTF8.GetBytes("Hululu!0"))), account.Password.HashedPassword);
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace AgoraphobiaTests
             });
             var account = accounts.Login("delulu", "Hululu!0", true);
             Assert.AreEqual("delulu", account.Username);
-            Assert.AreEqual("Hululu!0", account.HashedPassword);
+            Assert.AreEqual("Hululu!0", account.Password.HashedPassword);
         }
 
         [TestMethod]
@@ -119,7 +119,7 @@ namespace AgoraphobiaTests
                 new Account(1, "delulu", "Hululu!0"),
                 new Account(2, "jackie", "Hululu!0")
             });
-            accounts.UpdateUsername(2, "brownie");
+            accounts.UpdateAccount(2, "brownie", "Hululu!0", "Hululu!0", "Hululu!0");
             var updated = accounts.GetAccount(2)!;
             Assert.AreEqual("brownie", updated.Username);
         }
@@ -132,9 +132,10 @@ namespace AgoraphobiaTests
                 new Account(1, "delulu", "Hululu!0"),
                 new Account(2, "jackie", "Hululu!0")
             });
-            Assert.ThrowsException<TooShortUsernameException>(() => accounts.UpdateUsername(2, "aoe"));
-            Assert.ThrowsException<TooLongUsernameException>(() => accounts.UpdateUsername(2, "auaeouhteoanuheroatuhneoahunteoheuntaooe"));
+            Assert.ThrowsException<TooShortUsernameException>(() => accounts.UpdateAccount(2, "aoe", "Hululu!0", "Hululu!0", "Hululu!0"));
+            Assert.ThrowsException<TooLongUsernameException>(() => accounts.UpdateAccount(2, "auaeouhteoanuheroatuhneoahunteoheuntaooe", "Hululu!0", "Hululu!0", "Hululu!0"));
         }
+        [TestMethod]
         public void AccountsCanBeDeleted()
         {
             var accounts = new Accounts(new List<Account>()
@@ -145,6 +146,19 @@ namespace AgoraphobiaTests
             Assert.AreEqual(2, accounts.GetAccounts().Count());
             accounts.DeleteAccount(1);
             Assert.AreEqual(1, accounts.GetAccounts().Count());
+        }
+
+        [TestMethod]
+        public void PasswordOfAccountCanBeChanged()
+        {
+            var accounts = new Accounts(new List<Account>()
+            {
+                new Account(1, "delulu", "Hululu!0"),
+                new Account(2, "jackie", "Hululu!0")
+            });
+            accounts.UpdateAccount(1,"delulu", "Hululu!0", "Delulu!0", "Delulu!0");
+            var account = accounts.Login("delulu", "Delulu!0");
+            Assert.AreEqual(1, account.Id);
         }
     }
 }
