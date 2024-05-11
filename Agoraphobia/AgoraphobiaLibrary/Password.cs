@@ -6,8 +6,8 @@ namespace AgoraphobiaLibrary
 {
     public class Password
     {
-        private readonly string _password;
-        private readonly bool _isHashed;
+        private string _password;
+        private bool _isHashed;
         private const int MAX_SECURITY_LEVEL = 31;
         public Password(string password, bool isHashed = false)
         {
@@ -35,6 +35,18 @@ namespace AgoraphobiaLibrary
             if (password.Length >= 8)
                 securityLevel += 16;
             return securityLevel;
+        }
+
+        public void ChangePassword(string oldPassword, string newPassword, string newPasswordAgain)
+        {
+            if (System.Text.Encoding.UTF8.GetString(SHA512.HashData(System.Text.Encoding.UTF8.GetBytes(oldPassword))) != HashedPassword)
+                throw new IncorrectPasswordException();
+            if (newPassword != newPasswordAgain)
+                throw new PasswordsDoNotMatchException();
+            if (CheckSecurityLevel(newPassword) != MAX_SECURITY_LEVEL)
+                throw new NotSecurePasswordException();
+            _password = newPassword;
+            _isHashed = false;
         }
     }
 }

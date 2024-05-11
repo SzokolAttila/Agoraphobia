@@ -94,5 +94,43 @@ namespace AgoraphobiaTests
         {
             Assert.ThrowsException<NotSecurePasswordException>(() => new Password(password));
         }
-}
+
+        [TestMethod]
+        public void PasswordCanBeChanged()
+        {
+            var password = new Password("Hululu!0");
+            var temp = new Password("Hululu!0");
+            Assert.AreEqual(password.HashedPassword, temp.HashedPassword);
+            password.ChangePassword("Hululu!0", "Delulu!0", "Delulu!0");
+            Assert.AreNotEqual(password.HashedPassword, temp.HashedPassword);
+        }
+
+        [TestMethod]
+        public void ChangingPasswordThrowsExceptionIfOldPasswordIsIncorrect()
+        {
+            var password = new Password("Hululu!0");
+            Assert.ThrowsException<IncorrectPasswordException>(() =>
+                password.ChangePassword("Delulu!0", "Delulu!0", "Delulu!0"));
+        }
+
+        [TestMethod]
+        public void NotMatchingPasswordsThrowException()
+        {
+            var password = new Password("Delulu!0");
+            Assert.ThrowsException<PasswordsDoNotMatchException>(() => 
+                password.ChangePassword("Delulu!0", "aueo", "eoauhoe"));
+        }
+
+        [TestMethod]
+        [DataRow("euohtaueueohnta")]
+        [DataRow("Ooue3{")]
+        [DataRow("Ooue3oeueo")]
+        [DataRow("Ooue}oeueo")]
+        public void PasswordSecurityRequirementsApplyToChangedPassword(string passwd)
+        {
+            var password = new Password("Delulu!0");
+            Assert.ThrowsException<NotSecurePasswordException>(() => 
+                password.ChangePassword("Delulu!0", passwd, passwd));
+        }
+    }
 }
