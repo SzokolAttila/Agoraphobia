@@ -24,6 +24,8 @@ namespace AgoraphobiaLibrary
 
         public Account CreateAccount(int id, string username, string password)
         {
+            if (GetAccount(id) is not null)
+                throw new NonUniqueIdException();
             var account = new Account(id, username, password);
             AccountsList.Add(account);
             return account;

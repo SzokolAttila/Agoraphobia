@@ -88,7 +88,18 @@ namespace AgoraphobiaTests
             Assert.AreEqual(2, accounts.GetAccounts().Count());
             accounts.CreateAccount(3, "newAccount", "Delulu!0"); 
             Assert.AreEqual(3, accounts.GetAccounts().Count());
-        }       
+        }
+
+        [TestMethod]
+        public void NonUniqueIdThrowsException()
+        {
+            var accounts = new Accounts(new List<Account>()
+            {
+                new Account(1, "delulu", "Hululu!0"),
+                new Account(2, "jackie", "Hululu!0")
+            });
+            Assert.ThrowsException<NonUniqueIdException>(() => accounts.CreateAccount(2, "newAccount", "Delulu!0"));
+        }
         [TestMethod]
         public void AccountsCanBeUpdated()
         {
