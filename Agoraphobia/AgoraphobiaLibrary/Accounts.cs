@@ -38,8 +38,8 @@ namespace AgoraphobiaLibrary
             {
                 if (x.Id == id)
                 {
-                    x.Username = username;
                     x.Password.ChangePassword(oldPassword, newPassword, newPasswordAgain);
+                    x.Username = username;
                 }
                 return x;
             }).ToList();

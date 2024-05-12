@@ -1,4 +1,5 @@
-﻿using AgoraphobiaLibrary.Exceptions;
+﻿using System.Text.Json.Serialization;
+using AgoraphobiaLibrary.Exceptions;
 
 namespace AgoraphobiaLibrary
 {
@@ -27,6 +28,9 @@ namespace AgoraphobiaLibrary
                 _username = value;
             }
         }
+        [JsonInclude]
+        public string HashedPassword => Password.HashedPassword;
+        [JsonIgnore]
         public Password Password { get; }
     }
 }
