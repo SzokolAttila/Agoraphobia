@@ -14,7 +14,7 @@ namespace AgoraphobiaLibrary
             var passwd = new Password(password, isPasswordHashed);
             var account = AccountsList.Find(x => 
                 x.Username == username
-                && x.Password.HashedPassword == passwd.HashedPassword);
+                && x.Password.Passwd == passwd.Passwd);
             if (account is null)
                 throw new InvalidLoginException();
             return account;

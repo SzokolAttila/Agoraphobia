@@ -1,5 +1,8 @@
+using AgoraphobiaAPI.Data;
 using AgoraphobiaLibrary;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+
 var accounts = new Accounts(new List<Account>());
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +10,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
      c.SwaggerDoc("v1", new OpenApiInfo { Title = "Agoraphobia API", Description = "It's high time you got started with that book...", Version = "v1" });
+});
+
+builder.Services.AddDbContext<ApplicationDBContext>(options => {
+   options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 var app = builder.Build();

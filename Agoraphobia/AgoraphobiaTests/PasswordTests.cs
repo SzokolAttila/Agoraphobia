@@ -11,17 +11,17 @@ namespace AgoraphobiaTests
         public void HashedPasswordCanBeAccessed()
         {
             var password = new Password("Hululu!0");
-            Console.WriteLine(password.HashedPassword);
+            Console.WriteLine(password.Passwd);
             Assert.AreEqual(
                 System.Text.Encoding.UTF8.GetString(SHA512.HashData(System.Text.Encoding.UTF8.GetBytes("Hululu!0"))),
-                password.HashedPassword);
+                password.Passwd);
         }
 
         [TestMethod]
         public void AlreadyHashedPasswordIsNotHashedAgain()
         {
             var password = new Password("Hululu!0", true);
-            Assert.AreEqual("Hululu!0", password.HashedPassword);
+            Assert.AreEqual("Hululu!0", password.Passwd);
         }
 
         [TestMethod]
@@ -100,9 +100,9 @@ namespace AgoraphobiaTests
         {
             var password = new Password("Hululu!0");
             var temp = new Password("Hululu!0");
-            Assert.AreEqual(password.HashedPassword, temp.HashedPassword);
+            Assert.AreEqual(password.Passwd, temp.Passwd);
             password.ChangePassword("Hululu!0", "Delulu!0", "Delulu!0");
-            Assert.AreNotEqual(password.HashedPassword, temp.HashedPassword);
+            Assert.AreNotEqual(password.Passwd, temp.Passwd);
         }
 
         [TestMethod]
