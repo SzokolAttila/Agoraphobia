@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,19 +15,14 @@ using System.Windows.Shapes;
 
 namespace AgoraphobiaGUI.UserControls
 {
-    public partial class CreditsUC : UserControl
+    /// <summary>
+    /// Interaction logic for ItemCollectionWindow.xaml
+    /// </summary>
+    public partial class ItemCollectionWindow : UserControl
     {
-        readonly Grid container;
-        public CreditsUC(Grid container)
+        public ItemCollectionWindow()
         {
             InitializeComponent();
-            this.container = container;
-        }
-
-        public void Back(object sender, RoutedEventArgs e)
-        {
-            container.Children.Add(new MainMenuUC(container));
-            container.Children.Remove(this);
         }
     }
 }
