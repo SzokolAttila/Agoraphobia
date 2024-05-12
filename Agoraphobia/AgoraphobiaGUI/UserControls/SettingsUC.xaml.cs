@@ -20,7 +20,8 @@ namespace AgoraphobiaGUI.UserControls
 {
     public partial class SettingsUC : UserControl, INotifyPropertyChanged
     {
-        Grid container;
+        Panel container;
+        Color? Bg;
 
         public double MainVolume
         {
@@ -34,11 +35,14 @@ namespace AgoraphobiaGUI.UserControls
                 OnPropertyChanged("MainVolume");
             }
         }
-        public SettingsUC(Grid container)
+        public SettingsUC(Panel container, Color? bg = null, Color? border = null)
         {
             InitializeComponent();
             DataContext = this;
             this.container = container;
+            Main.Background = new SolidColorBrush(bg ?? Colors.Transparent);
+            Main.BorderBrush = new SolidColorBrush(border ?? Colors.Transparent);
+            Bg = bg;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -49,7 +53,10 @@ namespace AgoraphobiaGUI.UserControls
 
         public void Back(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new MainMenuUC(container));
+            if (Bg==null)
+            {
+                container.Children.Add(new MainMenuUC((Grid)container));
+            }
             container.Children.Remove(this);
         }
 

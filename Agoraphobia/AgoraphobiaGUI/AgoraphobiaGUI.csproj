@@ -41,7 +41,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="UserControls\CreditsUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\TutorialUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UserControls\SettingsUC.xaml.cs">
@@ -50,6 +57,10 @@
     <Compile Update="UserControls\NewGameUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UserControls\ItemCollectionTypes\" />
   </ItemGroup>
 
 </Project>

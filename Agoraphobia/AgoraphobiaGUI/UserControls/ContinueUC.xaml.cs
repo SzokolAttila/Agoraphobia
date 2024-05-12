@@ -21,7 +21,7 @@ namespace AgoraphobiaGUI.UserControls
     /// </summary>
     public partial class ContinueUC : UserControl
     {
-        Grid container;
+        readonly Grid container;
         public ContinueUC(Grid container)
         {
             InitializeComponent();

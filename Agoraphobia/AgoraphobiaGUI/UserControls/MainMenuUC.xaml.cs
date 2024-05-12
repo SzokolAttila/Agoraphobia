@@ -20,7 +20,7 @@ namespace AgoraphobiaGUI.UserControls
     /// </summary>
     public partial class MainMenuUC : UserControl
     {
-        Grid container;
+        readonly Grid container;
         public MainMenuUC(Grid container)
         {
             InitializeComponent();
@@ -47,7 +47,7 @@ namespace AgoraphobiaGUI.UserControls
 
         public void TutorialWindow(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new SettingsUC(container));
+            container.Children.Add(new TutorialUC(container));
             container.Children.Remove(this);
         }
 

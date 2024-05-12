@@ -19,7 +19,7 @@ namespace AgoraphobiaGUI.UserControls
     
     public partial class NewGameUC : UserControl
     {
-        Grid container;
+        readonly Grid container;
         public NewGameUC(Grid container)
         {
             InitializeComponent();
