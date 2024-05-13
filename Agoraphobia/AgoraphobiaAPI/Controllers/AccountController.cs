@@ -1,6 +1,9 @@
-﻿using AgoraphobiaAPI.Data;
+﻿using System.Security.AccessControl;
+using AgoraphobiaAPI.Data;
+using AgoraphobiaAPI.Dtos.Account;
+using AgoraphobiaAPI.Mappers;
+using AgoraphobiaLibrary;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AgoraphobiaAPI.Controllers
 {
@@ -24,6 +27,16 @@ namespace AgoraphobiaAPI.Controllers
         {
             var account = _context.Accounts.Find(id);
             return account is null ? NotFound() : Ok(account);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateAccountRequestDto account)
+        {
+            var accountModel = account.ToAccountFromCreateDto();
+            var final = new Account(accountModel.Username, accountModel.Passwd, true);
+            _context.Accounts.Add(final);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, final.ToAccountDto());
         }
     }
 }

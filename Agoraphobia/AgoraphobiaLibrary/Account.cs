@@ -7,11 +7,10 @@ namespace AgoraphobiaLibrary
     public record Account
     {
         [JsonConstructor]
-        public Account(Account account)
+        public Account(string username, string password, bool isPasswordHashed)
         {
-            Username = account.Username;
-            Password = new Password(account.Passwd, true);
-            Id = account.Id;
+            Username = username;
+            Password = new Password(password, isPasswordHashed);
         }
         public Account(int id, string username, string passwd, bool isPasswordHashed = false)
         {
