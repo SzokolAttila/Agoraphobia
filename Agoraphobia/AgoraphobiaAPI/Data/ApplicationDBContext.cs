@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AgoraphobiaLibrary;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +10,6 @@ namespace AgoraphobiaAPI.Data
         {
             
         }
-        public DbSet<Account> Account { get; set; }
+        public DbSet<Account> Accounts { get; set; }
     }
 }

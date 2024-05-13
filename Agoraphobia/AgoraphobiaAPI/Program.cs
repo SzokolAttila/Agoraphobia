@@ -1,11 +1,9 @@
 using AgoraphobiaAPI.Data;
-using AgoraphobiaLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-var accounts = new Accounts(new List<Account>());
-
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -26,11 +24,5 @@ if (app.Environment.IsDevelopment())
    });
 }
 
-app.MapGet("/accounts", () => accounts.GetAccounts());
-app.MapGet("/accounts/{id}", (int id) => accounts.GetAccount(id));
-app.MapPost("/accounts", (int id, string username, string password) => accounts.CreateAccount(id, username, password));
-app.MapPut("/accounts", (int id, string username, string oldPassword, string newPassword, string newPasswordAgain) => 
-    accounts.UpdateAccount(id, username, oldPassword, newPassword, newPasswordAgain));
-app.MapDelete("/accounts/{id}", (int id) => accounts.DeleteAccount(id));
-
+app.MapControllers();
 app.Run();

@@ -10,10 +10,10 @@ namespace AgoraphobiaTests
         [TestMethod]
         public void HashedPasswordCanBeAccessed()
         {
-            var password = new Password("Hululu!0");
+            var password = new Password("Delulu!0");
             Console.WriteLine(password.Passwd);
             Assert.AreEqual(
-                System.Text.Encoding.UTF8.GetString(SHA512.HashData(System.Text.Encoding.UTF8.GetBytes("Hululu!0"))),
+                System.Text.Encoding.UTF8.GetString(SHA512.HashData(System.Text.Encoding.UTF8.GetBytes("Delulu!0"))),
                 password.Passwd);
         }
 

@@ -15,8 +15,11 @@ namespace AgoraphobiaLibrary
         private const int MAX_SECURITY_LEVEL = 31;
         public Password(string passwd, bool isHashed = false)
         {
-            if (CheckSecurityLevel(passwd) != MAX_SECURITY_LEVEL)
-                throw new NotSecurePasswordException();
+            if (!isHashed)
+            {
+                if (CheckSecurityLevel(passwd) != MAX_SECURITY_LEVEL)
+                    throw new NotSecurePasswordException();
+            }
             IsHashed = isHashed;
             _password = passwd;
         }

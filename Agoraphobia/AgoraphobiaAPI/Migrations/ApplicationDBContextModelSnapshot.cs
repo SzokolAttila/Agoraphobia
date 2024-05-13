@@ -43,7 +43,7 @@ namespace AgoraphobiaAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Account");
+                    b.ToTable("Accounts");
                 });
 #pragma warning restore 612, 618
         }

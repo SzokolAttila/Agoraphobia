@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgoraphobiaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240512184115_init")]
-    partial class init
+    [Migration("20240513130133_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,7 +46,7 @@ namespace AgoraphobiaAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Account");
+                    b.ToTable("Accounts");
                 });
 #pragma warning restore 612, 618
         }
