@@ -38,5 +38,20 @@ namespace AgoraphobiaAPI.Controllers
             _context.SaveChanges();
             return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, final.ToAccountDto());
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] UpdateAccountRequestDto account)
+        {
+            var accountModel = _context.Accounts.FirstOrDefault(x => x.Id == id);
+            if (accountModel is null)
+                return NotFound();
+
+            accountModel.Username = account.Username;
+            accountModel.Password.ChangePassword(account.OldPassword, account.NewPassword);
+            
+            _context.SaveChanges();
+            return Ok(accountModel);
+        }
     }
 }

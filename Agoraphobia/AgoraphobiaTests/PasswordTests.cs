@@ -101,7 +101,7 @@ namespace AgoraphobiaTests
             var password = new Password("Hululu!0");
             var temp = new Password("Hululu!0");
             Assert.AreEqual(password.Passwd, temp.Passwd);
-            password.ChangePassword("Hululu!0", "Delulu!0", "Delulu!0");
+            password.ChangePassword("Hululu!0",  "Delulu!0");
             Assert.AreNotEqual(password.Passwd, temp.Passwd);
         }
 
@@ -110,15 +110,7 @@ namespace AgoraphobiaTests
         {
             var password = new Password("Hululu!0");
             Assert.ThrowsException<IncorrectPasswordException>(() =>
-                password.ChangePassword("Delulu!0", "Delulu!0", "Delulu!0"));
-        }
-
-        [TestMethod]
-        public void NotMatchingPasswordsThrowException()
-        {
-            var password = new Password("Delulu!0");
-            Assert.ThrowsException<PasswordsDoNotMatchException>(() => 
-                password.ChangePassword("Delulu!0", "aueo", "eoauhoe"));
+                password.ChangePassword("Delulu!0", "Delulu!0"));
         }
 
         [TestMethod]
@@ -130,7 +122,7 @@ namespace AgoraphobiaTests
         {
             var password = new Password("Delulu!0");
             Assert.ThrowsException<NotSecurePasswordException>(() => 
-                password.ChangePassword("Delulu!0", passwd, passwd));
+                password.ChangePassword("Delulu!0", passwd));
         }
     }
 }

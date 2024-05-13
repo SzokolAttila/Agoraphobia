@@ -20,14 +20,14 @@ namespace AgoraphobiaLibrary
                 if (CheckSecurityLevel(passwd) != MAX_SECURITY_LEVEL)
                     throw new NotSecurePasswordException();
             }
-            IsHashed = isHashed;
-            _password = passwd;
+            _password = isHashed ? passwd : 
+                System.Text.Encoding.UTF8.GetString(SHA512.HashData(System.Text.Encoding.UTF8.GetBytes(passwd)));
+            IsHashed = true;
         }
         
-        public string Passwd
+        public string Passwd 
         {
-            get => IsHashed ? _password : 
-                System.Text.Encoding.UTF8.GetString(SHA512.HashData(System.Text.Encoding.UTF8.GetBytes(_password)));
+            get => _password;
             private set
             { 
                 
@@ -51,16 +51,13 @@ namespace AgoraphobiaLibrary
             return securityLevel;
         }
 
-        public void ChangePassword(string oldPassword, string newPassword, string newPasswordAgain)
+        public void ChangePassword(string oldPassword, string newPassword)
         {
             if (System.Text.Encoding.UTF8.GetString(SHA512.HashData(System.Text.Encoding.UTF8.GetBytes(oldPassword))) != Passwd)
                 throw new IncorrectPasswordException();
-            if (newPassword != newPasswordAgain)
-                throw new PasswordsDoNotMatchException();
             if (CheckSecurityLevel(newPassword) != MAX_SECURITY_LEVEL)
                 throw new NotSecurePasswordException();
-            _password = newPassword;
-            IsHashed = false;
+            _password = System.Text.Encoding.UTF8.GetString(SHA512.HashData(System.Text.Encoding.UTF8.GetBytes(newPassword)));
         }
     }
 }
