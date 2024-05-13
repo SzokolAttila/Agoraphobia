@@ -53,5 +53,18 @@ namespace AgoraphobiaAPI.Controllers
             _context.SaveChanges();
             return Ok(accountModel);
         }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            var accountModel = _context.Accounts.FirstOrDefault(x => x.Id == id);
+            if (accountModel is null)
+                return NotFound();
+            
+            _context.Accounts.Remove(accountModel);
+            _context.SaveChanges();
+            return NoContent();
+        }
     }
 }
