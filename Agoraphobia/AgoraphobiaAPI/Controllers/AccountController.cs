@@ -1,9 +1,9 @@
-﻿using System.Security.AccessControl;
-using AgoraphobiaAPI.Data;
+﻿using AgoraphobiaAPI.Data;
 using AgoraphobiaAPI.Dtos.Account;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaLibrary;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AgoraphobiaAPI.Controllers
 {
@@ -17,53 +17,53 @@ namespace AgoraphobiaAPI.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_context.Accounts.ToList());
+            return Ok(await _context.Accounts.ToListAsync());
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var account = _context.Accounts.Find(id);
+            var account = await _context.Accounts.FindAsync(id);
             return account is null ? NotFound() : Ok(account);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateAccountRequestDto account)
+        public async Task<IActionResult> Create([FromBody] CreateAccountRequestDto account)
         {
             var accountModel = account.ToAccountFromCreateDto();
             var final = new Account(accountModel.Username, accountModel.Passwd, true);
-            _context.Accounts.Add(final);
-            _context.SaveChanges();
+            await _context.Accounts.AddAsync(final);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, final.ToAccountDto());
         }
 
         [HttpPut]
         [Route("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] UpdateAccountRequestDto account)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAccountRequestDto account)
         {
-            var accountModel = _context.Accounts.FirstOrDefault(x => x.Id == id);
+            var accountModel = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
             if (accountModel is null)
                 return NotFound();
 
             accountModel.Username = account.Username;
             accountModel.Password.ChangePassword(account.OldPassword, account.NewPassword);
             
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok(accountModel);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var accountModel = _context.Accounts.FirstOrDefault(x => x.Id == id);
+            var accountModel = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
             if (accountModel is null)
                 return NotFound();
             
             _context.Accounts.Remove(accountModel);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return NoContent();
         }
     }
