@@ -1,10 +1,7 @@
-﻿using AgoraphobiaAPI.Data;
-using AgoraphobiaAPI.Dtos.Account;
+﻿using AgoraphobiaAPI.Dtos.Account;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
-using AgoraphobiaLibrary;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace AgoraphobiaAPI.Controllers
 {
@@ -12,11 +9,9 @@ namespace AgoraphobiaAPI.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
         private readonly IAccountRepository _accountRepository;
-        public AccountController(ApplicationDBContext context, IAccountRepository accountRepository)
+        public AccountController(IAccountRepository accountRepository)
         {
-            _context = context;
             _accountRepository = accountRepository;
         }
         [HttpGet]
@@ -28,7 +23,7 @@ namespace AgoraphobiaAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var account = await _context.Accounts.FindAsync(id);
+            var account = await _accountRepository.GetByIdAsync(id);
             return account is null ? NotFound() : Ok(account);
         }
 
@@ -36,24 +31,17 @@ namespace AgoraphobiaAPI.Controllers
         public async Task<IActionResult> Create([FromBody] CreateAccountRequestDto account)
         {
             var accountModel = account.ToAccountFromCreateDto();
-            var final = new Account(accountModel.Username, accountModel.Passwd, true);
-            await _context.Accounts.AddAsync(final);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, final.ToAccountDto());
+            await _accountRepository.CreateAsync(accountModel);
+            return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel);
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAccountRequestDto account)
         {
-            var accountModel = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
+            var accountModel = await _accountRepository.UpdateAsync(id, account);
             if (accountModel is null)
                 return NotFound();
-
-            accountModel.Username = account.Username;
-            accountModel.Password.ChangePassword(account.OldPassword, account.NewPassword);
-            
-            await _context.SaveChangesAsync();
             return Ok(accountModel);
         }
 
@@ -61,12 +49,9 @@ namespace AgoraphobiaAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var accountModel = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
+            var accountModel = await _accountRepository.DeleteAsync(id);
             if (accountModel is null)
                 return NotFound();
-            
-            _context.Accounts.Remove(accountModel);
-            await _context.SaveChangesAsync();
             return NoContent();
         }
     }

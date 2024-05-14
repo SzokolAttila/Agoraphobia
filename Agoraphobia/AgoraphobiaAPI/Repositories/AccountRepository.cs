@@ -1,4 +1,6 @@
-﻿using AgoraphobiaAPI.Data;
+﻿using System.Xml;
+using AgoraphobiaAPI.Data;
+using AgoraphobiaAPI.Dtos.Account;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +14,42 @@ public class AccountRepository : IAccountRepository
     {
         _context = context;
     }
-    public Task<List<Account>> GetAllAsync()
+    public async Task<List<Account>> GetAllAsync()
     {
-        return _context.Accounts.ToListAsync();
+        return await _context.Accounts.ToListAsync();
+    }
+
+    public async Task<Account?> GetByIdAsync(int id)
+    {
+        return await _context.Accounts.FindAsync(id);
+    }
+
+    public async Task<Account> CreateAsync(Account accountModel)
+    {
+        await _context.Accounts.AddAsync(accountModel);
+        await _context.SaveChangesAsync();
+        return accountModel;
+    }
+
+    public async Task<Account?> UpdateAsync(int id, UpdateAccountRequestDto accountDto)
+    {
+        var accountModel = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
+        if (accountModel is null)
+            return null;
+        
+        accountModel.Username = accountDto.Username;
+        accountModel.Password.ChangePassword(accountDto.OldPassword, accountDto.NewPassword);
+        await _context.SaveChangesAsync();
+        return accountModel;
+    }
+
+    public async Task<Account?> DeleteAsync(int id)
+    {
+        var accountModel = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
+        if (accountModel is null)
+            return null;
+        _context.Accounts.Remove(accountModel);
+        await _context.SaveChangesAsync();
+        return accountModel;
     }
 }
