@@ -18,8 +18,6 @@ namespace AgoraphobiaLibrary
             Password = new Password(passwd, isPasswordHashed);
             Id = id;
         }
-        private const int MINIMUM_LENGTH = 6;
-        private const int MAXIMUM_LENGTH = 32;
         [Key]
         public int Id { get; private set; }
         private string _username;
@@ -55,8 +53,9 @@ namespace AgoraphobiaLibrary
                 
             }
         }
-
         [JsonIgnore]
         public Password Password { get; private set; }
+        private const int MINIMUM_LENGTH = 6;
+        private const int MAXIMUM_LENGTH = 32;
     }
 }
