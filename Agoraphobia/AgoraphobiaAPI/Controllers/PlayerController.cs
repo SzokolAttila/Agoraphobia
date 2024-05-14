@@ -1,7 +1,6 @@
 ﻿using AgoraphobiaAPI.Dtos.Player;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
-using AgoraphobiaLibrary;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers;
@@ -39,5 +38,14 @@ public class PlayerController : ControllerBase
         var player = playerDto.ToAccountFromCreateDto();
         await _playerRepository.CreateAsync(player);
         return CreatedAtAction(nameof(GetById), new { id = player.Id }, player);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        var player = await _playerRepository.DeleteAsync(id);
+        if (player is null)
+            return NotFound();
+        return NoContent();
     }
 }
