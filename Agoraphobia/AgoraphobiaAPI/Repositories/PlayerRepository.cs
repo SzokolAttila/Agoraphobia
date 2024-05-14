@@ -21,4 +21,11 @@ public class PlayerRepository : IPlayerRepository
     {
         return await _context.Players.FindAsync(id);
     }
+
+    public async Task<Player> CreateAsync(Player player)
+    {
+        await _context.Players.AddAsync(player);
+        await _context.SaveChangesAsync();
+        return player;
+    }
 }

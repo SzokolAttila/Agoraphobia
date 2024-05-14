@@ -1,4 +1,7 @@
-﻿using AgoraphobiaAPI.Interfaces;
+﻿using AgoraphobiaAPI.Dtos.Player;
+using AgoraphobiaAPI.Interfaces;
+using AgoraphobiaAPI.Mappers;
+using AgoraphobiaLibrary;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers;
@@ -28,5 +31,13 @@ public class PlayerController : ControllerBase
             return NotFound();
 
         return Ok(player);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreatePlayerRequestDto playerDto)
+    {
+        var player = playerDto.ToAccountFromCreateDto();
+        await _playerRepository.CreateAsync(player);
+        return CreatedAtAction(nameof(GetById), new { id = player.Id }, player);
     }
 }

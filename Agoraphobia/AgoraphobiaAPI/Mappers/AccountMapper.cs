@@ -3,7 +3,7 @@ using AgoraphobiaLibrary;
 
 namespace AgoraphobiaAPI.Mappers;
 
-public static class AccountMappers
+public static class AccountMapper
 {
     public static Account ToAccountFromCreateDto(this CreateAccountRequestDto account)
     {

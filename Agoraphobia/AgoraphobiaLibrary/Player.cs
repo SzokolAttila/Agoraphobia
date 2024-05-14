@@ -2,6 +2,10 @@
 
 public class Player
 {
+    public Player(int accountId)
+    {
+        AccountId = accountId;
+    }
     public Player(int id, int accountId, double sanity, double health, int energy, double attack, double defense, int dreamCoins)
     {
         Id = id;
