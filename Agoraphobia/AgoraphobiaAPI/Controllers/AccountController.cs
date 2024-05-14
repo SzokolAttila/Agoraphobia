@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaAPI.Data;
 using AgoraphobiaAPI.Dtos.Account;
+using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaLibrary;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +13,16 @@ namespace AgoraphobiaAPI.Controllers
     public class AccountController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
-        public AccountController(ApplicationDBContext context)
+        private readonly IAccountRepository _accountRepository;
+        public AccountController(ApplicationDBContext context, IAccountRepository accountRepository)
         {
             _context = context;
+            _accountRepository = accountRepository;
         }
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _context.Accounts.ToListAsync());
+            return Ok(await _accountRepository.GetAllAsync());
         }
 
         [HttpGet("{id}")]
