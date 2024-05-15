@@ -6,23 +6,27 @@ public class Player
     {
         AccountId = accountId;
     }
-    public Player(int id, int accountId, double sanity, double health, int energy, double attack, double defense, int dreamCoins)
+    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins)
     {
         Id = id;
         AccountId = accountId;
         Sanity = sanity;
+        MaxHealth = maxHealth;
         Health = health;
+        MaxEnergy = maxEnergy;
         Energy = energy;
         Attack = attack;
         Defense = defense;
         DreamCoins = dreamCoins;
     }
-    public int Id { get; private set; }
-    public int AccountId { get; private set; }
-    public double Sanity { get; private set; }
-    public double Health { get; private set; }
-    public int Energy { get; private set; }
-    public double Attack { get; private set; }
-    public double Defense { get; private set; }
-    public int DreamCoins { get; private set; }
+    public int Id { get; set; }
+    public int AccountId { get; set; }
+    public double Sanity { get; set; }
+    public double MaxHealth { get; set; }
+    public double Health { get; set; }
+    public int MaxEnergy { get; set; }
+    public int Energy { get; set; }
+    public double Attack { get; set; }
+    public double Defense { get; set; }
+    public int DreamCoins { get; set; }
 }

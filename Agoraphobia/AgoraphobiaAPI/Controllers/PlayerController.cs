@@ -40,7 +40,16 @@ public class PlayerController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = player.Id }, player);
     }
 
-    [HttpDelete("{id}")]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePlayerRequestDto playerDto)
+    {
+        var player = await _playerRepository.UpdateAsync(id, playerDto);
+        if (player is null)
+            return NotFound();
+        return Ok(player);
+    }
+
+[HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         var player = await _playerRepository.DeleteAsync(id);

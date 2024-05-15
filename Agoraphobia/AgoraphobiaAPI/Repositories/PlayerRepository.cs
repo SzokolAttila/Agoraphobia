@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaAPI.Data;
+using AgoraphobiaAPI.Dtos.Player;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,23 @@ public class PlayerRepository : IPlayerRepository
         if (player is null)
             return null;
         _context.Players.Remove(player);
+        await _context.SaveChangesAsync();
+        return player;
+    }
+
+    public async Task<Player?> UpdateAsync(int id, UpdatePlayerRequestDto playerDto)
+    {
+        var player = await _context.Players.FirstOrDefaultAsync(x => x.Id == id);
+        if (player is null)
+            return null;
+
+        player.Attack = playerDto.Attack;
+        player.Defense = playerDto.Defense;
+        player.Sanity = playerDto.Sanity;
+        player.Energy = playerDto.Energy;
+        player.DreamCoins = playerDto.DreamCoins;
+        player.Health = playerDto.Health;
+
         await _context.SaveChangesAsync();
         return player;
     }
