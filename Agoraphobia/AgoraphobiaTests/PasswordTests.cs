@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.Exceptions;
+using AgoraphobiaLibrary.Exceptions.Password;
 
 namespace AgoraphobiaTests
 {

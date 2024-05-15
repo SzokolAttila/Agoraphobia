@@ -1,4 +1,4 @@
-﻿namespace AgoraphobiaLibrary.Exceptions
+﻿namespace AgoraphobiaLibrary.Exceptions.Password
 {
     public class NotSecurePasswordException : Exception
     {

@@ -1,4 +1,4 @@
-﻿namespace AgoraphobiaLibrary.Exceptions;
+﻿namespace AgoraphobiaLibrary.Exceptions.Account;
 
 public class NonUniqueUsernameException : Exception
 {

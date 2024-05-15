@@ -1,7 +1,7 @@
 ﻿using AgoraphobiaAPI.Dtos.Account;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
-using AgoraphobiaLibrary.Exceptions;
+using AgoraphobiaLibrary.Exceptions.Account;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.Exceptions;
+using AgoraphobiaLibrary.Exceptions.Account;
 
 namespace AgoraphobiaLibrary
 {

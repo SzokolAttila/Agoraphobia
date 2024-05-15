@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.Exceptions;
+using AgoraphobiaLibrary.Exceptions.Account;
 
 namespace AgoraphobiaTests
 {

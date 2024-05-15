@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using AgoraphobiaLibrary.Exceptions;
+using AgoraphobiaLibrary.Exceptions.Password;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgoraphobiaLibrary
