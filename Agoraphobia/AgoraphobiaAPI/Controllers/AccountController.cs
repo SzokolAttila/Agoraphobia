@@ -1,6 +1,7 @@
 ﻿using AgoraphobiaAPI.Dtos.Account;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
+using AgoraphobiaLibrary.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers
@@ -30,6 +31,9 @@ namespace AgoraphobiaAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateAccountRequestDto account)
         {
+            var accounts = await _accountRepository.GetAllAsync();
+            if (accounts.Exists(x => x.Username == account.Username))
+                throw new NonUniqueUsernameException();
             var accountModel = account.ToAccountFromCreateDto();
             await _accountRepository.CreateAsync(accountModel);
             return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel);
@@ -39,6 +43,9 @@ namespace AgoraphobiaAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAccountRequestDto account)
         {
+            var accounts = await _accountRepository.GetAllAsync();
+            if (accounts.Exists(x => x.Username == account.Username && x.Id != id))
+                throw new NonUniqueUsernameException();
             var accountModel = await _accountRepository.UpdateAsync(id, account);
             if (accountModel is null)
                 return NotFound();
