@@ -18,6 +18,7 @@ namespace AgoraphobiaLibrary
         [JsonInclude]
         public int Energy {  get; set; }
 
+        [JsonConstructor]
         public Weapon(int id, string name, string description, int rarityIdx, int price,
             double minMultiplier, double maxMultiplier, int energy) : base(id,name,description,rarityIdx,price)
         {
@@ -26,7 +27,6 @@ namespace AgoraphobiaLibrary
             Energy = energy;
         }
 
-        [JsonConstructor]
         public Weapon(string name, string description, int rarityIdx, int price,
             double minMultiplier, double maxMultiplier, int energy) : base(name, description, rarityIdx, price)
         {
