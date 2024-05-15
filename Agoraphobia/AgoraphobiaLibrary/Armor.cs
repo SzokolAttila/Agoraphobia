@@ -18,23 +18,31 @@ namespace AgoraphobiaLibrary
         }
 
         [JsonInclude]
-        public int Defense { get; init; }
+        public int Defense { get; set; }
         
         [JsonInclude]
-        public int HP { get; init; }
+        public int Hp { get; set; }
 
         [JsonIgnore]
-        public ArmorPiece ArmorType => (ArmorPiece)_armorTypeIdx;
+        public ArmorPiece ArmorType { get; set; }
 
         [JsonInclude]
-        private int _armorTypeIdx { get; init; }
+        public int ArmorTypeIdx { get => (int)ArmorType; set => ArmorType = (ArmorPiece)value; }
         
         public Armor(int id, string name, string description, int rarityIdx, int price,
             int defense, int hp, int armorTypeIdx) : base(id, name, description, rarityIdx, price)
         {
             Defense = defense;
-            HP = hp;
-            _armorTypeIdx = armorTypeIdx;
+            Hp = hp;
+            ArmorTypeIdx = armorTypeIdx;
+        }
+
+        public Armor(string name, string description, int rarityIdx, int price,
+            int defense, int hp, int armorTypeIdx) : base(name, description, rarityIdx, price)
+        {
+            Defense = defense;
+            Hp = hp;
+            ArmorTypeIdx = armorTypeIdx;
         }
     }
 }
