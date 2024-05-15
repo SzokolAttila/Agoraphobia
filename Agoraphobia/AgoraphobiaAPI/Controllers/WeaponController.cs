@@ -1,5 +1,4 @@
-﻿using AgoraphobiaAPI.Dtos.Account;
-using AgoraphobiaAPI.Dtos.Weapon;
+﻿using AgoraphobiaAPI.Dtos.Weapon;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using Microsoft.AspNetCore.Mvc;
