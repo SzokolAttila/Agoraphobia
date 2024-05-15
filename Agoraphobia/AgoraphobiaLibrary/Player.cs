@@ -9,7 +9,7 @@ public class Player
         AccountId = accountId;
     }
     [JsonConstructor]
-    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins)
+    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<Weapon> weapons)
     {
         Id = id;
         AccountId = accountId;
@@ -21,6 +21,7 @@ public class Player
         Attack = attack;
         Defense = defense;
         DreamCoins = dreamCoins;
+        Weapons = weapons;
     }
     public int Id { get; set; }
     public int AccountId { get; set; }
@@ -32,4 +33,5 @@ public class Player
     public double Attack { get; set; }
     public double Defense { get; set; }
     public int DreamCoins { get; set; }
+    public List<Weapon> Weapons { get; set; }
 }
