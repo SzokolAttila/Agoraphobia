@@ -1,4 +1,6 @@
-﻿namespace AgoraphobiaLibrary;
+﻿using System.Text.Json.Serialization;
+
+namespace AgoraphobiaLibrary;
 
 public class Player
 {
@@ -6,6 +8,7 @@ public class Player
     {
         AccountId = accountId;
     }
+    [JsonConstructor]
     public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins)
     {
         Id = id;
