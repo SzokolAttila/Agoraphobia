@@ -6,12 +6,12 @@ namespace AgoraphobiaLibrary
 {
     public record Account
     {
-        [JsonConstructor]
         public Account(string username, string password, bool isPasswordHashed)
         {
             Username = username;
             Password = new Password(password, isPasswordHashed);
         }
+        [JsonConstructor]
         public Account(int id, string username, string passwd, bool isPasswordHashed = false)
         {
             Username = username;
