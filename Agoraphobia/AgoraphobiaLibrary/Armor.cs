@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AgoraphobiaLibrary
 {
-    public sealed class Armor : Item
+    public sealed record Armor : Item
     {
         public enum ArmorPiece
         {
@@ -15,16 +16,25 @@ namespace AgoraphobiaLibrary
             Gauntlet,
             Boots
         }
+
+        [JsonInclude]
         public int Defense { get; init; }
-        public int HP { get; init; }
-        public ArmorPiece ArmorType { get; init; }
         
-        public Armor(int id, string name, string description, ItemRarity rarity, int price,
-            int defense, int hp, ArmorPiece armorType) : base(id, name, description, rarity, price)
+        [JsonInclude]
+        public int HP { get; init; }
+
+        [JsonIgnore]
+        public ArmorPiece ArmorType => (ArmorPiece)_armorTypeIdx;
+
+        [JsonInclude]
+        private int _armorTypeIdx { get; init; }
+        
+        public Armor(int id, string name, string description, int rarityIdx, int price,
+            int defense, int hp, int armorTypeIdx) : base(id, name, description, rarityIdx, price)
         {
             Defense = defense;
             HP = hp;
-            ArmorType = armorType;
+            _armorTypeIdx = armorTypeIdx;
         }
     }
 }

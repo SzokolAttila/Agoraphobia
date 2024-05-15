@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AgoraphobiaLibrary
 {
-    public abstract class Item : Element
+    public abstract record Item : Element
     {
         public enum ItemRarity
         {
@@ -18,11 +19,25 @@ namespace AgoraphobiaLibrary
             Fabled
         }
 
-        public ItemRarity Rarity { get; init; }
-        public int Price { get; init; }
-        public Item(int id, string name, string description, ItemRarity rarity, int price) : base(id, name, description)
+        [JsonInclude]
+        public int RarityIdx { get => (int)Rarity; set => Rarity = (ItemRarity)value; }
+
+        [JsonIgnore]
+        public ItemRarity Rarity { get; set; }
+
+        [JsonInclude]
+        public int Price { get; set; }
+
+        [JsonConstructor]
+        public Item(string name, string description, int rarityIdx, int price) : base(name, description)
         {
-            Rarity = rarity;
+            RarityIdx = rarityIdx;
+            Price = price;
+        }
+
+        public Item(int id, string name, string description, int rarityIdx, int price) : base(id, name, description)
+        {
+            RarityIdx = rarityIdx;
             Price = price;
         }
     }

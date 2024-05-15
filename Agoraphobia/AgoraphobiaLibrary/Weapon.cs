@@ -2,18 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AgoraphobiaLibrary
 {
-    public sealed class Weapon : Item
+    public sealed record Weapon : Item
     {
-        public double MinMultiplier { get; init; }
-        public double MaxMultiplier { get; init; }
-        public int Energy {  get; init; }
+        [JsonInclude]
+        public double MinMultiplier { get; set; }
 
-        public Weapon(int id, string name, string description, ItemRarity rarity, int price,
-            double minMultiplier, double maxMultiplier, int energy) : base(id,name,description,rarity,price)
+        [JsonInclude]
+        public double MaxMultiplier { get; set; }
+
+        [JsonInclude]
+        public int Energy {  get; set; }
+
+        public Weapon(int id, string name, string description, int rarityIdx, int price,
+            double minMultiplier, double maxMultiplier, int energy) : base(id,name,description,rarityIdx,price)
+        {
+            MinMultiplier = minMultiplier;
+            MaxMultiplier = maxMultiplier;
+            Energy = energy;
+        }
+
+        [JsonConstructor]
+        public Weapon(string name, string description, int rarityIdx, int price,
+            double minMultiplier, double maxMultiplier, int energy) : base(name, description, rarityIdx, price)
         {
             MinMultiplier = minMultiplier;
             MaxMultiplier = maxMultiplier;

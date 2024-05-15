@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
 });
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IWeaponRepository, WeaponRepository>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

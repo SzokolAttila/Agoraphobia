@@ -2,20 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AgoraphobiaLibrary
 {
-    public sealed class Consumable : Item
+    public sealed record Consumable : Item
     {
+        [JsonInclude]
         public int Energy { get; init; }
+
+        [JsonInclude]
         public int HP { get; init; }
+
+        [JsonInclude]
         public int Defense { get; init; }
+
+        [JsonInclude]
         public int Attack { get; init; }
+
+        [JsonInclude]
         public int Duration { get; init; }
 
-        public Consumable(int id, string name, string description, ItemRarity rarity, int price,
-            int energy, int hp, int defense, int attack, int duration) : base(id, name, description, rarity, price)
+        [JsonConstructor]
+        public Consumable(int id, string name, string description, int rarityIdx, int price,
+            int energy, int hp, int defense, int attack, int duration) : base(id, name, description, rarityIdx, price)
         {
             Energy = energy;
             HP = hp;
