@@ -3,6 +3,7 @@ using AgoraphobiaAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgoraphobiaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240515131347_WeaponIncluded")]
+    partial class WeaponIncluded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,12 +73,6 @@ namespace AgoraphobiaAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<double>("Health")
-                        .HasColumnType("float");
-
-                    b.Property<int>("MaxEnergy")
-                        .HasColumnType("int");
-
-                    b.Property<double>("MaxHealth")
                         .HasColumnType("float");
 
                     b.Property<double>("Sanity")

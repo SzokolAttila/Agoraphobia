@@ -12,5 +12,6 @@ namespace AgoraphobiaAPI.Data
         }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Weapon> Weapons { get; set; }
     }
 }
