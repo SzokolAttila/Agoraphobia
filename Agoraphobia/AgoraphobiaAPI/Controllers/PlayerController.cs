@@ -38,7 +38,7 @@ public class PlayerController : ControllerBase
     {
         var player = playerDto.ToAccountFromCreateDto();
         await _playerRepository.CreateAsync(player);
-        return CreatedAtAction(nameof(GetById), new { id = player.Id }, player);
+        return CreatedAtAction(nameof(GetById), new { id = player.Id }, player.ToPlayerDto());
     }
 
     [HttpPut("{id}")]
@@ -47,7 +47,7 @@ public class PlayerController : ControllerBase
         var player = await _playerRepository.UpdateAsync(id, playerDto);
         if (player is null)
             return NotFound();
-        return Ok(player);
+        return Ok(player.ToPlayerDto());
     }
 
 [HttpDelete("{id}")]

@@ -29,16 +29,21 @@ namespace AgoraphobiaLibrary
         public int Price { get; set; }
 
         [JsonConstructor]
-        public Item(string name, string description, int rarityIdx, int price) : base(name, description)
+        protected Item(string name, string description, int rarityIdx, int price) : base(name, description)
         {
             RarityIdx = rarityIdx;
             Price = price;
         }
 
-        public Item(int id, string name, string description, int rarityIdx, int price) : base(id, name, description)
+        protected Item(int id, string name, string description, int rarityIdx, int price) : base(id, name, description)
         {
             RarityIdx = rarityIdx;
             Price = price;
+        }
+
+        protected Item() 
+        {
+            
         }
     }
 }

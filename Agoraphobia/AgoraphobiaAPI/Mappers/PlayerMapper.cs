@@ -24,7 +24,7 @@ public static class PlayerMapper
             MaxEnergy = player.MaxEnergy,
             Energy = player.Energy,
             DreamCoins = player.DreamCoins,
-            Armors = player.Armors,
+            Armors = player.ArmorInventories.Select(x => x.ToArmorInventoryDto()).ToList(),
             Weapons = player.Weapons,
             Consumables = player.Consumables
         };

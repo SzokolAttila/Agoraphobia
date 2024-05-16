@@ -18,14 +18,15 @@ namespace AgoraphobiaAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _accountRepository.GetAllAsync());
+            var accounts = await _accountRepository.GetAllAsync();
+            return Ok(accounts.Select(x => x.ToAccountDto()));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var account = await _accountRepository.GetByIdAsync(id);
-            return account is null ? NotFound() : Ok(account);
+            return account is null ? NotFound() : Ok(account.ToAccountDto());
         }
 
         [HttpPost]
@@ -36,7 +37,7 @@ namespace AgoraphobiaAPI.Controllers
                 throw new NonUniqueUsernameException();
             var accountModel = account.ToAccountFromCreateDto();
             await _accountRepository.CreateAsync(accountModel);
-            return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel);
+            return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel.ToAccountDto());
         }
 
         [HttpPut]
@@ -49,7 +50,7 @@ namespace AgoraphobiaAPI.Controllers
             var accountModel = await _accountRepository.UpdateAsync(id, account);
             if (accountModel is null)
                 return NotFound();
-            return Ok(accountModel);
+            return Ok(accountModel.ToAccountDto());
         }
 
         [HttpDelete]

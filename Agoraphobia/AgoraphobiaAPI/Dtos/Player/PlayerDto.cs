@@ -1,4 +1,7 @@
-﻿namespace AgoraphobiaAPI.Dtos.Player;
+﻿using AgoraphobiaAPI.Dtos.Armor;
+using AgoraphobiaAPI.Dtos.ArmorInventory;
+
+namespace AgoraphobiaAPI.Dtos.Player;
 
 public class PlayerDto
 {
@@ -14,5 +17,5 @@ public class PlayerDto
     public int DreamCoins { get; set; }
     public List<AgoraphobiaLibrary.Weapon> Weapons { get; set; } = new();
     public List<AgoraphobiaLibrary.Consumable> Consumables { get; set; } = new();
-    public List<AgoraphobiaLibrary.Armor> Armors { get; set; } = new();
+    public List<ArmorInventoryDto> Armors { get; set; } = new();
 }

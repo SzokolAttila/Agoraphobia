@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace AgoraphobiaLibrary
 {
@@ -26,6 +21,9 @@ namespace AgoraphobiaLibrary
         [JsonIgnore]
         public ArmorPiece ArmorType { get; set; }
 
+        [JsonIgnore]
+        public List<ArmorInventory> ArmorInventories { get; set; } = new();
+
         [JsonInclude]
         public int ArmorTypeIdx { get => (int)ArmorType; set => ArmorType = (ArmorPiece)value; }
         [JsonConstructor]
@@ -43,6 +41,11 @@ namespace AgoraphobiaLibrary
             Defense = defense;
             Hp = hp;
             ArmorTypeIdx = armorTypeIdx;
+        }
+
+        public Armor()
+        {
+            
         }
     }
 }

@@ -11,7 +11,7 @@ namespace AgoraphobiaLibrary
     public abstract record Element
     {
         [Key]
-        public int Id { get; private set; }
+        public int Id { get; set; }
         
         [Required]
         public string Name { get; set; }
@@ -20,18 +20,22 @@ namespace AgoraphobiaLibrary
         public string Description { get; set; }
 
         [JsonConstructor]
-        public Element(int id, string name, string description)
+        protected Element(int id, string name, string description)
         {
             Id = id;
             Name = name;
             Description = description;
         }
 
-        public Element(string name, string description)
+        protected Element(string name, string description)
         {
             Name = name;
             Description = description;
         }
 
+        protected Element()
+        {
+            
+        }
     }
 }

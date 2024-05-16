@@ -24,6 +24,7 @@ builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IWeaponRepository, WeaponRepository>();
 builder.Services.AddScoped<IArmorRepository, ArmorRepository>();
 builder.Services.AddScoped<IConsumableRepository, ConsumableRepository>();
+builder.Services.AddScoped<IArmorInventoryRepository, ArmorInventoryRepository>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
