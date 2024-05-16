@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.Exceptions.Player;
 
 namespace AgoraphobiaLibrary;
@@ -38,7 +39,9 @@ public class Player
         Consumables = consumables;
     }
     public int Id { get; set; }
+    [ForeignKey("AccountId")]
     public int AccountId { get; set; }
+    public Account? Account { get; set; }
     private double _sanity;
     public double Sanity
     {

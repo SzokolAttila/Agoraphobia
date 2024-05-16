@@ -19,7 +19,8 @@ public class PlayerController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await _playerRepository.GetAllAsync());
+        var players = await _playerRepository.GetAllAsync();
+        return Ok(players.Select(x => x.ToPlayerDto()));
     }
 
     [HttpGet("{id}")]
@@ -29,7 +30,7 @@ public class PlayerController : ControllerBase
         if (player is null)
             return NotFound();
 
-        return Ok(player);
+        return Ok(player.ToPlayerDto());
     }
 
     [HttpPost]

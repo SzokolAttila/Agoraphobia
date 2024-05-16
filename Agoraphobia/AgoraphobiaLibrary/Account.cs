@@ -54,6 +54,7 @@ namespace AgoraphobiaLibrary
                 
             }
         }
+        public List<Player> Players { get; set; }
         [JsonIgnore]
         public Password Password { get; private set; }
         private const int MINIMUM_LENGTH = 6;

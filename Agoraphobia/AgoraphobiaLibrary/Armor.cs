@@ -28,7 +28,7 @@ namespace AgoraphobiaLibrary
 
         [JsonInclude]
         public int ArmorTypeIdx { get => (int)ArmorType; set => ArmorType = (ArmorPiece)value; }
-        
+        [JsonConstructor]
         public Armor(int id, string name, string description, int rarityIdx, int price,
             int defense, int hp, int armorTypeIdx) : base(id, name, description, rarityIdx, price)
         {

@@ -9,4 +9,24 @@ public static class PlayerMapper
     {
         return new Player(playerDto.AccountId);
     }
+
+    public static PlayerDto ToPlayerDto(this Player player)
+    {
+        return new PlayerDto()
+        {
+            Id = player.Id,
+            AccountId = player.AccountId,
+            Attack = player.Attack,
+            Defense = player.Defense,
+            Sanity = player.Sanity,
+            MaxHealth = player.MaxHealth,
+            Health = player.Health,
+            MaxEnergy = player.MaxEnergy,
+            Energy = player.Energy,
+            DreamCoins = player.DreamCoins,
+            Armors = player.Armors,
+            Weapons = player.Weapons,
+            Consumables = player.Consumables
+        };
+    }
 }

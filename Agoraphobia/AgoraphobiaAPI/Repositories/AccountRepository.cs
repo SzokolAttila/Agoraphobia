@@ -16,12 +16,12 @@ public class AccountRepository : IAccountRepository
     }
     public async Task<List<Account>> GetAllAsync()
     {
-        return await _context.Accounts.ToListAsync();
+        return await _context.Accounts.Include(x => x.Players).ToListAsync();
     }
 
     public async Task<Account?> GetByIdAsync(int id)
     {
-        return await _context.Accounts.FindAsync(id);
+        return await _context.Accounts.Include(x => x.Players).FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Account> CreateAsync(Account accountModel)

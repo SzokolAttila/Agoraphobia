@@ -75,6 +75,9 @@ namespace AgoraphobiaAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
@@ -85,6 +88,8 @@ namespace AgoraphobiaAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Armors");
                 });
@@ -120,6 +125,9 @@ namespace AgoraphobiaAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
@@ -130,6 +138,8 @@ namespace AgoraphobiaAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Consumables");
                 });
@@ -170,6 +180,8 @@ namespace AgoraphobiaAPI.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
 
                     b.ToTable("Players");
                 });
@@ -218,6 +230,31 @@ namespace AgoraphobiaAPI.Migrations
                     b.ToTable("Weapons");
                 });
 
+            modelBuilder.Entity("AgoraphobiaLibrary.Armor", b =>
+                {
+                    b.HasOne("AgoraphobiaLibrary.Player", null)
+                        .WithMany("Armors")
+                        .HasForeignKey("PlayerId");
+                });
+
+            modelBuilder.Entity("AgoraphobiaLibrary.Consumable", b =>
+                {
+                    b.HasOne("AgoraphobiaLibrary.Player", null)
+                        .WithMany("Consumables")
+                        .HasForeignKey("PlayerId");
+                });
+
+            modelBuilder.Entity("AgoraphobiaLibrary.Player", b =>
+                {
+                    b.HasOne("AgoraphobiaLibrary.Account", "Account")
+                        .WithMany("Players")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
             modelBuilder.Entity("AgoraphobiaLibrary.Weapon", b =>
                 {
                     b.HasOne("AgoraphobiaLibrary.Player", null)
@@ -225,8 +262,17 @@ namespace AgoraphobiaAPI.Migrations
                         .HasForeignKey("PlayerId");
                 });
 
+            modelBuilder.Entity("AgoraphobiaLibrary.Account", b =>
+                {
+                    b.Navigation("Players");
+                });
+
             modelBuilder.Entity("AgoraphobiaLibrary.Player", b =>
                 {
+                    b.Navigation("Armors");
+
+                    b.Navigation("Consumables");
+
                     b.Navigation("Weapons");
                 });
 #pragma warning restore 612, 618
