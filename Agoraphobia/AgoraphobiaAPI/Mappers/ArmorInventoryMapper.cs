@@ -9,7 +9,7 @@ public static class ArmorInventoryMapper
     {
         return new ArmorInventoryDto
         {
-            ArmorId = armorInventory.ArmorId,
+            Armor = armorInventory.Armor!.ToArmorDto(),
             Quantity = armorInventory.Quantity
         };
     }

@@ -1,7 +1,9 @@
-﻿namespace AgoraphobiaAPI.Dtos.ArmorInventory;
+﻿using AgoraphobiaAPI.Dtos.Armor;
+
+namespace AgoraphobiaAPI.Dtos.ArmorInventory;
 
 public class ArmorInventoryDto
 {
-    public int ArmorId { get; set; }
+    public ArmorDto Armor { get; set; }
     public int Quantity { get; set; }
 }

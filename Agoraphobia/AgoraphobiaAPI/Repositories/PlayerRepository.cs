@@ -18,7 +18,10 @@ public class PlayerRepository : IPlayerRepository
         return await _context.Players
             .Include(x => x.Weapons)
             .Include(x => x.Consumables)
-            .Include(x => x.ArmorInventories).ToListAsync();
+            .Include(x => x.ArmorInventories)
+            .Include(x => x.ArmorInventories)
+            .ThenInclude(x => x.Armor)
+            .ToListAsync();
     }
 
     public async Task<Player?> GetByIdAsync(int id)
@@ -26,7 +29,10 @@ public class PlayerRepository : IPlayerRepository
         return await _context.Players
             .Include(x => x.Weapons)
             .Include(x => x.Consumables)
-            .Include(x => x.ArmorInventories).FirstOrDefaultAsync(x => x.Id == id);
+            .Include(x => x.ArmorInventories)
+            .Include(x => x.ArmorInventories)
+            .ThenInclude(x => x.Armor)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Player> CreateAsync(Player player)

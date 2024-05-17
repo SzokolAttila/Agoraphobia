@@ -96,6 +96,7 @@ public class Player
     }
     public List<Weapon> Weapons { get; set; }
     public List<Consumable> Consumables { get; set; }
+    public List<Armor> Armors { get; set; } = new();
     public List<ArmorInventory> ArmorInventories { get; set; }
     private const double BASE_SANITY = 30;
     private const double BASE_HEALTH = 42;
