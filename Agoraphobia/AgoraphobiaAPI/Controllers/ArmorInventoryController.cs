@@ -35,7 +35,7 @@ public class ArmorInventoryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddToArmorInventory([FromBody] CreateArmorInventoryRequestDto armorInventoryRequestDto)
+    public async Task<IActionResult> AddToArmorInventory([FromBody] ArmorInventoryRequestDto armorInventoryRequestDto)
     {
         var player = await _playerRepository.GetByIdAsync(armorInventoryRequestDto.PlayerId);
         var armor = await _armorRepository.GetByIdAsync(armorInventoryRequestDto.ArmorId);
@@ -50,7 +50,7 @@ public class ArmorInventoryController : ControllerBase
             var updated = await _armorInventoryRepository.AddOneAsync(armorInventoryRequestDto);
             if (updated is null)
                 return BadRequest("Something unexpected happened");
-            return Ok(updated.ToCreatedArmorInventoryDto());
+            return Ok(updated.ToUpdateArmorInventoryRequestDto());
         }
         var armorInventory = new ArmorInventory
         {
@@ -61,6 +61,33 @@ public class ArmorInventoryController : ControllerBase
             Armor = armor
         };
         await _armorInventoryRepository.CreateAsync(armorInventory);
-        return Created("agoraphobia/armorInventories", armorInventory.ToCreatedArmorInventoryDto());
+        return Created("agoraphobia/armorInventories", armorInventory.ToUpdateArmorInventoryRequestDto());
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> RemoveFromArmorInventory([FromBody] ArmorInventoryRequestDto armorInventoryRequestDto)
+    {
+        var player = await _playerRepository.GetByIdAsync(armorInventoryRequestDto.PlayerId);
+        var armor = await _armorRepository.GetByIdAsync(armorInventoryRequestDto.ArmorId);
+        if (player is null)
+            return BadRequest("Player not found");
+        if (armor is null)
+            return BadRequest("Armor not found");
+
+        var armorInventories = await _armorInventoryRepository.GetArmorInventoriesAsync(player.Id);
+        var armorInventory = armorInventories.FirstOrDefault(x => x.ArmorId == armor.Id);
+        if (armorInventory is null)
+            return NotFound();
+        
+        if (armorInventory.Quantity > 1)
+        {
+            var updated = await _armorInventoryRepository.RemoveOneAsync(armorInventoryRequestDto);
+            if (updated is null)
+                return BadRequest("Something unexpected happened"); 
+            return Ok(updated.ToUpdateArmorInventoryRequestDto());
+        }
+
+        await _armorInventoryRepository.DeleteAsync(armorInventory);
+        return NoContent();
     }
 }

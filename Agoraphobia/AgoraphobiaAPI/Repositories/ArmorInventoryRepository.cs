@@ -25,7 +25,18 @@ public class ArmorInventoryRepository : IArmorInventoryRepository
         return armorInventory;
     }
 
-    public async Task<ArmorInventory?> AddOneAsync(CreateArmorInventoryRequestDto update)
+    public async Task<ArmorInventory?> DeleteAsync(ArmorInventory armorInventory)
+    {
+        var armorInventoryModel = _context.ArmorInventories.FirstOrDefault(
+            x => x.PlayerId == armorInventory.PlayerId && x.ArmorId == armorInventory.ArmorId);
+        if (armorInventoryModel is null)
+            return null;
+        _context.ArmorInventories.Remove(armorInventoryModel);
+        await _context.SaveChangesAsync();
+        return armorInventoryModel;
+    }
+
+    public async Task<ArmorInventory?> AddOneAsync(ArmorInventoryRequestDto update)
     {
         var armorInventory = await _context.ArmorInventories.FirstOrDefaultAsync(
             x => x.ArmorId == update.ArmorId && x.PlayerId == update.PlayerId);
@@ -33,6 +44,18 @@ public class ArmorInventoryRepository : IArmorInventoryRepository
             return null;
         
         armorInventory.Quantity += 1;
+        await _context.SaveChangesAsync();
+        return armorInventory;
+    }
+
+    public async Task<ArmorInventory?> RemoveOneAsync(ArmorInventoryRequestDto update)
+    {
+        var armorInventory = await _context.ArmorInventories.FirstOrDefaultAsync(
+            x => x.ArmorId == update.ArmorId && x.PlayerId == update.PlayerId);
+        if (armorInventory is null)
+            return null;
+        
+        armorInventory.Quantity -= 1;
         await _context.SaveChangesAsync();
         return armorInventory;
     }

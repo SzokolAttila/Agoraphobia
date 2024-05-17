@@ -2,7 +2,7 @@
 
 namespace AgoraphobiaAPI.Dtos.ArmorInventory;
 
-public class CreatedArmorInventoryDto
+public class UpdateArmorInventoryRequestDto
 {
     public int PlayerId { get; set; }
     public ArmorDto Armor { get; set; } = new();

@@ -14,9 +14,9 @@ public static class ArmorInventoryMapper
         };
     }
 
-    public static CreatedArmorInventoryDto ToCreatedArmorInventoryDto(this ArmorInventory armorInventory)
+    public static UpdateArmorInventoryRequestDto ToUpdateArmorInventoryRequestDto(this ArmorInventory armorInventory)
     {
-        return new CreatedArmorInventoryDto
+        return new UpdateArmorInventoryRequestDto
         {
             PlayerId = armorInventory.PlayerId,
             Armor = armorInventory.Armor!.ToArmorDto(),
