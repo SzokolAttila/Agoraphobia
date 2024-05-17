@@ -13,4 +13,14 @@ public static class ArmorInventoryMapper
             Quantity = armorInventory.Quantity
         };
     }
+
+    public static CreatedArmorInventoryDto ToCreatedArmorInventoryDto(this ArmorInventory armorInventory)
+    {
+        return new CreatedArmorInventoryDto
+        {
+            PlayerId = armorInventory.PlayerId,
+            Armor = armorInventory.Armor!.ToArmorDto(),
+            Quantity = armorInventory.Quantity
+        };
+    }
 }

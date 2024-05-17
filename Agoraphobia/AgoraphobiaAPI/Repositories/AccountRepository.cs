@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using AgoraphobiaAPI.Data;
+﻿using AgoraphobiaAPI.Data;
 using AgoraphobiaAPI.Dtos.Account;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary;
@@ -16,12 +15,20 @@ public class AccountRepository : IAccountRepository
     }
     public async Task<List<Account>> GetAllAsync()
     {
-        return await _context.Accounts.Include(x => x.Players).ToListAsync();
+        return await _context.Accounts
+            .Include(x => x.Players)
+            .ThenInclude(x => x.ArmorInventories)
+            .ThenInclude(x => x.Armor)
+            .ToListAsync();
     }
 
     public async Task<Account?> GetByIdAsync(int id)
     {
-        return await _context.Accounts.Include(x => x.Players).FirstOrDefaultAsync(x => x.Id == id);
+        return await _context.Accounts
+            .Include(x => x.Players)
+            .ThenInclude(x => x.ArmorInventories)
+            .ThenInclude(x => x.Armor)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Account> CreateAsync(Account accountModel)

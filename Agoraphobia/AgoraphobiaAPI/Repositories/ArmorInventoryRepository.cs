@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaAPI.Data;
+using AgoraphobiaAPI.Dtos.ArmorInventory;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary;
 using Microsoft.EntityFrameworkCore;
@@ -12,22 +13,27 @@ public class ArmorInventoryRepository : IArmorInventoryRepository
     {
         _context = context;
     }
-    public async Task<List<Armor>> GetArmorsAsync(int playerId)
+    public async Task<List<ArmorInventory>> GetArmorInventoriesAsync(int playerId)
     {
-        return await _context.ArmorInventories.Where(x => x.PlayerId == playerId)
-            .Select(x => new Armor
-                {
-                    Id = x.ArmorId,
-                    ArmorType = x.Armor!.ArmorType,
-                    ArmorTypeIdx = x.Armor.ArmorTypeIdx,
-                    Defense = x.Armor.Defense,
-                    Description = x.Armor.Description,
-                    Name = x.Armor.Name,
-                    Price = x.Armor.Price,
-                    Hp = x.Armor.Hp,
-                    Rarity = x.Armor.Rarity,
-                    RarityIdx = x.Armor.RarityIdx
-                }
-            ).ToListAsync();
+        return await _context.ArmorInventories.Where(x => x.PlayerId == playerId).ToListAsync();
+    }
+
+    public async Task<ArmorInventory> CreateAsync(ArmorInventory armorInventory)
+    {
+        await _context.ArmorInventories.AddAsync(armorInventory);
+        await _context.SaveChangesAsync();
+        return armorInventory;
+    }
+
+    public async Task<ArmorInventory?> AddOneAsync(CreateArmorInventoryRequestDto update)
+    {
+        var armorInventory = await _context.ArmorInventories.FirstOrDefaultAsync(
+            x => x.ArmorId == update.ArmorId && x.PlayerId == update.PlayerId);
+        if (armorInventory is null)
+            return null;
+        
+        armorInventory.Quantity += 1;
+        await _context.SaveChangesAsync();
+        return armorInventory;
     }
 }

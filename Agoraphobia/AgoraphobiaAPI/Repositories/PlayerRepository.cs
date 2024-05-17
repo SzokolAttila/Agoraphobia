@@ -35,8 +35,10 @@ public class PlayerRepository : IPlayerRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Player> CreateAsync(Player player)
+    public async Task<Player?> CreateAsync(Player player)
     {
+        if (!_context.Accounts.Any(x => x.Id == player.AccountId))
+            return null;
         await _context.Players.AddAsync(player);
         await _context.SaveChangesAsync();
         return player;

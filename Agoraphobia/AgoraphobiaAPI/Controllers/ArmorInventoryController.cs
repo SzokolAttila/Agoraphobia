@@ -1,5 +1,7 @@
-﻿using AgoraphobiaAPI.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using AgoraphobiaAPI.Dtos.ArmorInventory;
+using AgoraphobiaAPI.Interfaces;
+using AgoraphobiaAPI.Mappers;
+using AgoraphobiaLibrary;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers;
@@ -25,6 +27,40 @@ public class ArmorInventoryController : ControllerBase
     [HttpGet("{playerId}")]
     public async Task<IActionResult> GetArmorInventory([FromRoute] int playerId)
     {
-        return Ok(await _armorInventoryRepository.GetArmorsAsync(playerId));
+        var player = await _playerRepository.GetByIdAsync(playerId);
+        if (player is null)
+            return NotFound();
+        var armorInventories = await _armorInventoryRepository.GetArmorInventoriesAsync(playerId);
+        return Ok(armorInventories.Select(x => x.ToArmorInventoryDto()));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddToArmorInventory([FromBody] CreateArmorInventoryRequestDto armorInventoryRequestDto)
+    {
+        var player = await _playerRepository.GetByIdAsync(armorInventoryRequestDto.PlayerId);
+        var armor = await _armorRepository.GetByIdAsync(armorInventoryRequestDto.ArmorId);
+        if (player is null)
+            return BadRequest("Player not found");
+        if (armor is null)
+            return BadRequest("Armor not found");
+        
+        var armorInventories = await _armorInventoryRepository.GetArmorInventoriesAsync(armorInventoryRequestDto.PlayerId);
+        if (armorInventories.Exists(x => x.ArmorId == armorInventoryRequestDto.ArmorId))
+        {
+            var updated = await _armorInventoryRepository.AddOneAsync(armorInventoryRequestDto);
+            if (updated is null)
+                return BadRequest("Something unexpected happened");
+            return Ok(updated.ToCreatedArmorInventoryDto());
+        }
+        var armorInventory = new ArmorInventory
+        {
+            PlayerId = armorInventoryRequestDto.PlayerId,
+            ArmorId = armorInventoryRequestDto.ArmorId,
+            Quantity = 1,
+            Player = player,
+            Armor = armor
+        };
+        await _armorInventoryRepository.CreateAsync(armorInventory);
+        return Created("agoraphobia/armorInventories", armorInventory.ToCreatedArmorInventoryDto());
     }
 }

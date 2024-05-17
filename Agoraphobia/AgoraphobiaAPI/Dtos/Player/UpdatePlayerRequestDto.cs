@@ -10,8 +10,5 @@ public class UpdatePlayerRequestDto
     public double Attack { get; set; }
     public double Defense { get; set; }
     public int DreamCoins { get; set; }
-    // public List<AgoraphobiaLibrary.Weapon> Weapons { get; set; } = new();
-    //public List<AgoraphobiaLibrary.Consumable> Consumables { get; set; } = new();
-    //public List<AgoraphobiaLibrary.Armor> Armors { get; set; } = new();
 }
  

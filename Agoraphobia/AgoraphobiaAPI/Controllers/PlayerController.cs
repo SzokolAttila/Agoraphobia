@@ -37,7 +37,9 @@ public class PlayerController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreatePlayerRequestDto playerDto)
     {
         var player = playerDto.ToAccountFromCreateDto();
-        await _playerRepository.CreateAsync(player);
+        var created = await _playerRepository.CreateAsync(player);
+        if (created is null)
+            return BadRequest("Account not found");
         return CreatedAtAction(nameof(GetById), new { id = player.Id }, player.ToPlayerDto());
     }
 
