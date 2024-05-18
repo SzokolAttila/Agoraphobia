@@ -64,5 +64,31 @@ public class ConsumableInventoryController : ControllerBase
         await _consumableInventoryRepository.CreateAsync(consumableInventory);
         return Created("agoraphobia/consumableInventories", consumableInventory.ToUpdateConsumableInventoryRequestDto());
     }
+    
+    [HttpDelete]
+    public async Task<IActionResult> RemoveFromConsummableInventory([FromBody] ConsumableInventoryRequestDto consumableInventoryRequestDto)
+    {
+        var player = await _playerRepository.GetByIdAsync(consumableInventoryRequestDto.PlayerId);
+        var consumable = await _consumableRepository.GetByIdAsync(consumableInventoryRequestDto.ConsumableId);
+        if (player is null)
+            return BadRequest("Player not found");
+        if (consumable is null)
+            return BadRequest("Consumable not found");
 
+        var consumableInventories = await _consumableInventoryRepository.GetConsumableInventoriesAsync(player.Id);
+        var consumableInventory = consumableInventories.FirstOrDefault(x => x.ConsumableId == consumable.Id);
+        if (consumableInventory is null)
+            return NotFound();
+        
+        if (consumableInventory.Quantity > 1)
+        {
+            var updated = await _consumableInventoryRepository.RemoveOneAsync(consumableInventoryRequestDto);
+            if (updated is null)
+                return BadRequest("Something unexpected happened"); 
+            return Ok(updated.ToUpdateConsumableInventoryRequestDto());
+        }
+
+        await _consumableInventoryRepository.DeleteAsync(consumableInventory);
+        return NoContent();
+    }
 }

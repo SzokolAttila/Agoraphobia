@@ -38,4 +38,27 @@ public class ConsumableInventoryRepository : IConsumableInventoryRepository
         await _context.SaveChangesAsync();
         return consumableInventory;
     }
+
+    public async Task<ConsumableInventory?> DeleteAsync(ConsumableInventory consumableInventory)
+    {
+        var consumableInventoryModel = _context.ConsumableInventories.FirstOrDefault(
+            x => x.PlayerId == consumableInventory.PlayerId && x.ConsumableId == consumableInventory.ConsumableId);
+        if (consumableInventoryModel is null)
+            return null;
+        _context.ConsumableInventories.Remove(consumableInventoryModel);
+        await _context.SaveChangesAsync();
+        return consumableInventoryModel;
+    }
+
+    public async Task<ConsumableInventory?> RemoveOneAsync(ConsumableInventoryRequestDto update)
+    {
+        var consumableInventory = await _context.ConsumableInventories.FirstOrDefaultAsync(
+            x => x.ConsumableId == update.ConsumableId && x.PlayerId == update.PlayerId);
+        if (consumableInventory is null)
+            return null;
+        
+        consumableInventory.Quantity -= 1;
+        await _context.SaveChangesAsync();
+        return consumableInventory;
+    }
 }
