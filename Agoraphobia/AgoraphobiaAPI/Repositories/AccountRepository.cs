@@ -19,6 +19,9 @@ public class AccountRepository : IAccountRepository
             .Include(x => x.Players)
             .ThenInclude(x => x.ArmorInventories)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.Players)
+            .ThenInclude(x => x.WeaponInventories)
+            .ThenInclude(x => x.Weapon)
             .ToListAsync();
     }
 
@@ -28,6 +31,9 @@ public class AccountRepository : IAccountRepository
             .Include(x => x.Players)
             .ThenInclude(x => x.ArmorInventories)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.Players)
+            .ThenInclude(x => x.WeaponInventories)
+            .ThenInclude(x => x.Weapon)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
