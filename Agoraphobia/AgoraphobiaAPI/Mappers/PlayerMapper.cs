@@ -26,7 +26,7 @@ public static class PlayerMapper
             DreamCoins = player.DreamCoins,
             Armors = player.ArmorInventories.Select(x => x.ToArmorInventoryDto()).ToList(),
             Weapons = player.WeaponInventories.Select(x => x.ToWeaponInventoryDto()).ToList(),
-            Consumables = player.Consumables
+            Consumables = player.ConsumableInventories.Select(x => x.ToConsumableInventoryDto()).ToList()
         };
     }
 }

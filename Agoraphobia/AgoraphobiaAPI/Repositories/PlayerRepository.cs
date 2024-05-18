@@ -20,6 +20,8 @@ public class PlayerRepository : IPlayerRepository
             .ThenInclude(x => x.Weapon)
             .Include(x => x.ArmorInventories)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.ConsumableInventories)
+            .ThenInclude(x => x.Consumable)
             .ToListAsync();
     }
 
@@ -30,6 +32,8 @@ public class PlayerRepository : IPlayerRepository
             .ThenInclude(x => x.Weapon)
             .Include(x => x.ArmorInventories)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.ConsumableInventories)
+            .ThenInclude(x => x.Consumable)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

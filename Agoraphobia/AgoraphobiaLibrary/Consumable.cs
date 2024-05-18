@@ -44,5 +44,7 @@ namespace AgoraphobiaLibrary
             Attack = attack;
             Duration = duration;
         }
+        [JsonIgnore]
+        public List<ConsumableInventory> ConsumableInventories { get; set; } = new();
     }
 }

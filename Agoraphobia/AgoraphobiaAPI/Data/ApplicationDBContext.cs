@@ -14,6 +14,7 @@ namespace AgoraphobiaAPI.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<ArmorInventory> ArmorInventories { get; set; }
         public DbSet<WeaponInventory> WeaponInventories { get; set; }
+        public DbSet<ConsumableInventory> ConsumableInventories { get; set; }
         public DbSet<Weapon> Weapons { get; set; }
         public DbSet<Armor> Armors { get; set; }
         public DbSet<Consumable> Consumables { get; set; }
@@ -41,6 +42,17 @@ namespace AgoraphobiaAPI.Data
                 .HasOne(x => x.Weapon)
                 .WithMany(x => x.WeaponInventories)
                 .HasForeignKey(x => x.WeaponId);
+            
+            builder.Entity<ConsumableInventory>(x => x.HasKey(y => new { y.PlayerId, y.ConsumableId }));
+            builder.Entity<ConsumableInventory>()
+                .HasOne(x => x.Player)
+                .WithMany(x => x.ConsumableInventories)
+                .HasForeignKey(x => x.PlayerId);       
+            
+            builder.Entity<ConsumableInventory>()
+                .HasOne(x => x.Consumable)
+                .WithMany(x => x.ConsumableInventories)
+                .HasForeignKey(x => x.ConsumableId);
         }
     }
 }
