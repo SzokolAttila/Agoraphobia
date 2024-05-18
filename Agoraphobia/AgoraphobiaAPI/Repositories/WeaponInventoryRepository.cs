@@ -37,4 +37,27 @@ public class WeaponInventoryRepository : IWeaponInventoryRepository
         await _context.SaveChangesAsync();
         return weaponInventory;
     }
+
+    public async Task<WeaponInventory?> DeleteAsync(WeaponInventory weaponInventory)
+    {
+        var weaponInventoryModel = _context.WeaponInventories.FirstOrDefault(
+            x => x.PlayerId == weaponInventory.PlayerId && x.WeaponId == weaponInventory.WeaponId);
+        if (weaponInventoryModel is null)
+            return null;
+        _context.WeaponInventories.Remove(weaponInventoryModel);
+        await _context.SaveChangesAsync();
+        return weaponInventoryModel;
+    }
+
+    public async Task<WeaponInventory?> RemoveOneAsync(WeaponInventoryRequestDto update)
+    {
+        var weaponInventory = await _context.WeaponInventories.FirstOrDefaultAsync(
+            x => x.WeaponId == update.WeaponId && x.PlayerId == update.PlayerId);
+        if (weaponInventory is null)
+            return null;
+        
+        weaponInventory.Quantity -= 1;
+        await _context.SaveChangesAsync();
+        return weaponInventory;
+    }
 }
