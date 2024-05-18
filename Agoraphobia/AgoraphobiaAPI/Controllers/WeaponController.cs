@@ -17,14 +17,15 @@ namespace AgoraphobiaAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _weaponRepository.GetAllAsync());
+            var weapons = await _weaponRepository.GetAllAsync();
+            return Ok(weapons.Select(x => x.ToWeaponDto()));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var weapon = await _weaponRepository.GetByIdAsync(id);
-            return weapon is null ? NotFound() : Ok(weapon);
+            return weapon is null ? NotFound() : Ok(weapon.ToWeaponDto());
         }
 
         [HttpPost]
@@ -32,7 +33,7 @@ namespace AgoraphobiaAPI.Controllers
         {
             var weaponModel = weapon.ToWeaponFromCreateDto();
             await _weaponRepository.CreateAsync(weaponModel);
-            return CreatedAtAction(nameof(GetById), new { id = weaponModel.Id }, weaponModel);
+            return CreatedAtAction(nameof(GetById), new { id = weaponModel.Id }, weaponModel.ToWeaponDto());
         }
 
         [HttpPut]
@@ -42,7 +43,7 @@ namespace AgoraphobiaAPI.Controllers
             var weaponModel = await _weaponRepository.UpdateAsync(id, weapon);
             if (weaponModel is null)
                 return NotFound();
-            return Ok(weaponModel);
+            return Ok(weaponModel.ToWeaponDto());
         }
 
         [HttpDelete]

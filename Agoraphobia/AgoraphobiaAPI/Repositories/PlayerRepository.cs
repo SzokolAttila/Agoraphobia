@@ -68,9 +68,6 @@ public class PlayerRepository : IPlayerRepository
         player.DreamCoins = playerDto.DreamCoins;
         player.MaxHealth = playerDto.MaxHealth;
         player.Health = playerDto.Health;
-        //player.Armors = playerDto.Armors;
-        //player.Weapons = playerDto.Weapons;
-        //player.Consumables = playerDto.Consumables;
 
         await _context.SaveChangesAsync();
         return player;

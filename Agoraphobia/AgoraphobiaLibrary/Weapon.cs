@@ -34,5 +34,7 @@ namespace AgoraphobiaLibrary
             MaxMultiplier = maxMultiplier;
             Energy = energy;
         }
+
+        public List<WeaponInventory> WeaponInventories { get; set; } = new();
     }
 }

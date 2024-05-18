@@ -9,7 +9,7 @@ public class Player
     public Player(int accountId)
     {
         AccountId = accountId;
-        Weapons = new List<Weapon>();
+        WeaponInventories = new List<WeaponInventory>();
         ArmorInventories = new List<ArmorInventory>();
         Consumables = new List<Consumable>();
         MaxHealth = BASE_HEALTH;
@@ -22,7 +22,7 @@ public class Player
         DreamCoins = BASE_DREAMCOINS;
     }
     [JsonConstructor]
-    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<Weapon> weapons, List<Consumable> consumables, List<ArmorInventory> armors)
+    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<WeaponInventory> weapons, List<Consumable> consumables, List<ArmorInventory> armors)
     {
         Id = id;
         AccountId = accountId;
@@ -34,7 +34,7 @@ public class Player
         Attack = attack;
         Defense = defense;
         DreamCoins = dreamCoins;
-        Weapons = weapons;
+        WeaponInventories = weapons;
         ArmorInventories = armors;
         Consumables = consumables;
     }
@@ -94,7 +94,8 @@ public class Player
             _dreamCoins = value;
         }
     }
-    public List<Weapon> Weapons { get; set; }
+    public List<WeaponInventory> WeaponInventories { get; set; }
+    public List<Weapon> Weapons { get; set; } = new();
     public List<Consumable> Consumables { get; set; }
     public List<Armor> Armors { get; set; } = new();
     public List<ArmorInventory> ArmorInventories { get; set; }
