@@ -8,7 +8,7 @@ public static class ConsumableMapper
     public static Consumable ToConsumableFromCreateDto(this CreateConsumableRequestDto consumable)
     {
         return new Consumable(consumable.Name, consumable.Description, consumable.RarityIdx, consumable.Price, consumable.Energy,
-            consumable.Hp, consumable.Defense, consumable.Attack, consumable.Duration);
+            consumable.Hp, consumable.Defense, consumable.Attack, consumable.Duration, consumable.Sanity);
     }
 
     public static ConsumableDto ToConsumableDto(this Consumable consumable)
@@ -24,7 +24,8 @@ public static class ConsumableMapper
             RarityIdx = consumable.RarityIdx,
             Name = consumable.Name,
             Price = consumable.Price,
-            Id = consumable.Id
+            Id = consumable.Id,
+            Sanity = consumable.Sanity
         };
     }
 }
