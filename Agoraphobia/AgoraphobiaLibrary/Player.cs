@@ -9,9 +9,9 @@ public class Player
     public Player(int accountId)
     {
         AccountId = accountId;
-        Weapons = new List<Weapon>();
+        WeaponInventories = new List<WeaponInventory>();
         ArmorInventories = new List<ArmorInventory>();
-        Consumables = new List<Consumable>();
+        ConsumableInventories = new List<ConsumableInventory>();
         MaxHealth = BASE_HEALTH;
         Health = BASE_HEALTH;
         MaxEnergy = BASE_ENERGY;
@@ -22,7 +22,7 @@ public class Player
         DreamCoins = BASE_DREAMCOINS;
     }
     [JsonConstructor]
-    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<Weapon> weapons, List<Consumable> consumables, List<ArmorInventory> armors)
+    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<WeaponInventory> weapons, List<ConsumableInventory> consumables, List<ArmorInventory> armors)
     {
         Id = id;
         AccountId = accountId;
@@ -34,9 +34,9 @@ public class Player
         Attack = attack;
         Defense = defense;
         DreamCoins = dreamCoins;
-        Weapons = weapons;
+        WeaponInventories = weapons;
         ArmorInventories = armors;
-        Consumables = consumables;
+        ConsumableInventories = consumables;
     }
     public int Id { get; set; }
     [ForeignKey("AccountId")]
@@ -94,10 +94,12 @@ public class Player
             _dreamCoins = value;
         }
     }
-    public List<Weapon> Weapons { get; set; }
-    public List<Consumable> Consumables { get; set; }
-    public List<Armor> Armors { get; set; } = new();
+    public List<WeaponInventory> WeaponInventories { get; set; }
+    public List<Weapon> Weapons { get; set; } = new();
+    public List<ConsumableInventory> ConsumableInventories { get; set; }
+    public List<Consumable> Consumables { get; set; } = new();
     public List<ArmorInventory> ArmorInventories { get; set; }
+    public List<Armor> Armors { get; set; } = new();
     private const double BASE_SANITY = 30;
     private const double BASE_HEALTH = 42;
     private const int BASE_ENERGY = 3;

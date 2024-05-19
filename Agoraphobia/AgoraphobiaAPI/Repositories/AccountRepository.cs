@@ -19,6 +19,12 @@ public class AccountRepository : IAccountRepository
             .Include(x => x.Players)
             .ThenInclude(x => x.ArmorInventories)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.Players)
+            .ThenInclude(x => x.WeaponInventories)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Players)
+            .ThenInclude(x => x.ConsumableInventories)
+            .ThenInclude(x => x.Consumable)
             .ToListAsync();
     }
 
@@ -28,6 +34,12 @@ public class AccountRepository : IAccountRepository
             .Include(x => x.Players)
             .ThenInclude(x => x.ArmorInventories)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.Players)
+            .ThenInclude(x => x.WeaponInventories)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Players)
+            .ThenInclude(x => x.ConsumableInventories)
+            .ThenInclude(x => x.Consumable)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

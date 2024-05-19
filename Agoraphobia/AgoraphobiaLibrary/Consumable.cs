@@ -23,26 +23,32 @@ namespace AgoraphobiaLibrary
 
         [JsonInclude]
         public int Duration { get; set; }
+        [JsonInclude]
+        public int Sanity { get; set; }
 
         [JsonConstructor]
         public Consumable(int id, string name, string description, int rarityIdx, int price,
-            int energy, int hp, int defense, int attack, int duration) : base(id, name, description, rarityIdx, price)
+            int energy, int hp, int defense, int attack, int duration, int sanity) : base(id, name, description, rarityIdx, price)
         {
             Energy = energy;
             Hp = hp;
             Defense = defense;
             Attack = attack;
             Duration = duration;
+            Sanity = sanity;
         }
 
         public Consumable(string name, string description, int rarityIdx, int price,
-            int energy, int hp, int defense, int attack, int duration) : base(name, description, rarityIdx, price)
+            int energy, int hp, int defense, int attack, int duration, int sanity) : base(name, description, rarityIdx, price)
         {
             Energy = energy;
             Hp = hp;
             Defense = defense;
             Attack = attack;
             Duration = duration;
+            Sanity = sanity;
         }
+        [JsonIgnore]
+        public List<ConsumableInventory> ConsumableInventories { get; set; } = new();
     }
 }

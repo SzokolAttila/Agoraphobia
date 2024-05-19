@@ -9,6 +9,7 @@
         public int Energy { get; set; }
         public int Hp { get; set; }
         public int Defense { get; set; }
+        public int Sanity { get; set; }
         public int Attack { get; set; }
         public int Duration { get; set; }
     }

@@ -16,22 +16,24 @@ public class PlayerRepository : IPlayerRepository
     public async Task<List<Player>> GetAllAsync()
     {
         return await _context.Players
-            .Include(x => x.Weapons)
-            .Include(x => x.Consumables)
-            .Include(x => x.ArmorInventories)
+            .Include(x => x.WeaponInventories)
+            .ThenInclude(x => x.Weapon)
             .Include(x => x.ArmorInventories)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.ConsumableInventories)
+            .ThenInclude(x => x.Consumable)
             .ToListAsync();
     }
 
     public async Task<Player?> GetByIdAsync(int id)
     {
         return await _context.Players
-            .Include(x => x.Weapons)
-            .Include(x => x.Consumables)
-            .Include(x => x.ArmorInventories)
+            .Include(x => x.WeaponInventories)
+            .ThenInclude(x => x.Weapon)
             .Include(x => x.ArmorInventories)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.ConsumableInventories)
+            .ThenInclude(x => x.Consumable)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
@@ -68,9 +70,6 @@ public class PlayerRepository : IPlayerRepository
         player.DreamCoins = playerDto.DreamCoins;
         player.MaxHealth = playerDto.MaxHealth;
         player.Health = playerDto.Health;
-        //player.Armors = playerDto.Armors;
-        //player.Weapons = playerDto.Weapons;
-        //player.Consumables = playerDto.Consumables;
 
         await _context.SaveChangesAsync();
         return player;

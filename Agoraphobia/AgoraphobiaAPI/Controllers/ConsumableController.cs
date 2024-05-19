@@ -17,14 +17,15 @@ namespace AgoraphobiaAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _consumableRepository.GetAllAsync());
+            var consumables = await _consumableRepository.GetAllAsync();
+            return Ok(consumables.Select(x => x.ToConsumableDto()));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var consumable = await _consumableRepository.GetByIdAsync(id);
-            return consumable is null ? NotFound() : Ok(consumable);
+            return consumable is null ? NotFound() : Ok(consumable.ToConsumableDto());
         }
 
         [HttpPost]
@@ -32,7 +33,7 @@ namespace AgoraphobiaAPI.Controllers
         {
             var consumableModel = consumable.ToConsumableFromCreateDto();
             await _consumableRepository.CreateAsync(consumableModel);
-            return CreatedAtAction(nameof(GetById), new { id = consumableModel.Id }, consumableModel);
+            return CreatedAtAction(nameof(GetById), new { id = consumableModel.Id }, consumableModel.ToConsumableDto());
         }
 
         [HttpPut]
@@ -42,7 +43,7 @@ namespace AgoraphobiaAPI.Controllers
             var consumableModel = await _consumableRepository.UpdateAsync(id, consumable);
             if (consumableModel is null)
                 return NotFound();
-            return Ok(consumableModel);
+            return Ok(consumableModel.ToConsumableDto());
         }
 
         [HttpDelete]
