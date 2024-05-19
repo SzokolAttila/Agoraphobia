@@ -1,45 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace AgoraphobiaLibrary
 {
     public class Enemy
     {
         private Random r = new Random();
+
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        [NotMapped]
         public Dictionary<Weapon, double> Weapons { get; set; }
-        public Dictionary<Armor, double> Armors { get; set; }
+        [NotMapped]
         public Dictionary<Consumable, double> Consumables { get; set; }
-        public int Hp { get; set; }
-        public int Defense { get; set; }
-        public int Attack { get; set; }
-        public int Sanity { get; set; }
+        public List<ArmorDroprate> ArmorDroprates { get; set; } = new();
+        public double Hp { get; set; }
+        public double Defense { get; set; }
+        public double Attack { get; set; }
+        public double Sanity { get; set; }
         public int DreamCoins { get; set; }
 
-        public Enemy(int id, string name, string description, int hp, int defense,
-            int attack, int sanity, int coins, Dictionary<Weapon, double> weaponry,
-            Dictionary<Armor, double> armory, Dictionary<Consumable, double> consumables)
+        [JsonConstructor]
+        public Enemy(int id, string name, string description, double hp, double defense,
+            double attack, double sanity, int dreamCoins, Dictionary<Weapon, double> weapons,
+            List<ArmorDroprate> armorDroprates, Dictionary<Consumable, double> consumables)
         {
             Id = id;
             Name = name;
             Description = description;
+            Hp = hp;
             Defense = defense;
             Attack = attack;
             Sanity = sanity;
-            DreamCoins = coins;
-            Weapons = weaponry;
-            Armors = armory;
+            DreamCoins = dreamCoins;
+            Weapons = weapons;
+            ArmorDroprates = armorDroprates;
             Consumables = consumables;
         }
 
-        public Enemy(string name, string description, int hp, int defense,
-            int attack, int sanity, int coins, Dictionary<Weapon, double> weaponry,
-            Dictionary<Armor, double> armory, Dictionary<Consumable, double> consumables)
+        public Enemy(string name, string description, double hp, double defense,
+            double attack, double sanity, int dreamCoins, Dictionary<Weapon, double> weapons,
+            List<ArmorDroprate> armorDroprates, Dictionary<Consumable, double> consumables)
         {
             Name = name;
             Description = description;
@@ -47,10 +55,25 @@ namespace AgoraphobiaLibrary
             Defense = defense;
             Attack = attack;
             Sanity = sanity;
-            DreamCoins = coins;
-            Weapons = weaponry;
-            Armors = armory;
+            DreamCoins = dreamCoins;
+            Weapons = weapons;
+            ArmorDroprates = armorDroprates;
             Consumables = consumables;
+        }
+
+        public Enemy(string name, string description, double hp, double defense,
+            double attack, double sanity, int dreamCoins)
+        {
+            Name = name;
+            Description = description;
+            Hp = hp;
+            Defense = defense;
+            Attack = attack;
+            Sanity = sanity;
+            DreamCoins = dreamCoins;
+            Weapons = new Dictionary<Weapon, double>();
+            ArmorDroprates = new List<ArmorDroprate>();
+            Consumables = new Dictionary<Consumable, double>();
         }
 
         public void Death(Player player)
@@ -64,11 +87,11 @@ namespace AgoraphobiaLibrary
         public List<Armor> DropArmors()
         {
             List<Armor> droppedArmors = new List<Armor>();
-            foreach (KeyValuePair<Armor, double> armor in Armors)
+            foreach (ArmorDroprate armor in ArmorDroprates)
             {
-                if (r.NextDouble() <= armor.Value)
+                if (r.NextDouble() <= armor.Droprate)
                 {
-                    droppedArmors.Add(armor.Key);
+                    droppedArmors.Add(armor.Armor);
                 }
             }
             return droppedArmors;
