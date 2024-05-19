@@ -24,8 +24,8 @@ public class ArmorDroprateController : ControllerBase
         _armorDroprateRepository = armorDroprateRepository;
     }
 
-    [HttpGet("{playerId}")]
-    public async Task<IActionResult> GetArmorInventory([FromRoute] int enemyId)
+    [HttpGet("{enemyId}")]
+    public async Task<IActionResult> GetArmorDroprate([FromRoute] int enemyId)
     {
         var enemy = await _enemyRepository.GetByIdAsync(enemyId);
         if (enemy is null)

@@ -18,6 +18,8 @@ public class EnemyRepository : IEnemyRepository
         return await _context.Enemies
             .Include(x => x.ArmorDroprates)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.WeaponDroprates)
+            .ThenInclude(x => x.Weapon)
             .ToListAsync();
     }
 
@@ -26,6 +28,8 @@ public class EnemyRepository : IEnemyRepository
         return await _context.Enemies
             .Include(x => x.ArmorDroprates)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.WeaponDroprates)
+            .ThenInclude(x => x.Weapon)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 

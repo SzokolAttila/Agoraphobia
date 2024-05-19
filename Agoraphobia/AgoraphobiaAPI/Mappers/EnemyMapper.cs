@@ -22,7 +22,7 @@ public static class EnemyMapper
             Hp = enemy.Hp,
             DreamCoins = enemy.DreamCoins,
             Armors = enemy.ArmorDroprates.Select(x => x.ToArmorDroprateDto()).ToList(),
-            Weapons = enemy.Weapons,
+            Weapons = enemy.WeaponDroprates.Select(x => x.ToWeaponDroprateDto()).ToList(),
             Consumables = enemy.Consumables
         };
     }

@@ -16,8 +16,7 @@ namespace AgoraphobiaLibrary
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        [NotMapped]
-        public Dictionary<Weapon, double> Weapons { get; set; }
+        public List<WeaponDroprate> WeaponDroprates { get; set; }
         [NotMapped]
         public Dictionary<Consumable, double> Consumables { get; set; }
         public List<ArmorDroprate> ArmorDroprates { get; set; } = new();
@@ -29,7 +28,7 @@ namespace AgoraphobiaLibrary
 
         [JsonConstructor]
         public Enemy(int id, string name, string description, double hp, double defense,
-            double attack, double sanity, int dreamCoins, Dictionary<Weapon, double> weapons,
+            double attack, double sanity, int dreamCoins, List<WeaponDroprate> weaponDroprates,
             List<ArmorDroprate> armorDroprates, Dictionary<Consumable, double> consumables)
         {
             Id = id;
@@ -40,13 +39,13 @@ namespace AgoraphobiaLibrary
             Attack = attack;
             Sanity = sanity;
             DreamCoins = dreamCoins;
-            Weapons = weapons;
+            WeaponDroprates = weaponDroprates;
             ArmorDroprates = armorDroprates;
             Consumables = consumables;
         }
 
         public Enemy(string name, string description, double hp, double defense,
-            double attack, double sanity, int dreamCoins, Dictionary<Weapon, double> weapons,
+            double attack, double sanity, int dreamCoins, List<WeaponDroprate> weaponDroprates,
             List<ArmorDroprate> armorDroprates, Dictionary<Consumable, double> consumables)
         {
             Name = name;
@@ -56,7 +55,7 @@ namespace AgoraphobiaLibrary
             Attack = attack;
             Sanity = sanity;
             DreamCoins = dreamCoins;
-            Weapons = weapons;
+            WeaponDroprates = weaponDroprates;
             ArmorDroprates = armorDroprates;
             Consumables = consumables;
         }
@@ -71,7 +70,7 @@ namespace AgoraphobiaLibrary
             Attack = attack;
             Sanity = sanity;
             DreamCoins = dreamCoins;
-            Weapons = new Dictionary<Weapon, double>();
+            WeaponDroprates = new List<WeaponDroprate>();
             ArmorDroprates = new List<ArmorDroprate>();
             Consumables = new Dictionary<Consumable, double>();
         }
@@ -97,17 +96,17 @@ namespace AgoraphobiaLibrary
             return droppedArmors;
         }
 
-        public List<Weapon> DropWeapons()
+        public List<Weapon> DropWeaponDroprates()
         {
-            List<Weapon> droppedWeapons = new List<Weapon>();
-            foreach (KeyValuePair<Weapon, double> weapon in Weapons)
+            List<Weapon> droppedWeaponDroprates = new List<Weapon>();
+            foreach (WeaponDroprate weapon in WeaponDroprates)
             {
-                if (r.NextDouble()<=weapon.Value)
+                if (r.NextDouble()<=weapon.Droprate)
                 {
-                    droppedWeapons.Add(weapon.Key);
+                    droppedWeaponDroprates.Add(weapon.Weapon);
                 }
             }
-            return droppedWeapons;
+            return droppedWeaponDroprates;
         }
 
         public List<Consumable> DropConsumables()

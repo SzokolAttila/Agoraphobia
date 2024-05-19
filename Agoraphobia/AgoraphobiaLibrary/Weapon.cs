@@ -36,5 +36,7 @@ namespace AgoraphobiaLibrary
         }
         [JsonIgnore]
         public List<WeaponInventory> WeaponInventories { get; set; } = new();
+        [JsonIgnore]
+        public List<WeaponDroprate> WeaponDroprates { get; set; } = new();
     }
 }

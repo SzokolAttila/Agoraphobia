@@ -29,6 +29,7 @@ builder.Services.AddScoped<IWeaponInventoryRepository, WeaponInventoryRepository
 builder.Services.AddScoped<IConsumableInventoryRepository, ConsumableInventoryRepository>();
 builder.Services.AddScoped<IEnemyRepository, EnemyRepository>();
 builder.Services.AddScoped<IArmorDroprateRepository, ArmorDroprateRepository>();
+builder.Services.AddScoped<IWeaponDroprateRepository, WeaponDroprateRepository>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
