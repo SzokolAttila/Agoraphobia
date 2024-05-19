@@ -21,6 +21,7 @@ namespace AgoraphobiaAPI.Data
         public DbSet<Enemy> Enemies { get; set; }
         public DbSet<ArmorDroprate> ArmorDroprates { get; set; }
         public DbSet<WeaponDroprate> WeaponDroprates { get; set; }
+        public DbSet<ConsumableDroprate> ConsumableDroprates { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -79,6 +80,17 @@ namespace AgoraphobiaAPI.Data
                 .HasOne(p => p.Weapon)
                 .WithMany(x => x.WeaponDroprates)
                 .HasForeignKey(x => x.WeaponId);
+
+            builder.Entity<ConsumableDroprate>(x => x.HasKey(p => new { p.EnemyId, p.ConsumableId }));
+            builder.Entity<ConsumableDroprate>()
+                .HasOne(p => p.Enemy)
+                .WithMany(x => x.ConsumableDroprates)
+                .HasForeignKey(x => x.EnemyId);
+
+            builder.Entity<ConsumableDroprate>()
+                .HasOne(p => p.Consumable)
+                .WithMany(x => x.ConsumableDroprates)
+                .HasForeignKey(x => x.ConsumableId);
         }
     }
 }

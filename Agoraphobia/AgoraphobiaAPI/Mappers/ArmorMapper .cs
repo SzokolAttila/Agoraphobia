@@ -13,7 +13,7 @@ public static class ArmorMapper
 
     public static Armor ToArmorFromArmorDto(this ArmorDto armorDto)
     {
-        return new Armor(armorDto.Name, armorDto.Description, armorDto.RarityIdx, armorDto.Price, armorDto.Defense, armorDto.Hp, armorDto.ArmorTypeIdx);
+        return new Armor(armorDto.Id, armorDto.Name, armorDto.Description, armorDto.RarityIdx, armorDto.Price, armorDto.Defense, armorDto.Hp, armorDto.ArmorTypeIdx);
     }
 
     public static ArmorDto ToArmorDto(this Armor armor)

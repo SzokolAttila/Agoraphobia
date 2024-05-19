@@ -23,7 +23,7 @@ public static class EnemyMapper
             DreamCoins = enemy.DreamCoins,
             Armors = enemy.ArmorDroprates.Select(x => x.ToArmorDroprateDto()).ToList(),
             Weapons = enemy.WeaponDroprates.Select(x => x.ToWeaponDroprateDto()).ToList(),
-            Consumables = enemy.Consumables
+            Consumables = enemy.ConsumableDroprates.Select(x => x.ToConsumableDroprateDto()).ToList()
         };
     }
 }

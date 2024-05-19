@@ -12,7 +12,7 @@ public static class WeaponMapper
 
     public static Weapon ToWeaponFromWeaponDto(this WeaponDto weaponDto)
     {
-        return new Weapon(weaponDto.Name, weaponDto.Description, weaponDto.RarityIdx, weaponDto.Price, weaponDto.MinMultiplier, weaponDto.MaxMultiplier, weaponDto.Price);
+        return new Weapon(weaponDto.Id, weaponDto.Name, weaponDto.Description, weaponDto.RarityIdx, weaponDto.Price, weaponDto.MinMultiplier, weaponDto.MaxMultiplier, weaponDto.Price);
     }
 
     public static WeaponDto ToWeaponDto(this Weapon weapon)

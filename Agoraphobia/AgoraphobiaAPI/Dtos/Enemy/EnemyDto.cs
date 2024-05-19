@@ -1,6 +1,6 @@
 ﻿using AgoraphobiaAPI.Dtos.ArmorDroprate;
 using AgoraphobiaAPI.Dtos.WeaponDroprate;
-using AgoraphobiaAPI.Dtos.ArmorInventory;
+using AgoraphobiaAPI.Dtos.ConsumableDroprate;
 
 namespace AgoraphobiaAPI.Dtos.Enemy
 {
@@ -13,7 +13,7 @@ namespace AgoraphobiaAPI.Dtos.Enemy
         public double Defense { get; set; }
         public int DreamCoins { get; set; }
         public List<WeaponDroprateDto> Weapons { get; set; } = new();
-        public Dictionary<AgoraphobiaLibrary.Consumable, double> Consumables { get; set; } = new();
+        public List<ConsumableDroprateDto> Consumables { get; set; } = new();
         public List<ArmorDroprateDto> Armors { get; set; }
     }
 }
