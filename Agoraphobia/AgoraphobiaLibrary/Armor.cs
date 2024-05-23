@@ -44,10 +44,5 @@ namespace AgoraphobiaLibrary
             Hp = hp;
             ArmorTypeIdx = armorTypeIdx;
         }
-
-        public Armor()
-        {
-            
-        }
     }
 }

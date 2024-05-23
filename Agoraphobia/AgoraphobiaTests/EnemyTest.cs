@@ -16,7 +16,7 @@ namespace AgoraphobiaTests
         public void Init()
         {
             enemy = new Enemy("Kitten", "He seems cute, but don't buy into his lies!", 10, 5, 2, 10, 3,
-                new Dictionary<Weapon, double>(), new Dictionary<Armor, double>(), new Dictionary<Consumable, double>());            
+                new List<WeaponDroprate>(), new List<ArmorDroprate>(), new List<ConsumableDroprate>());            
         }
 
         [TestMethod]
@@ -50,12 +50,32 @@ namespace AgoraphobiaTests
         [TestMethod]
         public void ThreeWeaponsWithFullDroprateAndTwoWithZeroReturnsTheThreeWeapons()
         {
-            enemy.Weapons.Add(new Weapon("Stick", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0), 1.0);
-            enemy.Weapons.Add(new Weapon("Sword", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0), 0);
-            enemy.Weapons.Add(new Weapon("Halberd", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0), 0);
-            enemy.Weapons.Add(new Weapon("Bat", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0), 1.0);
-            enemy.Weapons.Add(new Weapon("Bottle", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0), 1.0);
-            Assert.AreEqual(3, enemy.DropWeapons().Count);
+            Weapon stick = new Weapon("Stick", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0);
+            Weapon sword = new Weapon("Sword", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0);
+            Weapon halberd = new Weapon("Halberd", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0);
+            Weapon bat = new Weapon("Bat", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0);
+            Weapon bottle = new Weapon("Bottle", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0);
+            WeaponDroprate wpdr = new();
+
+            wpdr.Weapon = stick;
+            wpdr.Droprate = 1.0;
+            enemy.WeaponDroprates.Add(wpdr);
+
+            wpdr.Weapon = sword;
+            wpdr.Droprate = 0.0;
+            enemy.WeaponDroprates.Add(wpdr);
+
+            wpdr.Weapon = halberd;
+            wpdr.Droprate = 0.0;
+            enemy.WeaponDroprates.Add(wpdr);
+
+            wpdr.Weapon = bat;
+            wpdr.Droprate = 1.0;
+            enemy.WeaponDroprates.Add(wpdr);
+
+            wpdr.Weapon = bottle;
+            wpdr.Droprate = 1.0;
+            enemy.WeaponDroprates.Add(wpdr);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgoraphobiaLibrary.Exceptions.Consumable;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,8 +22,28 @@ namespace AgoraphobiaLibrary
         [JsonInclude]
         public int Attack { get; set; }
 
+        [JsonIgnore]
+        private int duration;
         [JsonInclude]
-        public int Duration { get; set; }
+        public int Duration
+        {
+            get
+            {
+                return duration;
+            }
+            set
+            {
+                if (value<0)
+                {
+                    throw new NegativeDurationException();
+                }
+                else
+                {
+                    duration = value;
+                }
+            }
+        }
+        
         [JsonInclude]
         public int Sanity { get; set; }
 

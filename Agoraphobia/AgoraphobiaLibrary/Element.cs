@@ -32,10 +32,5 @@ namespace AgoraphobiaLibrary
             Name = name;
             Description = description;
         }
-
-        protected Element()
-        {
-            
-        }
     }
 }

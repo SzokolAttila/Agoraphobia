@@ -40,10 +40,5 @@ namespace AgoraphobiaLibrary
             RarityIdx = rarityIdx;
             Price = price;
         }
-
-        protected Item() 
-        {
-            
-        }
     }
 }

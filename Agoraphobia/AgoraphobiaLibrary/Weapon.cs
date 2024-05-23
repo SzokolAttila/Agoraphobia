@@ -1,6 +1,8 @@
-﻿using System;
+﻿using AgoraphobiaLibrary.Exceptions.Weapon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -9,11 +11,57 @@ namespace AgoraphobiaLibrary
 {
     public sealed record Weapon : Item
     {
+        [JsonIgnore]
+        private double minMultiplier = -1;
         [JsonInclude]
-        public double MinMultiplier { get; set; }
+        public double MinMultiplier
+        {
+            get
+            {
+                return minMultiplier;
+            }
+            set
+            {
+                if (value < 0)
+                {
+                    throw new NegativeMaxOrMinException();
+                }
+                else if (value > MaxMultiplier && MaxMultiplier != -1)
+                {
+                    throw new MinGreaterThanMaxException();
+                }
+                else
+                {
+                    minMultiplier = value;
+                }
+            }
+        }
 
+        [JsonIgnore]
+        private double maxMultiplier = -1;
         [JsonInclude]
-        public double MaxMultiplier { get; set; }
+        public double MaxMultiplier
+        {
+            get
+            {
+                return maxMultiplier;
+            }
+            set
+            {
+                if (value<0)
+                {
+                    throw new NegativeMaxOrMinException();
+                }
+                else if (value < MinMultiplier && MinMultiplier != -1)
+                {
+                    throw new MaxSmallerThanMinException();
+                }
+                else
+                {
+                    maxMultiplier = value;
+                }
+            }
+        }
 
         [JsonInclude]
         public int Energy {  get; set; }
