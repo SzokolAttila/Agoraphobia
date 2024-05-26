@@ -55,27 +55,33 @@ namespace AgoraphobiaTests
             Weapon halberd = new Weapon("Halberd", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0);
             Weapon bat = new Weapon("Bat", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0);
             Weapon bottle = new Weapon("Bottle", "Really weak, believe me.", 0, 0, 0.5, 1.2, 0);
-            WeaponDroprate wpdr = new();
 
-            wpdr.Weapon = stick;
-            wpdr.Droprate = 1.0;
-            enemy.WeaponDroprates.Add(wpdr);
+            WeaponDroprate wpdr1 = new();
+            wpdr1.Weapon = stick;
+            wpdr1.Droprate = 1.0;
+            enemy.WeaponDroprates.Add(wpdr1);
 
-            wpdr.Weapon = sword;
-            wpdr.Droprate = 0.0;
-            enemy.WeaponDroprates.Add(wpdr);
+            WeaponDroprate wpdr2 = new();
+            wpdr2.Weapon = sword;
+            wpdr2.Droprate = 0.0;
+            enemy.WeaponDroprates.Add(wpdr2);
 
-            wpdr.Weapon = halberd;
-            wpdr.Droprate = 0.0;
-            enemy.WeaponDroprates.Add(wpdr);
+            WeaponDroprate wpdr3 = new();
+            wpdr3.Weapon = halberd;
+            wpdr3.Droprate = 0.0;
+            enemy.WeaponDroprates.Add(wpdr3);
 
-            wpdr.Weapon = bat;
-            wpdr.Droprate = 1.0;
-            enemy.WeaponDroprates.Add(wpdr);
+            WeaponDroprate wpdr4 = new();
+            wpdr4.Weapon = bat;
+            wpdr4.Droprate = 1.0;
+            enemy.WeaponDroprates.Add(wpdr4);
 
-            wpdr.Weapon = bottle;
-            wpdr.Droprate = 1.0;
-            enemy.WeaponDroprates.Add(wpdr);
+            WeaponDroprate wpdr5 = new();
+            wpdr5.Weapon = bottle;
+            wpdr5.Droprate = 1.0;
+            enemy.WeaponDroprates.Add(wpdr5);
+
+            Assert.AreEqual(3, enemy.DropWeapons().Count());
         }
     }
 }

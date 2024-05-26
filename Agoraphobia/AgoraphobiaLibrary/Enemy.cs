@@ -95,12 +95,12 @@ namespace AgoraphobiaLibrary
             return droppedArmors;
         }
 
-        public List<Weapon> DropWeaponDroprates()
+        public List<Weapon> DropWeapons()
         {
             List<Weapon> droppedWeaponDroprates = new List<Weapon>();
             foreach (WeaponDroprate weapon in WeaponDroprates)
             {
-                if (r.NextDouble()<=weapon.Droprate)
+                if (r.NextDouble() <= weapon.Droprate)
                 {
                     droppedWeaponDroprates.Add(weapon.Weapon);
                 }
