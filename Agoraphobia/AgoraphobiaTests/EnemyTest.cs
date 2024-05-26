@@ -15,8 +15,7 @@ namespace AgoraphobiaTests
         [TestInitialize]
         public void Init()
         {
-            enemy = new Enemy("Kitten", "He seems cute, but don't buy into his lies!", 10, 5, 2, 10, 3,
-                new List<WeaponDroprate>(), new List<ArmorDroprate>(), new List<ConsumableDroprate>());            
+            enemy = new Enemy("Kitten", "He seems cute, but don't buy into his lies!", 10, 5, 2, 10, 3);            
         }
 
         [TestMethod]
