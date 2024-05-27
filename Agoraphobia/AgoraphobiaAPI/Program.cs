@@ -35,6 +35,7 @@ builder.Services.AddScoped<IConsumableDroprateRepository, ConsumableDroprateRepo
 builder.Services.AddScoped<IArmorLootRepository, ArmorLootRepository>();
 builder.Services.AddScoped<IWeaponLootRepository, WeaponLootRepository>();
 builder.Services.AddScoped<IConsumableLootRepository, ConsumableLootRepository>();
+builder.Services.AddScoped<IEffectRepository, EffectRepository>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

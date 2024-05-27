@@ -12,6 +12,7 @@ namespace AgoraphobiaAPI.Data
         }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Effect> Effects { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<ArmorInventory> ArmorInventories { get; set; }
         public DbSet<WeaponInventory> WeaponInventories { get; set; }
@@ -128,6 +129,17 @@ namespace AgoraphobiaAPI.Data
             builder.Entity<ConsumableDroprate>()
                 .HasOne(p => p.Consumable)
                 .WithMany(x => x.ConsumableDroprates)
+                .HasForeignKey(x => x.ConsumableId);
+
+            builder.Entity<Effect>(x => x.HasKey(y => new { y.PlayerId, y.ConsumableId }));
+            builder.Entity<Effect>()
+                .HasOne(x => x.Player)
+                .WithMany(x => x.Effects)
+                .HasForeignKey(x => x.PlayerId);
+
+            builder.Entity<Effect>()
+                .HasOne(x => x.Consumable)
+                .WithMany(x => x.Effects)
                 .HasForeignKey(x => x.ConsumableId);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AgoraphobiaAPI.Dtos.Armor;
 using AgoraphobiaAPI.Dtos.ArmorInventory;
 using AgoraphobiaAPI.Dtos.ConsumableInventory;
+using AgoraphobiaAPI.Dtos.Effect;
 using AgoraphobiaAPI.Dtos.WeaponInventory;
 
 namespace AgoraphobiaAPI.Dtos.Player;
@@ -20,4 +21,5 @@ public class PlayerDto
     public List<WeaponInventoryDto> Weapons { get; set; } = new();
     public List<ConsumableInventoryDto> Consumables { get; set; } = new();
     public List<ArmorInventoryDto> Armors { get; set; } = new();
+    public List<EffectDto> Effects { get; set; } = new();
 }
