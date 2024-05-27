@@ -18,6 +18,8 @@ public class EnemyRepository : IEnemyRepository
         return await _context.Enemies
             .Include(x => x.ArmorDroprates)
             .ThenInclude(x => x.Armor)
+            .Include(x => x.WeaponDroprates)
+            .ThenInclude(x => x.Weapon)
             .Include(x => x.ConsumableDroprates)
             .ThenInclude(x => x.Consumable)
             .ToListAsync();

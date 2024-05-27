@@ -39,7 +39,7 @@ public class RoomController : ControllerBase
         var room = roomDto.ToRoomFromCreateDto();
         var created = await _roomRepository.CreateAsync(room);
         if (created is null)
-            return BadRequest("Account not found");
+            return BadRequest("Room not found");
         return CreatedAtAction(nameof(GetById), new { id = room.Id }, room.ToRoomDto());
     }
 

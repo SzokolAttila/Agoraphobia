@@ -23,6 +23,14 @@ public class RoomRepository : IRoomRepository
             .Include(x => x.Consumables)
             .ThenInclude(x => x.Consumable)
             .Include(x=>x.Enemy)
+            .ThenInclude(x=>x.WeaponDroprates)
+            .ThenInclude(x=>x.Weapon)
+            .Include(x => x.Enemy)
+            .ThenInclude(x => x.ArmorDroprates)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Enemy)
+            .ThenInclude(x => x.ConsumableDroprates)
+            .ThenInclude(x => x.Consumable)
             .ToListAsync();
     }
 
@@ -35,7 +43,15 @@ public class RoomRepository : IRoomRepository
             .ThenInclude(x => x.Armor)
             .Include(x => x.Consumables)
             .ThenInclude(x => x.Consumable)
-            .Include(x=>x.Enemy)
+            .Include(x => x.Enemy)
+            .ThenInclude(x => x.WeaponDroprates)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Enemy)
+            .ThenInclude(x => x.ArmorDroprates)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Enemy)
+            .ThenInclude(x => x.ConsumableDroprates)
+            .ThenInclude(x => x.Consumable)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
