@@ -7,6 +7,7 @@ using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using AgoraphobiaLibrary;
 
 namespace AgoraphobiaGUI
 {
@@ -15,8 +16,8 @@ namespace AgoraphobiaGUI
     /// </summary>
     public partial class App : Application
     {
-        static private MediaPlayer backgroundMusic = new MediaPlayer();
-        static public double Volume
+        private static MediaPlayer backgroundMusic = new MediaPlayer();
+        public static double Volume
         {
             get
             {
@@ -38,6 +39,8 @@ namespace AgoraphobiaGUI
                 }
             }
         }
+
+        public static Account? Account;
         public App()
         {
             InitializeComponent();

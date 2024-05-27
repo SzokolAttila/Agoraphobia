@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaAPI.Dtos.Account;
+using AgoraphobiaAPI.HttpClients;
 using AgoraphobiaLibrary;
+using Newtonsoft.Json;
 
 namespace AgoraphobiaGUI.UserControls
 {
@@ -41,9 +46,21 @@ namespace AgoraphobiaGUI.UserControls
             _container.Children.Add(new LogInUC(_container));
             _container.Children.Remove(this);
         }
-        private void Register(object sender, RoutedEventArgs e)
+        private async void Register(object sender, RoutedEventArgs e)
         {
-            _container.Children.Add(new MainMenuUC(_container));
+            var client = new AccountHttpClient(new HttpClient());
+            try
+            {
+                await client.CreateAccount(Username.Text, PasswordBox.Password, false);
+                MessageBox.Show("Account successfully created, time to log in!", "Account created", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Account could not be created", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            _container.Children.Add(new LogInUC(_container));
             _container.Children.Remove(this);
         }
         private void StrengthLevel(object sender, RoutedEventArgs e)

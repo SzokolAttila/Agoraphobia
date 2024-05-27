@@ -65,6 +65,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AgoraphobiaAPI\AgoraphobiaAPI.csproj" />
     <ProjectReference Include="..\AgoraphobiaLibrary\AgoraphobiaLibrary.csproj" />
   </ItemGroup>
 

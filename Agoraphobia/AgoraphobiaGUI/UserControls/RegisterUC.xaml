@@ -51,7 +51,7 @@
             <Label FontSize="32" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Register"></Label>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Username"></Label>
             <TextBlock HorizontalAlignment="Center" FontSize="8">Username should be at least 6 characters long</TextBlock>
-            <TextBox Margin="40 10"></TextBox>
+            <TextBox x:Name="Username" Margin="40 10"></TextBox>
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Content="Password"></Label>
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock HorizontalAlignment="Center" FontSize="8" x:Name="Lower" Foreground="Red">Contains lowercase letter</TextBlock>

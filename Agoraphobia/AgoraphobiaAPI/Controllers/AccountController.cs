@@ -1,8 +1,11 @@
 ﻿using AgoraphobiaAPI.Dtos.Account;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
+using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.Exceptions.Account;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Web.Http;
 
 namespace AgoraphobiaAPI.Controllers
 {
@@ -35,6 +38,7 @@ namespace AgoraphobiaAPI.Controllers
             var accounts = await _accountRepository.GetAllAsync();
             if (accounts.Exists(x => x.Username == account.Username))
                 throw new NonUniqueUsernameException();
+            var foo = new Account(account.Username, account.Passwd, account.IsPasswordHashed);
             var accountModel = account.ToAccountFromCreateDto();
             await _accountRepository.CreateAsync(accountModel);
             return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel.ToAccountDto());
