@@ -27,7 +27,7 @@ namespace AgoraphobiaGUI
         public MainWindow()
         {
             InitializeComponent();
-            Container.Children.Add(new MainMenuUC(Container));
+            Container.Children.Add(new RegisterUC(Container));
             
         }
 

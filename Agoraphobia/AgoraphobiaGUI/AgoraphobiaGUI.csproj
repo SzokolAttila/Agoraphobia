@@ -64,4 +64,8 @@
     <Folder Include="UserControls\ItemCollectionTypes\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AgoraphobiaLibrary\AgoraphobiaLibrary.csproj" />
+  </ItemGroup>
+
 </Project>
