@@ -36,7 +36,7 @@ public class RoomController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateRoomRequestDto roomDto)
     {
-        var room = roomDto.ToAccountFromCreateDto();
+        var room = roomDto.ToRoomFromCreateDto();
         var created = await _roomRepository.CreateAsync(room);
         if (created is null)
             return BadRequest("Account not found");

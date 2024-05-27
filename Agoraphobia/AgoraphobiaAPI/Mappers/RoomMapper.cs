@@ -5,7 +5,7 @@ namespace AgoraphobiaAPI.Mappers;
 
 public static class RoomMapper
 {
-    public static Room ToAccountFromCreateDto(this CreateRoomRequestDto roomDto)
+    public static Room ToRoomFromCreateDto(this CreateRoomRequestDto roomDto)
     {
         return new Room(roomDto.Name, roomDto.Description, roomDto.OrientationId, roomDto.EnemyId);
     }
@@ -19,6 +19,7 @@ public static class RoomMapper
             Description = room.Description,
             OrientationId = room.OrientationId,
             EnemyId = room.EnemyId,
+            Enemy = room.Enemy.ToEnemyDto(),
             Weapons = room.Weapons.Select(x => x.ToWeaponLootDto()).ToList(),
             Armors = room.Armors.Select(x => x.ToArmorLootDto()).ToList(),
             Consumables = room.Consumables.Select(x => x.ToConsumableLootDto()).ToList(),
