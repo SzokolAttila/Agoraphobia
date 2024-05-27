@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
 });
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IWeaponRepository, WeaponRepository>();
 builder.Services.AddScoped<IArmorRepository, ArmorRepository>();
 builder.Services.AddScoped<IConsumableRepository, ConsumableRepository>();
@@ -31,6 +32,9 @@ builder.Services.AddScoped<IEnemyRepository, EnemyRepository>();
 builder.Services.AddScoped<IArmorDroprateRepository, ArmorDroprateRepository>();
 builder.Services.AddScoped<IWeaponDroprateRepository, WeaponDroprateRepository>();
 builder.Services.AddScoped<IConsumableDroprateRepository, ConsumableDroprateRepository>();
+builder.Services.AddScoped<IArmorLootRepository, ArmorLootRepository>();
+builder.Services.AddScoped<IWeaponLootRepository, WeaponLootRepository>();
+builder.Services.AddScoped<IConsumableLootRepository, ConsumableLootRepository>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

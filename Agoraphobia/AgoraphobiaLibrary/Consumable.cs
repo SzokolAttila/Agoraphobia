@@ -74,5 +74,7 @@ namespace AgoraphobiaLibrary
 
         [JsonIgnore]
         public List<ConsumableDroprate> ConsumableDroprates { get; set; } = new();
+        [JsonIgnore]
+        public List<ConsumableLoot> ConsumableLoots { get; set; } = new();
     }
 }

@@ -12,9 +12,13 @@ namespace AgoraphobiaAPI.Data
         }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Room> Rooms { get; set; }
         public DbSet<ArmorInventory> ArmorInventories { get; set; }
         public DbSet<WeaponInventory> WeaponInventories { get; set; }
         public DbSet<ConsumableInventory> ConsumableInventories { get; set; }
+        public DbSet<ArmorLoot> ArmorLoots { get; set; }
+        public DbSet<WeaponLoot> WeaponLoots { get; set; }
+        public DbSet<ConsumableLoot> ConsumableLoots { get; set; }
         public DbSet<Weapon> Weapons { get; set; }
         public DbSet<Armor> Armors { get; set; }
         public DbSet<Consumable> Consumables { get; set; }
@@ -58,7 +62,41 @@ namespace AgoraphobiaAPI.Data
                 .HasOne(x => x.Consumable)
                 .WithMany(x => x.ConsumableInventories)
                 .HasForeignKey(x => x.ConsumableId);
-                
+
+            builder.Entity<ArmorLoot>(x => x.HasKey(y => new { y.RoomId, y.ArmorId }));
+            builder.Entity<ArmorLoot>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.Armors)
+                .HasForeignKey(x => x.RoomId);
+
+            builder.Entity<ArmorLoot>()
+                .HasOne(x => x.Armor)
+                .WithMany(x => x.ArmorLoots)
+                .HasForeignKey(x => x.ArmorId);
+
+
+            builder.Entity<WeaponLoot>(x => x.HasKey(y => new { y.RoomId, y.WeaponId }));
+            builder.Entity<WeaponLoot>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.Weapons)
+                .HasForeignKey(x => x.RoomId);
+
+            builder.Entity<WeaponLoot>()
+                .HasOne(x => x.Weapon)
+                .WithMany(x => x.WeaponLoots)
+                .HasForeignKey(x => x.WeaponId);
+
+            builder.Entity<ConsumableLoot>(x => x.HasKey(y => new { y.RoomId, y.ConsumableId }));
+            builder.Entity<ConsumableLoot>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.Consumables)
+                .HasForeignKey(x => x.RoomId);
+
+            builder.Entity<ConsumableLoot>()
+                .HasOne(x => x.Consumable)
+                .WithMany(x => x.ConsumableLoots)
+                .HasForeignKey(x => x.ConsumableId);
+
             builder.Entity<ArmorDroprate>(x => x.HasKey(p => new { p.EnemyId, p.ArmorId }));
             builder.Entity<ArmorDroprate>()
                 .HasOne(p => p.Enemy)

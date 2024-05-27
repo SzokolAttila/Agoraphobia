@@ -25,6 +25,8 @@ namespace AgoraphobiaLibrary
         public List<ArmorInventory> ArmorInventories { get; set; } = new();
         [JsonIgnore]
         public List<ArmorDroprate> ArmorDroprates { get; set; } = new();
+        [JsonIgnore]
+        public List<ArmorLoot> ArmorLoots { get; set; } = new();
 
         [JsonInclude]
         public int ArmorTypeIdx { get => (int)ArmorType; set => ArmorType = (ArmorPiece)value; }
