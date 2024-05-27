@@ -38,7 +38,8 @@ namespace AgoraphobiaGUI.UserControls
 
         private void LoginWindow(object sender, RoutedEventArgs e)
         {
-
+            _container.Children.Add(new LogInUC(_container));
+            _container.Children.Remove(this);
         }
         private void Register(object sender, RoutedEventArgs e)
         {
