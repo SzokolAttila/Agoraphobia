@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaAPI.HttpClients;
 
 namespace AgoraphobiaGUI.UserControls
 {
@@ -26,8 +28,20 @@ namespace AgoraphobiaGUI.UserControls
             InitializeComponent();
             _container = container;
         }
-        private void LogIn(object sender, RoutedEventArgs e)
+        private async void LogIn(object sender, RoutedEventArgs e)
         {
+            var client = new AccountHttpClient(new HttpClient());
+            try
+            {
+                App.Account = await client.LogIn(Username.Text, PasswordBox.Password, false);
+                MessageBox.Show("Logging in was successful, good luck on your journey!", "Successful login", MessageBoxButton.OK,
+                    MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Login failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             _container.Children.Add(new MainMenuUC(_container));
             _container.Children.Remove(this);
         }
