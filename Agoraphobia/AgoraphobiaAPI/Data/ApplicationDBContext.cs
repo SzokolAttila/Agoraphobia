@@ -33,7 +33,7 @@ namespace AgoraphobiaAPI.Data
         public DbSet<Merchant> Merchants { get; set; }
         public DbSet<ConsumableSale> ConsumableSales { get; set; }
         public DbSet<WeaponSale> WeaponSales { get; set; }
-        public DbSet<ArmorSale> ArmorsSale { get; set; }
+        public DbSet<ArmorSale> ArmorSales { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
