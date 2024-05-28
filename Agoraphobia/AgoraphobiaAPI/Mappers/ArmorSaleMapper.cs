@@ -13,5 +13,15 @@ namespace AgoraphobiaAPI.Mappers
                 Quantity = armor.Quantity
             };
         }
+
+        public static UpdateArmorSaleRequestDto ToUpdateArmorSaleRequestDto(this ArmorSale armorSale)
+        {
+            return new UpdateArmorSaleRequestDto
+            {
+                MerchantId = armorSale.MerchantId,
+                Armor = armorSale.Armor!.ToArmorDto(),
+                Quantity = armorSale.Quantity
+            };
+        }
     }
 }
