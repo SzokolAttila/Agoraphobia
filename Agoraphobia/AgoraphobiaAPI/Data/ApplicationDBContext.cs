@@ -30,6 +30,10 @@ namespace AgoraphobiaAPI.Data
         public DbSet<ArmorDroprate> ArmorDroprates { get; set; }
         public DbSet<WeaponDroprate> WeaponDroprates { get; set; }
         public DbSet<ConsumableDroprate> ConsumableDroprates { get; set; }
+        public DbSet<Merchant> Merchant { get; set; }
+        public DbSet<ConsumableSale> ConsumableSales { get; set; }
+        public DbSet<WeaponSale> WeaponSales { get; set; }
+        public DbSet<ArmorSale> ArmorsSale { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -143,6 +147,39 @@ namespace AgoraphobiaAPI.Data
             builder.Entity<Effect>()
                 .HasOne(x => x.Consumable)
                 .WithMany(x => x.Effects)
+                .HasForeignKey(x => x.ConsumableId);
+
+            builder.Entity<ArmorSale>(x => x.HasKey(y => new { y.ArmorId, y.MerchantId}));
+            builder.Entity<ArmorSale>()
+                .HasOne(x => x.Merchant)
+                .WithMany(x => x.ArmorSales)
+                .HasForeignKey(x => x.MerchantId);
+
+            builder.Entity<ArmorSale>()
+                .HasOne(x => x.Armor)
+                .WithMany(x => x.ArmorSales)
+                .HasForeignKey(x => x.ArmorId);
+
+            builder.Entity<WeaponSale>(x => x.HasKey(y => new { y.WeaponId, y.MerchantId }));
+            builder.Entity<WeaponSale>()
+                .HasOne(x => x.Merchant)
+                .WithMany(x => x.WeaponSales)
+                .HasForeignKey(x => x.MerchantId);
+
+            builder.Entity<WeaponSale>()
+                .HasOne(x => x.Weapon)
+                .WithMany(x => x.WeaponSales)
+                .HasForeignKey(x => x.WeaponId);
+
+            builder.Entity<ConsumableSale>(x => x.HasKey(y => new { y.ConsumableId, y.MerchantId }));
+            builder.Entity<ConsumableSale>()
+                .HasOne(x => x.Merchant)
+                .WithMany(x => x.ConsumableSales)
+                .HasForeignKey(x => x.MerchantId);
+
+            builder.Entity<ConsumableSale>()
+                .HasOne(x => x.Consumable)
+                .WithMany(x => x.ConsumableSales)
                 .HasForeignKey(x => x.ConsumableId);
         }
     }

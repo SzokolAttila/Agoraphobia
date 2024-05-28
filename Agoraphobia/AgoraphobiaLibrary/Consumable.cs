@@ -78,6 +78,8 @@ namespace AgoraphobiaLibrary
         [JsonIgnore]
         public List<ConsumableLoot> ConsumableLoots { get; set; } = new();
         [JsonIgnore]
+        public List<ConsumableSale> ConsumableSales { get; set; } = new();
+        [JsonIgnore]
         public List<Effect> Effects { get; set; } = new();
     }
 }

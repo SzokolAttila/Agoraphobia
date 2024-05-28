@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AgoraphobiaLibrary.JoinTables.Weapons;
+using AgoraphobiaLibrary.JoinTables.Armors;
+using AgoraphobiaLibrary.JoinTables.Consumables;
+using Newtonsoft.Json;
 
 namespace AgoraphobiaLibrary
 {
@@ -11,11 +10,27 @@ namespace AgoraphobiaLibrary
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+
         public Merchant(int id, string name, string description)
         {
             Id = id;
             Name = name;
             Description = description;
         }
+        public Merchant(int id, string name, string description, List<WeaponSale> weaponSales, List<ArmorSale> armorSales, List<ConsumableSale> consumableSales)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            WeaponSales = weaponSales;
+            ArmorSales = armorSales;
+            ConsumableSales = consumableSales;
+        }
+        [JsonIgnore]
+        public List<WeaponSale> WeaponSales { get; set; } 
+        [JsonIgnore]
+        public List<ArmorSale> ArmorSales { get; set; } 
+        [JsonIgnore]
+        public List<ConsumableSale> ConsumableSales { get; set; } 
     }
 }
