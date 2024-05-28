@@ -19,7 +19,7 @@ namespace AgoraphobiaAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAll()
         {
             var merchants = await _merchantRepository.GetAllAsync();
             return Ok(merchants.Select(x => x.ToMerchantDto()));
@@ -41,6 +41,15 @@ namespace AgoraphobiaAPI.Controllers
             var merchant = merchantDto.ToMerchantFromCreateDto();
             var created = await _merchantRepository.CreateAsync(merchant);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created.ToMerchantDto());
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var merchant = await _merchantRepository.DeleteAsync(id);
+            if (merchant is null)
+                return NotFound();
+            return NoContent();
         }
     }
 }

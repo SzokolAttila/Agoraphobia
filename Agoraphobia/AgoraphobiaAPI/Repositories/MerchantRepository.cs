@@ -46,5 +46,15 @@ namespace AgoraphobiaAPI.Repositories
             await _context.SaveChangesAsync();
             return merchant;
         }
+
+        public async Task<Merchant?> DeleteAsync(int id)
+        {
+            var merchant = await _context.Merchants.FirstOrDefaultAsync(x => x.Id == id);
+            if (merchant is null)
+                return null;
+            _context.Merchants.Remove(merchant);
+            await _context.SaveChangesAsync();
+            return merchant;
+        }
     }
 }

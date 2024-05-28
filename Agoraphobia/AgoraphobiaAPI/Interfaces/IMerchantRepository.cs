@@ -7,6 +7,6 @@ namespace AgoraphobiaAPI.Interfaces
         Task<List<Merchant>> GetAllAsync();
         Task<Merchant?> GetByIdAsync(int id);
         Task<Merchant> CreateAsync(Merchant merchant);
-
+        Task<Merchant?> DeleteAsync(int id);
     }
 }
