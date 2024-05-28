@@ -25,5 +25,17 @@ namespace AgoraphobiaAPI.Repositories
                 .ThenInclude(x => x.Weapon)
                 .ToListAsync();
         }
+
+        public async Task<Merchant?> GetByIdAsync(int id)
+        {
+            return await _context.Merchants
+                .Include(x => x.WeaponSales)
+                .ThenInclude(x => x.Weapon)
+                .Include(x => x.ArmorSales)
+                .ThenInclude(x => x.Armor)
+                .Include(x => x.ConsumableSales)
+                .ThenInclude(x => x.Consumable)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

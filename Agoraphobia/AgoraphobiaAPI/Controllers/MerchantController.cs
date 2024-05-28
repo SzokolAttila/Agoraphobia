@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
+using AgoraphobiaAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers
@@ -20,6 +21,16 @@ namespace AgoraphobiaAPI.Controllers
         {
             var merchants = await _merchantRepository.GetAllAsync();
             return Ok(merchants.Select(x => x.ToMerchantDto()));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
+        {
+            var merchant = await _merchantRepository.GetByIdAsync(id);
+            if (merchant is null)
+                return NotFound();
+
+            return Ok(merchant.ToMerchantDto());
         }
     }
 }
