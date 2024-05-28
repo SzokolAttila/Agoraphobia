@@ -4,6 +4,8 @@ using AgoraphobiaLibrary;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Numerics;
+using AgoraphobiaAPI.Dtos.Merchant;
+using AgoraphobiaAPI.Dtos.Player;
 
 namespace AgoraphobiaAPI.Repositories
 {
@@ -53,6 +55,19 @@ namespace AgoraphobiaAPI.Repositories
             if (merchant is null)
                 return null;
             _context.Merchants.Remove(merchant);
+            await _context.SaveChangesAsync();
+            return merchant;
+        }
+
+        public async Task<Merchant?> UpdateAsync(int id, MerchantRequestDto merchantDto)
+        {
+            var merchant = await _context.Merchants.FirstOrDefaultAsync(x => x.Id == id);
+            if (merchant is null)
+                return null;
+
+            merchant.Description = merchantDto.Description;
+            merchant.Name = merchantDto.Name;
+
             await _context.SaveChangesAsync();
             return merchant;
         }

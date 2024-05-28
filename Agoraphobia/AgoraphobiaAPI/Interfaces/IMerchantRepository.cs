@@ -1,4 +1,5 @@
-﻿using AgoraphobiaLibrary;
+﻿using AgoraphobiaAPI.Dtos.Merchant;
+using AgoraphobiaLibrary;
 
 namespace AgoraphobiaAPI.Interfaces
 {
@@ -8,5 +9,6 @@ namespace AgoraphobiaAPI.Interfaces
         Task<Merchant?> GetByIdAsync(int id);
         Task<Merchant> CreateAsync(Merchant merchant);
         Task<Merchant?> DeleteAsync(int id);
+        Task<Merchant?> UpdateAsync(int id, MerchantRequestDto merchantDto);
     }
 }

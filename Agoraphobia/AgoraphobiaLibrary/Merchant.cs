@@ -29,6 +29,16 @@ namespace AgoraphobiaLibrary
             ArmorSales = armorSales;
             ConsumableSales = consumableSales;
         }
+
+        public Merchant(string name, string description)
+        {
+            Name = name;
+            Description = description;
+            ArmorSales = new();
+            WeaponSales = new();
+            ConsumableSales = new();
+        }
+
         [JsonIgnore]
         public List<WeaponSale> WeaponSales { get; set; } 
         [JsonIgnore]

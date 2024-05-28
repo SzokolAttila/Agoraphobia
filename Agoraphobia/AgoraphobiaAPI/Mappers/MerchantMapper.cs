@@ -20,7 +20,7 @@ namespace AgoraphobiaAPI.Mappers
 
         public static Merchant ToMerchantFromCreateDto(this MerchantRequestDto merchant)
         {
-            return new Merchant(merchant.Id, merchant.Name, merchant.Description);
+            return new Merchant(merchant.Name, merchant.Description);
         }
     }
 }
