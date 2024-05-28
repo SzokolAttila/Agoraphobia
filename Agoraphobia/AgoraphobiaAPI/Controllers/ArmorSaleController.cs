@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaAPI.Dtos.ArmorSale;
+using AgoraphobiaAPI.Dtos.ArmorSale;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaAPI.Repositories;
@@ -24,7 +25,7 @@ namespace AgoraphobiaAPI.Controllers
             _armorSaleRepository = armorSaleRepository;
         }
         [HttpGet("{merchantId}")]
-        public async Task<IActionResult> GetArmorInventory([FromRoute] int merchantId)
+        public async Task<IActionResult> GetArmorSale([FromRoute] int merchantId)
         {
             var merchant = await _merchantRepository.GetByIdAsync(merchantId);
             if (merchant is null)
@@ -61,6 +62,33 @@ namespace AgoraphobiaAPI.Controllers
             };
             await _armorSaleRepository.CreateAsync(armorSale);
             return Created("agoraphobia/armorSales", armorSale.ToUpdateArmorSaleRequestDto());
+        }
+        [HttpDelete]
+        public async Task<IActionResult> RemoveFromArmorSale([FromBody] ArmorSaleRequestDto armorSaleRequestDto)
+        {
+            var merchant = await _merchantRepository.GetByIdAsync(armorSaleRequestDto.MerchantId);
+            var armor = await _armorRepository.GetByIdAsync(armorSaleRequestDto.ArmorId);
+            if (merchant is null)
+                return BadRequest("Merchant" +
+                                  " not found");
+            if (armor is null)
+                return BadRequest("Armor not found");
+
+            var armorInventories = await _armorSaleRepository.GetArmorSalesAsync(merchant.Id);
+            var armorSale = armorInventories.FirstOrDefault(x => x.ArmorId == armor.Id);
+            if (armorSale is null)
+                return NotFound();
+
+            if (armorSale.Quantity > 1)
+            {
+                var updated = await _armorSaleRepository.RemoveOneAsync(armorSaleRequestDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToUpdateArmorSaleRequestDto());
+            }
+
+            await _armorSaleRepository.DeleteAsync(armorSale);
+            return NoContent();
         }
     }
 }

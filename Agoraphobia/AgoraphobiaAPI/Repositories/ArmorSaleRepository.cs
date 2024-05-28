@@ -35,5 +35,27 @@ namespace AgoraphobiaAPI.Repositories
             await _context.SaveChangesAsync();
             return armorSale;
         }
+        public async Task<ArmorSale?> DeleteAsync(ArmorSale armorSale)
+        {
+            var armorSaleModel = _context.ArmorSales.FirstOrDefault(
+                x => x.MerchantId == armorSale.MerchantId && x.ArmorId == armorSale.ArmorId);
+            if (armorSaleModel is null)
+                return null;
+            _context.ArmorSales.Remove(armorSale);
+            await _context.SaveChangesAsync();
+            return armorSaleModel;
+        }
+
+        public async Task<ArmorSale?> RemoveOneAsync(ArmorSaleRequestDto update)
+        {
+            var armorSale = await _context.ArmorSales.FirstOrDefaultAsync(
+                x => x.ArmorId == update.ArmorId && x.MerchantId == update.MerchantId);
+            if (armorSale is null)
+                return null;
+
+            armorSale.Quantity -= 1;
+            await _context.SaveChangesAsync();
+            return armorSale;
+        }
     }
 }

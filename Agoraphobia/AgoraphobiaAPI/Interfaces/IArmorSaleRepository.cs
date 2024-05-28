@@ -1,4 +1,5 @@
-﻿using AgoraphobiaAPI.Dtos.ArmorSale;
+﻿using AgoraphobiaAPI.Dtos.ArmorInventory;
+using AgoraphobiaAPI.Dtos.ArmorSale;
 using AgoraphobiaAPI.Dtos.ConsumableInventory;
 using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.JoinTables.Armors;
@@ -11,5 +12,7 @@ namespace AgoraphobiaAPI.Interfaces
         public Task<List<ArmorSale>> GetArmorSalesAsync(int merchantId);
         public Task<ArmorSale> CreateAsync(ArmorSale armorSale);
         public Task<ArmorSale?> AddOneAsync(ArmorSaleRequestDto update);
+        public Task<ArmorSale?> DeleteAsync(ArmorSale armorSale);
+        public Task<ArmorSale?> RemoveOneAsync(ArmorSaleRequestDto update);
     }
 }
