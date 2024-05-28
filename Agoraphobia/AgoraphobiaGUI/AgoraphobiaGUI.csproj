@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Images\Background.png" />
+    <None Remove="Images\BackgroundNoBook.png" />
     <None Remove="Images\Button.png" />
     <None Remove="Images\ButtonClick.png" />
     <None Remove="Images\ButtonHover.png" />
@@ -17,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\BackgroundNoBook.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>

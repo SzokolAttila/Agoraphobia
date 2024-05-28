@@ -2,13 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:AgoraphobiaGUI"
-             StartupUri="MainWindow.xaml">
+             StartupUri="GameWindow.xaml">
     <Application.Resources>
         <ImageBrush x:Key="ButtonImage" ImageSource="./Images/Button.png" Stretch="Uniform"/>
         <ImageBrush x:Key="ButtonHoverImage" ImageSource="./Images/ButtonHover.png" Stretch="Uniform"/>
         <ImageBrush x:Key="ButtonClickImage" ImageSource="./Images/ButtonClick.png" Stretch="Uniform"/>
         <ImageBrush x:Key="Background" ImageSource="./Images/Background.png" Stretch="UniformToFill"/>
         <ImageBrush x:Key="Text" ImageSource="./Images/Text.png" Stretch="Uniform"/>
+        <ImageBrush x:Key="BackgroundNoBook" ImageSource="./Images/BackgroundNoBook.png" Stretch="UniformToFill"/>
 
         <Style TargetType="{x:Type Button}">
             <Setter Property="Background" Value="{StaticResource ButtonImage}"/>
