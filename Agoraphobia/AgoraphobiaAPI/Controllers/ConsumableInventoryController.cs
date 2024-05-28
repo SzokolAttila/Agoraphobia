@@ -1,7 +1,6 @@
 ﻿using AgoraphobiaAPI.Dtos.ConsumableInventory;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
-using AgoraphobiaAPI.Migrations;
 using AgoraphobiaLibrary.JoinTables.Consumables;
 using Microsoft.AspNetCore.Mvc;
 using ConsumableInventory = AgoraphobiaLibrary.JoinTables.Consumables.ConsumableInventory;

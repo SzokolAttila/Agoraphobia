@@ -16,6 +16,9 @@ namespace AgoraphobiaLibrary
             Id = id;
             Name = name;
             Description = description;
+            WeaponSales = new();
+            ArmorSales = new();
+            ConsumableSales = new();
         }
         public Merchant(int id, string name, string description, List<WeaponSale> weaponSales, List<ArmorSale> armorSales, List<ConsumableSale> consumableSales)
         {

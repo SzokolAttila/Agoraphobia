@@ -30,7 +30,7 @@ namespace AgoraphobiaAPI.Data
         public DbSet<ArmorDroprate> ArmorDroprates { get; set; }
         public DbSet<WeaponDroprate> WeaponDroprates { get; set; }
         public DbSet<ConsumableDroprate> ConsumableDroprates { get; set; }
-        public DbSet<Merchant> Merchant { get; set; }
+        public DbSet<Merchant> Merchants { get; set; }
         public DbSet<ConsumableSale> ConsumableSales { get; set; }
         public DbSet<WeaponSale> WeaponSales { get; set; }
         public DbSet<ArmorSale> ArmorsSale { get; set; }
