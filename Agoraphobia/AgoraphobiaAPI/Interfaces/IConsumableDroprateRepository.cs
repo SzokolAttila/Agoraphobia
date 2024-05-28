@@ -1,5 +1,5 @@
 ﻿using AgoraphobiaAPI.Dtos.ConsumableDroprate;
-using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Consumables;
 
 namespace AgoraphobiaAPI.Interfaces;
 

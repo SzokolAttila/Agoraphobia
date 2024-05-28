@@ -2,6 +2,7 @@
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Consumables;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers;

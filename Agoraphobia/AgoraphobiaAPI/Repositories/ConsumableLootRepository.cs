@@ -1,7 +1,7 @@
 ﻿using AgoraphobiaAPI.Data;
 using AgoraphobiaAPI.Dtos.ConsumableLoot;
 using AgoraphobiaAPI.Interfaces;
-using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Consumables;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgoraphobiaAPI.Repositories;

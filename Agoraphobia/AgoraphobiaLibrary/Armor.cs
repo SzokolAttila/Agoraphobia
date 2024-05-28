@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using AgoraphobiaLibrary.JoinTables.Armors;
 
 namespace AgoraphobiaLibrary
 {

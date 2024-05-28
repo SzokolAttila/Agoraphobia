@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Armors;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;

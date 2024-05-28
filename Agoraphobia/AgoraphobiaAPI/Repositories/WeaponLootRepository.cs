@@ -1,7 +1,8 @@
 ﻿using AgoraphobiaAPI.Data;
 using AgoraphobiaAPI.Dtos.WeaponLoot;
 using AgoraphobiaAPI.Interfaces;
-using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgoraphobiaAPI.Repositories;

@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaAPI.Dtos.WeaponDroprate;
-using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaAPI.Mappers;
 

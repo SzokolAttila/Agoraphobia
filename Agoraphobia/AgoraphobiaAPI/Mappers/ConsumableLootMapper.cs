@@ -1,5 +1,5 @@
 ﻿using AgoraphobiaAPI.Dtos.ConsumableLoot;
-using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Consumables;
 
 namespace AgoraphobiaAPI.Mappers;
 

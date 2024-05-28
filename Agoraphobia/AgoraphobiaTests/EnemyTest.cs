@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace AgoraphobiaLibrary;
+﻿namespace AgoraphobiaLibrary.JoinTables.Weapons;
 
 public class WeaponLoot
 {

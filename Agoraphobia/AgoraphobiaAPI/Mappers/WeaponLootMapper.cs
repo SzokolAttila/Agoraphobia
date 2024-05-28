@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaAPI.Dtos.WeaponLoot;
-using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaAPI.Mappers;
 

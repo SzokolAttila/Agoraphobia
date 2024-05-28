@@ -1,5 +1,5 @@
 ﻿using AgoraphobiaAPI.Dtos.ArmorDroprate;
-using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Armors;
 
 namespace AgoraphobiaAPI.Mappers;
 

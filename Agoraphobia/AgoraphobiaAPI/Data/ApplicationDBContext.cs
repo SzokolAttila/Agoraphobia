@@ -1,4 +1,7 @@
 using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Armors;
+using AgoraphobiaLibrary.JoinTables.Consumables;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgoraphobiaAPI.Data

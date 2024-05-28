@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgoraphobiaLibrary
+namespace AgoraphobiaLibrary.JoinTables.Armors
 {
-    public class ConsumableDroprate
+    public class ArmorDroprate
     {
         public int EnemyId { get; set; }
-        public int ConsumableId { get; set; }
+        public int ArmorId { get; set; }
         public double Droprate { get; set; }
         public Enemy? Enemy { get; set; }
-        public Consumable? Consumable { get; set; }
+        public Armor? Armor { get; set; }
     }
 }

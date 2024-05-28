@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AgoraphobiaLibrary
 {
-    public abstract record Item : Element
+    public abstract record Item
     {
         public enum ItemRarity
         {
@@ -27,18 +27,26 @@ namespace AgoraphobiaLibrary
 
         [JsonInclude]
         public int Price { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Id { get; set; }
 
         [JsonConstructor]
-        protected Item(string name, string description, int rarityIdx, int price) : base(name, description)
+        protected Item(string name, string description, int rarityIdx, int price)
         {
             RarityIdx = rarityIdx;
             Price = price;
+            Name = name;
+            Description = description;
         }
 
-        protected Item(int id, string name, string description, int rarityIdx, int price) : base(id, name, description)
+        protected Item(int id, string name, string description, int rarityIdx, int price)
         {
             RarityIdx = rarityIdx;
             Price = price;
+            Id = id;
+            Name = name;
+            Description = description;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaLibrary.Exceptions.Weapon;
+using AgoraphobiaLibrary.JoinTables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaLibrary
 {

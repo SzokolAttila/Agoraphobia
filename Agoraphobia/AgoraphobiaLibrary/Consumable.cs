@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaLibrary.Exceptions.Consumable;
+using AgoraphobiaLibrary.JoinTables.Consumables;
 using System;
 using System.Collections.Generic;
 using System.Linq;

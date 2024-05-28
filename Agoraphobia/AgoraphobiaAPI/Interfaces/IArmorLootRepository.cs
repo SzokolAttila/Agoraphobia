@@ -1,5 +1,5 @@
 ﻿using AgoraphobiaAPI.Dtos.ArmorLoot;
-using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Armors;
 
 namespace AgoraphobiaAPI.Interfaces;
 
