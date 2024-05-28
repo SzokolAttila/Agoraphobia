@@ -17,5 +17,10 @@ namespace AgoraphobiaAPI.Mappers
                 Weapons = merchant.WeaponSales.Select(x => x.ToWeaponSaleDto()).ToList()
             };
         }
+
+        public static Merchant ToMerchantFromCreateDto(this MerchantRequestDto merchant)
+        {
+            return new Merchant(merchant.Id, merchant.Name, merchant.Description);
+        }
     }
 }

@@ -2,6 +2,8 @@
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Numerics;
 
 namespace AgoraphobiaAPI.Repositories
 {
@@ -36,6 +38,13 @@ namespace AgoraphobiaAPI.Repositories
                 .Include(x => x.ConsumableSales)
                 .ThenInclude(x => x.Consumable)
                 .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Merchant> CreateAsync(Merchant merchant)
+        {
+            await _context.Merchants.AddAsync(merchant);
+            await _context.SaveChangesAsync();
+            return merchant;
         }
     }
 }
