@@ -1,7 +1,6 @@
 ﻿using AgoraphobiaAPI.Dtos.ConsumableSale;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
-using AgoraphobiaAPI.Repositories;
 using AgoraphobiaLibrary.JoinTables.Consumables;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,6 +59,32 @@ namespace AgoraphobiaAPI.Controllers
             };
             await _consumableSaleRepository.CreateAsync(consumableSale);
             return Created("agoraphobia/consumableSales", consumableSale.ToUpdateConsumableSaleRequestDto());
+        }
+        [HttpDelete]
+        public async Task<IActionResult> RemoveFromConsumableSales([FromBody] ConsumableSaleRequestDto consumableSaleRequestDto)
+        {
+            var merchant = await _merchantRepository.GetByIdAsync(consumableSaleRequestDto.MerchantId);
+            var consumable = await _consumableRepository.GetByIdAsync(consumableSaleRequestDto.ConsumableId);
+            if (merchant is null)
+                return BadRequest("Merchant not found");
+            if (consumable is null)
+                return BadRequest("Consumable not found");
+
+            var consumableInventories = await _consumableSaleRepository.GetConsumableSalesAsync(merchant.Id);
+            var consumableSale = consumableInventories.FirstOrDefault(x => x.ConsumableId == consumable.Id);
+            if (consumableSale is null)
+                return NotFound();
+
+            if (consumableSale.Quantity > 1)
+            {
+                var updated = await _consumableSaleRepository.RemoveOneAsync(consumableSaleRequestDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToUpdateConsumableSaleRequestDto());
+            }
+
+            await _consumableSaleRepository.DeleteAsync(consumableSale);
+            return NoContent();
         }
     }
 }
