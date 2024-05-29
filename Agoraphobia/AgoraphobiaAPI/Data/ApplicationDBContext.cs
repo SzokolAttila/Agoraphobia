@@ -1,6 +1,7 @@
 using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,7 @@ namespace AgoraphobiaAPI.Data
         public DbSet<ConsumableSale> ConsumableSales { get; set; }
         public DbSet<WeaponSale> WeaponSales { get; set; }
         public DbSet<ArmorSale> ArmorSales { get; set; }
+        public DbSet<RoomEnemyStatus> RoomEnemyStatus { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -181,6 +183,20 @@ namespace AgoraphobiaAPI.Data
                 .HasOne(x => x.Consumable)
                 .WithMany(x => x.ConsumableSales)
                 .HasForeignKey(x => x.ConsumableId);
+
+            builder.Entity<RoomEnemyStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId, y.EnemyId }));
+            builder.Entity<RoomEnemyStatus>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.RoomEnemyStatusList)
+                .HasForeignKey(x => x.RoomId);
+            builder.Entity<RoomEnemyStatus>()
+                .HasOne(x => x.Player)
+                .WithMany(x => x.RoomEnemyStatusList)
+                .HasForeignKey(x => x.PlayerId);
+            builder.Entity<RoomEnemyStatus>()
+                .HasOne(x => x.Enemy)
+                .WithMany(x => x.RoomEnemyStatusList)
+                .HasForeignKey(x => x.EnemyId);
         }
     }
 }

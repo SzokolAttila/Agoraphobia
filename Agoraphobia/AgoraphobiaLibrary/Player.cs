@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.Exceptions.Player;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaLibrary;
@@ -112,4 +113,7 @@ public class Player
     private const int BASE_DREAMCOINS = 100;
     private const int INVENTORY_CAPACITY = 50;
     private const int MAX_SANITY = 120;
+
+    [JsonIgnore]
+    public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();
 }
