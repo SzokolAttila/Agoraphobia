@@ -13,5 +13,15 @@ namespace AgoraphobiaAPI.Mappers
                 EnemyHp = status.EnemyHp
             };
         }
+
+        public static RoomEnemyStatus ToRoomStatusFromCreateDto(this CreateRoomEnemyStatusDto statusDto)
+        {
+            return new RoomEnemyStatus
+            {
+                EnemyHp = statusDto.EnemyHp,
+                PlayerId = statusDto.PlayerId,
+                RoomId = statusDto.RoomId
+            };
+        }
     }
 }

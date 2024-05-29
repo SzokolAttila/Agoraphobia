@@ -27,14 +27,13 @@ namespace AgoraphobiaLibrary
         [JsonIgnore]
         public RoomOrientation Orientation { get; set; }
         public int OrientationId { get => (int)Orientation; set => Orientation = (RoomOrientation)value; }
-        //public Merchant Merchant { get; set; }
         [ForeignKey("EnemyId")]
         public int EnemyId { get; set; }
         [JsonIgnore]
-        public Enemy? Enemy { get; set; }    
+        public Enemy? Enemy { get; set; }
+        [ForeignKey("MerchantId")]
         public int MerchantId { get; set; }
-        [JsonIgnore]
-        public Merchant? Merchant { get; set; }
+        [JsonIgnore] public Merchant? Merchant { get; set; }
         
         public enum RoomOrientation
         {

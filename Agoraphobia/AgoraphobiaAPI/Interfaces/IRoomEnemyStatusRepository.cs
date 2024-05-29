@@ -7,5 +7,6 @@ namespace AgoraphobiaAPI.Interfaces
     public interface IRoomEnemyStatusRepository
     {
         public Task<List<RoomEnemyStatus>> GetRoomStatusesAsync(int playerId);
+        public Task<RoomEnemyStatus> CreateRoomStatusAsync(RoomEnemyStatus roomStatus);
     }
 }

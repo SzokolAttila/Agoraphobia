@@ -18,7 +18,57 @@ namespace AgoraphobiaAPI.Repositories
         public async Task<List<RoomEnemyStatus>> GetRoomStatusesAsync(int playerId)
         {
             return await _context.RoomEnemyStatus
-                .Where(x => x.PlayerId == playerId).ToListAsync();
+                .Where(x => x.PlayerId == playerId)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Enemy)
+                .ThenInclude(x => x.ArmorDroprates)
+                .ThenInclude(x => x.Armor)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Enemy)
+                .ThenInclude(x => x.ConsumableDroprates)
+                .ThenInclude(x => x.Consumable)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Enemy)
+                .ThenInclude(x => x.WeaponDroprates)
+                .ThenInclude(x => x.Weapon)
+                .Include(x => x.Player)
+                .ThenInclude(x => x.ArmorInventories)
+                .ThenInclude(x => x.Armor)
+                .Include(x => x.Player)
+                .ThenInclude(x => x.WeaponInventories)
+                .ThenInclude(x => x.Weapon)
+                .Include(x => x.Player)
+                .ThenInclude(x => x.ConsumableInventories)
+                .ThenInclude(x => x.Consumable)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Armors)
+                .ThenInclude(x => x.Armor)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Consumables)
+                .ThenInclude(x => x.Consumable)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Weapons)
+                .ThenInclude(x => x.Weapon)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Merchant)
+                .ThenInclude(x => x.ArmorSales)
+                .ThenInclude(x => x.Armor)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Merchant)
+                .ThenInclude(x => x.ConsumableSales)
+                .ThenInclude(x => x.Consumable)
+                .Include(x => x.Room)
+                .ThenInclude(x => x.Merchant)
+                .ThenInclude(x => x.WeaponSales)
+                .ThenInclude(x => x.Weapon)
+                .ToListAsync();
+        }
+
+        public async Task<RoomEnemyStatus> CreateRoomStatusAsync(RoomEnemyStatus roomStatus)
+        {
+            await _context.RoomEnemyStatus.AddAsync(roomStatus);
+            await _context.SaveChangesAsync();
+            return roomStatus;
         }
     }
 }

@@ -12,7 +12,7 @@ public static class RoomMapper
 
     public static RoomDto ToRoomDto(this Room room)
     {
-        return new RoomDto()
+        return new RoomDto
         {
             Id = room.Id,
             Name = room.Name,
