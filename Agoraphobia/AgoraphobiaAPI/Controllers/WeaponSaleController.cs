@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaAPI.Dtos.WeaponSale;
+using AgoraphobiaAPI.Dtos.WeaponSale;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaAPI.Repositories;
@@ -60,6 +61,32 @@ namespace AgoraphobiaAPI.Controllers
             };
             await _weaponSaleRepository.CreateAsync(weaponSale);
             return Created("agoraphobia/weaponSales", weaponSale.ToUpdateWeaponSaleRequestDto());
+        }
+        [HttpDelete]
+        public async Task<IActionResult> RemoveFromWeaponSales([FromBody] WeaponSaleRequestDto weaponSaleRequestDto)
+        {
+            var merchant = await _merchantRepository.GetByIdAsync(weaponSaleRequestDto.MerchantId);
+            var weapon = await _weaponRepository.GetByIdAsync(weaponSaleRequestDto.WeaponId);
+            if (merchant is null)
+                return BadRequest("Merchant not found");
+            if (weapon is null)
+                return BadRequest("Weapon not found");
+
+            var weaponInventories = await _weaponSaleRepository.GetWeaponSalesAsync(merchant.Id);
+            var weaponSale = weaponInventories.FirstOrDefault(x => x.WeaponId == weapon.Id);
+            if (weaponSale is null)
+                return NotFound();
+
+            if (weaponSale.Quantity > 1)
+            {
+                var updated = await _weaponSaleRepository.RemoveOneAsync(weaponSaleRequestDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToUpdateWeaponSaleRequestDto());
+            }
+
+            await _weaponSaleRepository.DeleteAsync(weaponSale);
+            return NoContent();
         }
     }
 }

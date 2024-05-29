@@ -1,7 +1,9 @@
 ﻿using AgoraphobiaAPI.Data;
 using AgoraphobiaAPI.Dtos.WeaponSale;
 using AgoraphobiaAPI.Dtos.WeaponSale;
+using AgoraphobiaAPI.Dtos.WeaponSale;
 using AgoraphobiaAPI.Interfaces;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +36,27 @@ namespace AgoraphobiaAPI.Repositories
                 return null;
 
             weaponSale.Quantity += 1;
+            await _context.SaveChangesAsync();
+            return weaponSale;
+        }
+        public async Task<WeaponSale?> DeleteAsync(WeaponSale weaponSale)
+        {
+            var weaponSaleModel = _context.WeaponSales.FirstOrDefault(
+                x => x.MerchantId == weaponSale.MerchantId && x.WeaponId == weaponSale.WeaponId);
+            if (weaponSaleModel is null)
+                return null;
+            _context.WeaponSales.Remove(weaponSale);
+            await _context.SaveChangesAsync();
+            return weaponSaleModel;
+        }
+        public async Task<WeaponSale?> RemoveOneAsync(WeaponSaleRequestDto update)
+        {
+            var weaponSale = await _context.WeaponSales.FirstOrDefaultAsync(
+                x => x.WeaponId == update.WeaponId && x.MerchantId == update.MerchantId);
+            if (weaponSale is null)
+                return null;
+
+            weaponSale.Quantity -= 1;
             await _context.SaveChangesAsync();
             return weaponSale;
         }
