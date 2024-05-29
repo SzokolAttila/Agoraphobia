@@ -7,7 +7,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
-using AgoraphobiaLibrary.JoinTables.Rooms;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaLibrary
@@ -125,7 +124,7 @@ namespace AgoraphobiaLibrary
             return droppedConsumables;
         }
 
-        public bool TakeHit(int dmg)
+        public bool TakeHit(double dmg)
         {
             if (dmg>Defense)
             {

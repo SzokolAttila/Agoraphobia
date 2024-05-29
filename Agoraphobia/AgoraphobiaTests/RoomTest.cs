@@ -1,5 +1,7 @@
 ﻿using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.JoinTables.Armors;
+using AgoraphobiaLibrary.JoinTables.Consumables;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.JoinTables;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
