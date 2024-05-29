@@ -3,7 +3,6 @@ using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.Exceptions.Player;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
-using AgoraphobiaLibrary.JoinTables.Rooms;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaLibrary;
@@ -99,12 +98,10 @@ public class Player
         }
     }
     public List<WeaponInventory> WeaponInventories { get; set; }
-    public List<Weapon> Weapons { get; set; } = new();
     public List<ConsumableInventory> ConsumableInventories { get; set; }
-    public List<Consumable> Consumables { get; set; } = new();
     public List<Effect> Effects { get; set; } = new();
     public List<ArmorInventory> ArmorInventories { get; set; }
-    public List<Armor> Armors { get; set; } = new();
+
     private const double BASE_SANITY = 30;
     private const double BASE_HEALTH = 42;
     private const int BASE_ENERGY = 3;
@@ -114,6 +111,97 @@ public class Player
     private const int INVENTORY_CAPACITY = 50;
     private const int MAX_SANITY = 120;
 
-    [JsonIgnore]
-    public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();
+    public int InventoryCount
+    {
+        get
+        {
+            int sum = 0;
+            foreach (var item in WeaponInventories)
+            {
+                sum += item.Quantity;
+            }
+            foreach (var item in ConsumableInventories)
+            {
+                sum += item.Quantity;
+            }
+            foreach (var item in ArmorInventories)
+            {
+                sum += item.Quantity;
+            }
+            return sum;
+        }
+    }
+
+    public void AttackEnemy(Enemy target, Weapon weapon)
+    {
+        double dmg = (Random.Shared.NextDouble()*(weapon.MaxMultiplier-weapon.MinMultiplier)+weapon.MinMultiplier) * Attack;
+        Energy -= weapon.Energy;
+        if (target.TakeHit(dmg))
+        {
+            target.Death(this);
+        }
+        else
+        {
+            Health -= target.Attack;
+        }
+
+    }
+
+    public static Player operator +(Player player, ArmorInventory armor)
+    {
+        if ((player.InventoryCount+armor.Quantity)>INVENTORY_CAPACITY)
+        {
+            throw new InventoryAlreadyFullException();
+        }
+
+        if (player.ArmorInventories.Select(x=>x.ArmorId).Contains(armor.ArmorId))
+        {
+            player.ArmorInventories.First(x => x.ArmorId == armor.ArmorId).Quantity += armor.Quantity;
+        }
+        else
+        {
+            player.ArmorInventories.Add(armor);
+        }
+
+        return player;
+    }
+
+    public static Player operator +(Player player, ConsumableInventory consumable)
+    {
+        if ((player.InventoryCount + consumable.Quantity) > INVENTORY_CAPACITY)
+        {
+            throw new InventoryAlreadyFullException();
+        }
+
+        if (player.ConsumableInventories.Select(x => x.ConsumableId).Contains(consumable.ConsumableId))
+        {
+            player.ConsumableInventories.First(x => x.ConsumableId == consumable.ConsumableId).Quantity += consumable.Quantity;
+        }
+        else
+        {
+            player.ConsumableInventories.Add(consumable);
+        }
+
+        return player;
+    }
+
+
+    public static Player operator +(Player player, WeaponInventory weapon)
+    {
+        if ((player.InventoryCount + weapon.Quantity) > INVENTORY_CAPACITY)
+        {
+            throw new InventoryAlreadyFullException();
+        }
+
+        if (player.WeaponInventories.Select(x => x.WeaponId).Contains(weapon.WeaponId))
+        {
+            player.WeaponInventories.First(x => x.WeaponId == weapon.WeaponId).Quantity += weapon.Quantity;
+        }
+        else
+        {
+            player.WeaponInventories.Add(weapon);
+        }
+
+        return player;
+    }
 }
