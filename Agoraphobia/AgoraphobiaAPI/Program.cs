@@ -37,6 +37,7 @@ builder.Services.AddScoped<IWeaponLootRepository, WeaponLootRepository>();
 builder.Services.AddScoped<IConsumableLootRepository, ConsumableLootRepository>();
 builder.Services.AddScoped<IMerchantRepository, MerchantRepository>();
 builder.Services.AddScoped<IArmorSaleRepository, ArmorSaleRepository>();
+builder.Services.AddScoped<IWeaponSaleRepository, WeaponSaleRepository>();
 builder.Services.AddScoped<IEffectRepository, EffectRepository>();
 
 var app = builder.Build();

@@ -25,7 +25,7 @@ namespace AgoraphobiaAPI.Controllers
             _armorSaleRepository = armorSaleRepository;
         }
         [HttpGet("{merchantId}")]
-        public async Task<IActionResult> GetArmorSale([FromRoute] int merchantId)
+        public async Task<IActionResult> GetArmorSales([FromRoute] int merchantId)
         {
             var merchant = await _merchantRepository.GetByIdAsync(merchantId);
             if (merchant is null)
@@ -35,7 +35,7 @@ namespace AgoraphobiaAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToArmorSale([FromBody] ArmorSaleRequestDto armorSaleRequestDto)
+        public async Task<IActionResult> AddToArmorSales([FromBody] ArmorSaleRequestDto armorSaleRequestDto)
         {
             var merchant = await _merchantRepository.GetByIdAsync(armorSaleRequestDto.MerchantId);
             var armor = await _armorRepository.GetByIdAsync(armorSaleRequestDto.ArmorId);
@@ -64,13 +64,12 @@ namespace AgoraphobiaAPI.Controllers
             return Created("agoraphobia/armorSales", armorSale.ToUpdateArmorSaleRequestDto());
         }
         [HttpDelete]
-        public async Task<IActionResult> RemoveFromArmorSale([FromBody] ArmorSaleRequestDto armorSaleRequestDto)
+        public async Task<IActionResult> RemoveFromArmorSales([FromBody] ArmorSaleRequestDto armorSaleRequestDto)
         {
             var merchant = await _merchantRepository.GetByIdAsync(armorSaleRequestDto.MerchantId);
             var armor = await _armorRepository.GetByIdAsync(armorSaleRequestDto.ArmorId);
             if (merchant is null)
-                return BadRequest("Merchant" +
-                                  " not found");
+                return BadRequest("Merchant not found");
             if (armor is null)
                 return BadRequest("Armor not found");
 
