@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.Exceptions.Player;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaLibrary;
@@ -204,4 +205,6 @@ public class Player
 
         return player;
     }
+
+    [JsonIgnore] public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();
 }

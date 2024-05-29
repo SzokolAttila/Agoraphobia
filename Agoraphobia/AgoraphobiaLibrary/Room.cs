@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaLibrary
@@ -53,6 +54,7 @@ namespace AgoraphobiaLibrary
             Consumables = consumables;
             OrientationId = orientationId;
             EnemyId = enemyId;
+            MerchantId = merchantId;
         }
         public Room(string name, string description, List<WeaponLoot> weapons,
             List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, int enemyId, int merchantId)
@@ -64,6 +66,7 @@ namespace AgoraphobiaLibrary
             Consumables = consumables;
             OrientationId = orientationId;
             EnemyId = enemyId;
+            MerchantId = merchantId;
         }
 
         public Room(string name, string description, int orientationId, int enemyId, int merchantId)
@@ -75,6 +78,7 @@ namespace AgoraphobiaLibrary
             Consumables = new List<ConsumableLoot>();
             OrientationId = orientationId;
             EnemyId = enemyId;
+            MerchantId = merchantId;
         }
 
         public Weapon PickupWeapon(int index)
@@ -118,5 +122,6 @@ namespace AgoraphobiaLibrary
             }
             return consumable.Consumable;
         }
+        [JsonIgnore] public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();
     }
 }
