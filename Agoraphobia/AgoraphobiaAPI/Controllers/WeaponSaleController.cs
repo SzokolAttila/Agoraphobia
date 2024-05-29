@@ -1,6 +1,8 @@
-﻿using AgoraphobiaAPI.Interfaces;
+﻿using AgoraphobiaAPI.Dtos.WeaponSale;
+using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaAPI.Repositories;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers
@@ -29,6 +31,35 @@ namespace AgoraphobiaAPI.Controllers
                 return NotFound();
             var weaponSales = await _weaponSaleRepository.GetWeaponSalesAsync(merchantId);
             return Ok(weaponSales.Select(x => x.ToWeaponSaleDto()));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddToWeaponSales([FromBody] WeaponSaleRequestDto weaponSaleRequestDto)
+        {
+            var merchant = await _merchantRepository.GetByIdAsync(weaponSaleRequestDto.MerchantId);
+            var weapon = await _weaponRepository.GetByIdAsync(weaponSaleRequestDto.WeaponId);
+            if (merchant is null)
+                return BadRequest("Merchant not found");
+            if (weapon is null)
+                return BadRequest("Weapon not found");
+
+            var weaponSales = await _weaponSaleRepository.GetWeaponSalesAsync(weaponSaleRequestDto.MerchantId);
+            if (weaponSales.Exists(x => x.WeaponId == weapon.Id))
+            {
+                var updated = await _weaponSaleRepository.AddOneAsync(weaponSaleRequestDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToUpdateWeaponSaleRequestDto());
+            }
+            var weaponSale = new WeaponSale
+            {
+                MerchantId = weaponSaleRequestDto.MerchantId,
+                WeaponId = weaponSaleRequestDto.WeaponId,
+                Quantity = 1,
+                Merchant = merchant,
+                Weapon = weapon
+            };
+            await _weaponSaleRepository.CreateAsync(weaponSale);
+            return Created("agoraphobia/weaponSales", weaponSale.ToUpdateWeaponSaleRequestDto());
         }
     }
 }
