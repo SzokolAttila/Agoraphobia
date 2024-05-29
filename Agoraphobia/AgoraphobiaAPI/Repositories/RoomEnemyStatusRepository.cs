@@ -70,5 +70,17 @@ namespace AgoraphobiaAPI.Repositories
             await _context.SaveChangesAsync();
             return roomStatus;
         }
+
+        public async Task<RoomEnemyStatus?> UpdateRoomStatusAsync(CreateRoomEnemyStatusDto roomStatus)
+        {
+            var roomStatusModel = await _context.RoomEnemyStatus.FirstOrDefaultAsync(x => x.PlayerId == roomStatus.PlayerId && x.RoomId == roomStatus.RoomId);
+            if (roomStatusModel is null)
+                return null;
+
+            roomStatusModel.EnemyHp = roomStatus.EnemyHp;
+
+            await _context.SaveChangesAsync();
+            return roomStatusModel;
+        }
     }
 }

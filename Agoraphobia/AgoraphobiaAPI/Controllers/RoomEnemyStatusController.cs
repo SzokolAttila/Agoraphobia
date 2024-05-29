@@ -48,5 +48,14 @@ namespace AgoraphobiaAPI.Controllers
             var status = await _roomEnemyStatusRepository.CreateRoomStatusAsync(statusDto.ToRoomStatusFromCreateDto());
             return Ok(status.ToRoomEnemyStatusDto());
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateRoomStatus([FromBody] CreateRoomEnemyStatusDto statusDto)
+        {
+            var roomStatus = await _roomEnemyStatusRepository.UpdateRoomStatusAsync(statusDto);
+            if (roomStatus is null)
+                return NotFound();
+            return Ok(statusDto);
+        }
     }
 }

@@ -15,8 +15,6 @@ namespace AgoraphobiaLibrary
 {
     public class Room
     {
-        private Random r = new Random();
-
         [Key]
         public int Id { get; set; }
         public string Name { get; set; }
