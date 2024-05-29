@@ -184,7 +184,7 @@ namespace AgoraphobiaAPI.Data
                 .WithMany(x => x.ConsumableSales)
                 .HasForeignKey(x => x.ConsumableId);
 
-            builder.Entity<RoomEnemyStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId, y.EnemyId }));
+            builder.Entity<RoomEnemyStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId }));
             builder.Entity<RoomEnemyStatus>()
                 .HasOne(x => x.Room)
                 .WithMany(x => x.RoomEnemyStatusList)
@@ -193,10 +193,6 @@ namespace AgoraphobiaAPI.Data
                 .HasOne(x => x.Player)
                 .WithMany(x => x.RoomEnemyStatusList)
                 .HasForeignKey(x => x.PlayerId);
-            builder.Entity<RoomEnemyStatus>()
-                .HasOne(x => x.Enemy)
-                .WithMany(x => x.RoomEnemyStatusList)
-                .HasForeignKey(x => x.EnemyId);
         }
     }
 }

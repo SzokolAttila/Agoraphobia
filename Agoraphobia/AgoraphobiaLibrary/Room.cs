@@ -31,7 +31,10 @@ namespace AgoraphobiaLibrary
         [ForeignKey("EnemyId")]
         public int EnemyId { get; set; }
         [JsonIgnore]
-        public Enemy Enemy { get; set; }
+        public Enemy? Enemy { get; set; }    
+        public int MerchantId { get; set; }
+        [JsonIgnore]
+        public Merchant? Merchant { get; set; }
         
         public enum RoomOrientation
         {
@@ -42,7 +45,7 @@ namespace AgoraphobiaLibrary
 
         [JsonConstructor]
         public Room(int id, string name, string description, List<WeaponLoot> weapons,
-            List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, int enemyId)
+            List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, int enemyId, int merchantId)
         {
             Id = id;
             Name = name;
@@ -52,9 +55,10 @@ namespace AgoraphobiaLibrary
             Consumables = consumables;
             OrientationId = orientationId;
             EnemyId = enemyId;
+            MerchantId = merchantId;
         }
         public Room(string name, string description, List<WeaponLoot> weapons,
-            List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, int enemyId)
+            List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, int enemyId, int merchantId)
         {
             Name = name;
             Description = description;
@@ -63,9 +67,10 @@ namespace AgoraphobiaLibrary
             Consumables = consumables;
             OrientationId = orientationId;
             EnemyId = enemyId;
+            MerchantId = merchantId;
         }
 
-        public Room(string name, string description, int orientationId, int enemyId)
+        public Room(string name, string description, int orientationId, int enemyId, int merchantId)
         {
             Name = name;
             Description = description;
@@ -74,6 +79,7 @@ namespace AgoraphobiaLibrary
             Consumables = new List<ConsumableLoot>();
             OrientationId = orientationId;
             EnemyId = enemyId;
+            MerchantId = merchantId;
         }
 
         public Weapon PickupWeapon(int index)

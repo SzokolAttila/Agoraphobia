@@ -1,6 +1,7 @@
 ﻿using AgoraphobiaAPI.Dtos.ArmorLoot;
 using AgoraphobiaAPI.Dtos.ConsumableLoot;
 using AgoraphobiaAPI.Dtos.Enemy;
+using AgoraphobiaAPI.Dtos.Merchant;
 using AgoraphobiaAPI.Dtos.WeaponLoot;
 
 namespace AgoraphobiaAPI.Dtos.Room
@@ -14,7 +15,7 @@ namespace AgoraphobiaAPI.Dtos.Room
         public List<ArmorLootDto> Armors { get; set; }
         public List<ConsumableLootDto> Consumables { get; set; }
         public EnemyDto Enemy { get; set; }
+        public MerchantDto Merchant { get; set; } = new();
         public int OrientationId { get; set; }
-        public int EnemyId { get; set; }
     }
 }

@@ -31,6 +31,15 @@ public class RoomRepository : IRoomRepository
             .Include(x => x.Enemy)
             .ThenInclude(x => x.ConsumableDroprates)
             .ThenInclude(x => x.Consumable)
+            .Include(x => x.Merchant)
+            .ThenInclude(x => x.ArmorSales)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Merchant)
+            .ThenInclude(x => x.WeaponSales)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Merchant)
+            .ThenInclude(x => x.ConsumableSales)
+            .ThenInclude(x => x.Consumable)
             .ToListAsync();
     }
 
@@ -51,6 +60,15 @@ public class RoomRepository : IRoomRepository
             .ThenInclude(x => x.Armor)
             .Include(x => x.Enemy)
             .ThenInclude(x => x.ConsumableDroprates)
+            .ThenInclude(x => x.Consumable)
+            .Include(x => x.Merchant)
+            .ThenInclude(x => x.ArmorSales)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Merchant)
+            .ThenInclude(x => x.WeaponSales)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Merchant)
+            .ThenInclude(x => x.ConsumableSales)
             .ThenInclude(x => x.Consumable)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
@@ -82,6 +100,7 @@ public class RoomRepository : IRoomRepository
         room.Description = roomDto.Description;
         room.OrientationId = roomDto.OrientationId;
         room.EnemyId = roomDto.EnemyId;
+        room.MerchantId = roomDto.MerchantId;
 
         await _context.SaveChangesAsync();
         return room;

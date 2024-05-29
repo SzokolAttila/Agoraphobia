@@ -12,8 +12,6 @@ namespace AgoraphobiaLibrary.JoinTables.Rooms
         public Player? Player { get; set; }
         public int RoomId { get; set; }
         public Room? Room { get; set; }
-        public int EnemyId { get; set; }
-        public Enemy? Enemy { get; set; }
         public double EnemyHp { get; set; }
     }
 }

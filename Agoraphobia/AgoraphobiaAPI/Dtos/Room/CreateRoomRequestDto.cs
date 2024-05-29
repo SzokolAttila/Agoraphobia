@@ -6,5 +6,6 @@
         public string Description { get; set; }
         public int OrientationId { get; set; }
         public int EnemyId { get; set; }
+        public int MerchantId { get; set; }
     }
 }

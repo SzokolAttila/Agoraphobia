@@ -137,8 +137,5 @@ namespace AgoraphobiaLibrary
             }
             return false;
         }
-
-        [JsonIgnore]
-        public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();
     }
 }
