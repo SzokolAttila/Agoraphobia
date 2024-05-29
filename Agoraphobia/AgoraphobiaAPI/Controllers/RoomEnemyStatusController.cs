@@ -57,5 +57,14 @@ namespace AgoraphobiaAPI.Controllers
                 return NotFound();
             return Ok(statusDto);
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteRoomStatus([FromBody] RoomStatusIdDto statusIdDto)
+        {
+            var status = await _roomEnemyStatusRepository.DeleteRoomStatusAsync(statusIdDto);
+            if (status is null)
+                return NotFound();
+            return NoContent();
+        }
     }
 }
