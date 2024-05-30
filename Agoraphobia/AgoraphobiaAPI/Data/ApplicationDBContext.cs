@@ -38,6 +38,7 @@ namespace AgoraphobiaAPI.Data
         public DbSet<RoomEnemyStatus> RoomEnemyStatus { get; set; }
         public DbSet<RoomArmorLootStatus> RoomArmorLootStatus { get; set; }
         public DbSet<RoomWeaponLootStatus> RoomWeaponLootStatus { get; set; }
+        public DbSet<RoomConsumableLootStatus> RoomConsumableLootStatus { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -235,6 +236,23 @@ namespace AgoraphobiaAPI.Data
                 .HasOne(x => x.Weapon)
                 .WithMany(x => x.RoomWeaponLootStatus)
                 .HasForeignKey(x => x.WeaponId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<RoomConsumableLootStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId, y.ConsumableId }));
+            builder.Entity<RoomConsumableLootStatus>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.RoomConsumableLootStatus)
+                .HasForeignKey(x => x.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<RoomConsumableLootStatus>()
+                .HasOne(x => x.Player)
+                .WithMany(x => x.RoomConsumableLootStatus)
+                .HasForeignKey(x => x.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<RoomConsumableLootStatus>()
+                .HasOne(x => x.Consumable)
+                .WithMany(x => x.RoomConsumableLootStatus)
+                .HasForeignKey(x => x.ConsumableId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
