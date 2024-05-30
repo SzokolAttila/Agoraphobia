@@ -1,5 +1,4 @@
 ﻿using AgoraphobiaAPI.Data;
-using AgoraphobiaAPI.Dtos.RoomArmorLootStatus;
 using AgoraphobiaAPI.Dtos.RoomWeaponLootStatus;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary.JoinTables.Rooms;
@@ -71,6 +70,28 @@ namespace AgoraphobiaAPI.Repositories
                 return null;
 
             status.Quantity += 1;
+            await _context.SaveChangesAsync();
+            return status;
+        }
+        public async Task<RoomWeaponLootStatus?> DeleteAsync(RoomWeaponLootStatus status)
+        {
+            var statusModel = _context.RoomWeaponLootStatus.FirstOrDefault(
+                x => x.WeaponId == status.WeaponId && x.PlayerId == status.PlayerId && x.RoomId == status.RoomId);
+            if (statusModel is null)
+                return null;
+            _context.RoomWeaponLootStatus.Remove(status);
+            await _context.SaveChangesAsync();
+            return statusModel;
+        }
+
+        public async Task<RoomWeaponLootStatus?> RemoveOneAsync(WeaponLootStatusRequestDto update)
+        {
+            var status = await _context.RoomWeaponLootStatus.FirstOrDefaultAsync(
+                x => x.WeaponId == update.WeaponId && x.PlayerId == update.PlayerId && x.RoomId == update.RoomId);
+            if (status is null)
+                return null;
+
+            status.Quantity -= 1;
             await _context.SaveChangesAsync();
             return status;
         }

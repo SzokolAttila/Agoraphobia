@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaAPI.Dtos.RoomWeaponLootStatus;
+using AgoraphobiaAPI.Dtos.RoomWeaponLootStatus;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaAPI.Repositories;
@@ -71,6 +72,35 @@ namespace AgoraphobiaAPI.Controllers
             };
             await _weaponStatusRepository.CreateAsync(status);
             return Created("agoraphobia/roomWeaponLootStatus", status.ToRoomWeaponLootStatusDto());
+        }
+        [HttpDelete]
+        public async Task<IActionResult> RemoveFromWeaponSales([FromBody] WeaponLootStatusRequestDto statusDto)
+        {
+            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
+            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
+            var weapon = await _weaponRepository.GetByIdAsync(statusDto.WeaponId);
+            if (player is null)
+                return BadRequest("Player not found");
+            if (room is null)
+                return BadRequest("Room not found");
+            if (weapon is null)
+                return BadRequest("Weapon not found");
+
+            var lootStatuses = await _weaponStatusRepository.GetRoomWeaponLootStatusesAsync(player.Id);
+            var lootStatus = lootStatuses.FirstOrDefault(x => x.RoomId == room.Id && x.WeaponId == weapon.Id);
+            if (lootStatus is null)
+                return NotFound();
+
+            if (lootStatus.Quantity > 1)
+            {
+                var updated = await _weaponStatusRepository.RemoveOneAsync(statusDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToRoomWeaponLootStatusDto());
+            }
+
+            await _weaponStatusRepository.DeleteAsync(lootStatus);
+            return NoContent();
         }
     }
 }
