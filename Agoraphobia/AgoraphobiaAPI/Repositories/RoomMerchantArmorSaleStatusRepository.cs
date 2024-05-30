@@ -1,5 +1,8 @@
 ﻿using AgoraphobiaAPI.Data;
+using AgoraphobiaAPI.Dtos.RoomArmorLootStatus;
+using AgoraphobiaAPI.Dtos.RoomMerchantArmorSaleStatus;
 using AgoraphobiaAPI.Interfaces;
+using AgoraphobiaAPI.Mappers;
 using AgoraphobiaLibrary.JoinTables.Rooms;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,6 +55,26 @@ namespace AgoraphobiaAPI.Repositories
                 .Include(x => x.Armor)
                 .ToListAsync();
         }
+        public async Task<RoomMerchantArmorSaleStatus> CreateAsync(RoomMerchantArmorSaleStatus status)
+        {
+            await _context.RoomMerchantArmorSaleStatus.AddAsync(status);
+            await _context.SaveChangesAsync();
+            return status;
+        }
 
+        public async Task<RoomMerchantArmorSaleStatus?> AddOneAsync(ArmorSaleStatusRequestDto update)
+        {
+            var status = await _context.RoomMerchantArmorSaleStatus.FirstOrDefaultAsync(
+                x => x.PlayerId == update.PlayerId &&
+                     x.RoomId == update.RoomId &&
+                     x.ArmorId == update.ArmorId &&
+                     x.MerchantId == update.MerchantId);
+            if (status is null)
+                return null;
+
+            status.Quantity += 1;
+            await _context.SaveChangesAsync();
+            return status;
+        }
     }
 }

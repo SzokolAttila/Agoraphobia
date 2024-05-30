@@ -40,7 +40,7 @@ namespace AgoraphobiaAPI.Controllers
             return Ok(lootStatuses.Select(x => x.ToRoomWeaponLootStatusDto()));
         }
         [HttpPost]
-        public async Task<IActionResult> AddToWeaponSales([FromBody] WeaponLootStatusRequestDto statusDto)
+        public async Task<IActionResult> AddToWeaponLoot([FromBody] WeaponLootStatusRequestDto statusDto)
         {
             var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
             var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
@@ -74,7 +74,7 @@ namespace AgoraphobiaAPI.Controllers
             return Created("agoraphobia/roomWeaponLootStatus", status.ToRoomWeaponLootStatusDto());
         }
         [HttpDelete]
-        public async Task<IActionResult> RemoveFromWeaponSales([FromBody] WeaponLootStatusRequestDto statusDto)
+        public async Task<IActionResult> RemoveFromWeaponLoot([FromBody] WeaponLootStatusRequestDto statusDto)
         {
             var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
             var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);

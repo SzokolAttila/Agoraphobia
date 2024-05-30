@@ -40,7 +40,7 @@ namespace AgoraphobiaAPI.Controllers
             return Ok(lootStatuses.Select(x => x.ToRoomConsumableLootStatusDto()));
         }
         [HttpPost]
-        public async Task<IActionResult> AddToWeaponSales([FromBody] ConsumableLootStatusRequestDto statusDto)
+        public async Task<IActionResult> AddToConsumableLoot([FromBody] ConsumableLootStatusRequestDto statusDto)
         {
             var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
             var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
@@ -74,7 +74,7 @@ namespace AgoraphobiaAPI.Controllers
             return Created("agoraphobia/roomConsumableLootStatus", status.ToRoomConsumableLootStatusDto());
         }
         [HttpDelete]
-        public async Task<IActionResult> RemoveFromWeaponSales([FromBody] ConsumableLootStatusRequestDto statusDto)
+        public async Task<IActionResult> RemoveFromConsumableLoot([FromBody] ConsumableLootStatusRequestDto statusDto)
         {
             var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
             var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
