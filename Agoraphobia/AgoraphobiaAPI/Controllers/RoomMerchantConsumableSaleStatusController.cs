@@ -1,5 +1,8 @@
-﻿using AgoraphobiaAPI.Interfaces;
+﻿using AgoraphobiaAPI.Dtos.RoomMerchantConsumableSaleStatus;
+using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
+using AgoraphobiaAPI.Repositories;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers
@@ -37,6 +40,45 @@ namespace AgoraphobiaAPI.Controllers
                 return NotFound();
             var saleStatuses = await _consumableSaleStatusRepository.GetConsumableSalesAsync(player.Id);
             return Ok(saleStatuses.Select(x => x.ToRoomMerchantConsumableSaleStatusDto()));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddToConsumableSales([FromBody] ConsumableSaleStatusRequestDto statusDto)
+        {
+            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
+            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
+            var consumable = await _consumableRepository.GetByIdAsync(statusDto.ConsumableId);
+            var merchant = await _merchantRepository.GetByIdAsync(statusDto.MerchantId);
+            if (player is null)
+                return BadRequest("Player not found");
+            if (room is null)
+                return BadRequest("Room not found");
+            if (consumable is null)
+                return BadRequest("Consumable not found");
+            if (merchant is null)
+                return BadRequest("Merchant not found");
+
+            var consumableSaleStatuses = await _consumableSaleStatusRepository.GetConsumableSalesAsync(statusDto.PlayerId);
+            if (consumableSaleStatuses.Exists(x => x.RoomId == room.Id && x.ConsumableId == consumable.Id && x.MerchantId == merchant.Id))
+            {
+                var updated = await _consumableSaleStatusRepository.AddOneAsync(statusDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToRoomMerchantConsumableSaleStatusDto());
+            }
+            var status = new RoomMerchantConsumableSaleStatus
+            {
+                Consumable = consumable,
+                Quantity = 1,
+                ConsumableId = consumable.Id,
+                Player = player,
+                PlayerId = player.Id,
+                Room = room,
+                RoomId = room.Id,
+                Merchant = merchant,
+                MerchantId = merchant.Id
+            };
+            await _consumableSaleStatusRepository.CreateAsync(status);
+            return Created("agoraphobia/roomMerchantConsumableSaleStatus", status.ToRoomMerchantConsumableSaleStatusDto());
         }
     }
 }
