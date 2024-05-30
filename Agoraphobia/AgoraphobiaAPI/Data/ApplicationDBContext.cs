@@ -41,6 +41,7 @@ namespace AgoraphobiaAPI.Data
         public DbSet<RoomConsumableLootStatus> RoomConsumableLootStatus { get; set; }
         public DbSet<RoomMerchantArmorSaleStatus> RoomMerchantArmorSaleStatus { get; set; }
         public DbSet<RoomMerchantWeaponSaleStatus> RoomMerchantWeaponSaleStatus { get; set; }
+        public DbSet<RoomMerchantConsumableSaleStatus> RoomMerchantConsumableSaleStatus { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -309,6 +310,28 @@ namespace AgoraphobiaAPI.Data
                 .HasOne(x => x.Weapon)
                 .WithMany(x => x.RoomMerchantWeaponSaleStatus)
                 .HasForeignKey(x => x.WeaponId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<RoomMerchantConsumableSaleStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId, y.MerchantId, y.ConsumableId }));
+            builder.Entity<RoomMerchantConsumableSaleStatus>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.RoomMerchantConsumableSaleStatus)
+                .HasForeignKey(x => x.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<RoomMerchantConsumableSaleStatus>()
+                .HasOne(x => x.Player)
+                .WithMany(x => x.RoomMerchantConsumableSaleStatus)
+                .HasForeignKey(x => x.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<RoomMerchantConsumableSaleStatus>()
+                .HasOne(x => x.Merchant)
+                .WithMany(x => x.RoomMerchantConsumableSaleStatus)
+                .HasForeignKey(x => x.MerchantId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<RoomMerchantConsumableSaleStatus>()
+                .HasOne(x => x.Consumable)
+                .WithMany(x => x.RoomMerchantConsumableSaleStatus)
+                .HasForeignKey(x => x.ConsumableId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

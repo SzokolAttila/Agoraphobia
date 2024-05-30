@@ -84,5 +84,7 @@ namespace AgoraphobiaLibrary
         public List<Effect> Effects { get; set; } = new();
         [JsonIgnore]
         public List<RoomConsumableLootStatus> RoomConsumableLootStatus { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomMerchantConsumableSaleStatus> RoomMerchantConsumableSaleStatus { get; set; } = new();
     }
 }
