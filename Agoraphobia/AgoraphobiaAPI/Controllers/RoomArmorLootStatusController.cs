@@ -1,5 +1,11 @@
-﻿using AgoraphobiaAPI.Interfaces;
+﻿using AgoraphobiaAPI.Dtos.ArmorLoot;
+using AgoraphobiaAPI.Dtos.RoomArmorLootStatus;
+using AgoraphobiaAPI.Dtos.WeaponSale;
+using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
+using AgoraphobiaAPI.Repositories;
+using AgoraphobiaLibrary.JoinTables.Rooms;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers
@@ -34,6 +40,40 @@ namespace AgoraphobiaAPI.Controllers
                 return NotFound();
             var lootStatuses = await _armorStatusRepository.GetRoomArmorLootStatusesAsync(player.Id);
             return Ok(lootStatuses.Select(x => x.ToRoomArmorLootStatusDto()));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddToWeaponSales([FromBody] ArmorLootStatusRequestDto statusDto)
+        {
+            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
+            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
+            var armor = await _armorRepository.GetByIdAsync(statusDto.ArmorId);
+            if (player is null)
+                return BadRequest("Player not found");
+            if (room is null)
+                return BadRequest("Room not found");
+            if (armor is null)
+                return BadRequest("Armor not found");
+
+            var lootStatuses = await _armorStatusRepository.GetRoomArmorLootStatusesAsync(statusDto.PlayerId);
+            if (lootStatuses.Exists(x => x.RoomId == room.Id && x.ArmorId == armor.Id))
+            {
+                var updated = await _armorStatusRepository.AddOneAsync(statusDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToRoomArmorLootStatusDto());
+            }
+            var status = new RoomArmorLootStatus
+            {
+                Armor = armor,
+                Quantity = 1,
+                ArmorId = armor.Id,
+                Player = player,
+                PlayerId = player.Id,
+                Room = room,
+                RoomId = room.Id
+            };
+            await _armorStatusRepository.CreateAsync(status);
+            return Created("agoraphobia/roomArmorLootStatus", status.ToRoomArmorLootStatusDto());
         }
     }
 }

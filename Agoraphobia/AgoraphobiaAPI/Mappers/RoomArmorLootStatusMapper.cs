@@ -1,4 +1,4 @@
-﻿using AgoraphobiaAPI.Dtos;
+﻿using AgoraphobiaAPI.Dtos.RoomArmorLootStatus;
 using AgoraphobiaLibrary.JoinTables.Rooms;
 
 namespace AgoraphobiaAPI.Mappers

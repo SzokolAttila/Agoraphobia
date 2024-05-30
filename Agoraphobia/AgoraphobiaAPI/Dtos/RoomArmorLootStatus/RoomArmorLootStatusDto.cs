@@ -1,7 +1,7 @@
 ﻿using AgoraphobiaAPI.Dtos.Armor;
 using AgoraphobiaAPI.Dtos.Room;
 
-namespace AgoraphobiaAPI.Dtos
+namespace AgoraphobiaAPI.Dtos.RoomArmorLootStatus
 {
     public class RoomArmorLootStatusDto
     {
