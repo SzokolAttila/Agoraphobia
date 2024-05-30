@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaAPI.Data;
 using AgoraphobiaAPI.Dtos.RoomMerchantConsumableSaleStatus;
+using AgoraphobiaAPI.Dtos.RoomMerchantConsumableSaleStatus;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary.JoinTables.Rooms;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +72,34 @@ namespace AgoraphobiaAPI.Repositories
                 return null;
 
             status.Quantity += 1;
+            await _context.SaveChangesAsync();
+            return status;
+        }
+        public async Task<RoomMerchantConsumableSaleStatus?> DeleteAsync(RoomMerchantConsumableSaleStatus status)
+        {
+            var statusModel = _context.RoomMerchantConsumableSaleStatus.FirstOrDefault(
+                x => x.ConsumableId == status.ConsumableId
+                     && x.PlayerId == status.PlayerId
+                     && x.RoomId == status.RoomId
+                     && x.MerchantId == status.MerchantId);
+            if (statusModel is null)
+                return null;
+            _context.RoomMerchantConsumableSaleStatus.Remove(status);
+            await _context.SaveChangesAsync();
+            return statusModel;
+        }
+
+        public async Task<RoomMerchantConsumableSaleStatus?> RemoveOneAsync(ConsumableSaleStatusRequestDto update)
+        {
+            var status = await _context.RoomMerchantConsumableSaleStatus.FirstOrDefaultAsync(
+                x => x.ConsumableId == update.ConsumableId
+                     && x.PlayerId == update.PlayerId
+                     && x.RoomId == update.RoomId
+                     && x.MerchantId == update.MerchantId);
+            if (status is null)
+                return null;
+
+            status.Quantity -= 1;
             await _context.SaveChangesAsync();
             return status;
         }

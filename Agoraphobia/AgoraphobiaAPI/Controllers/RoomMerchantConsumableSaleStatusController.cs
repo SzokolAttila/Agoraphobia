@@ -1,4 +1,5 @@
 ﻿using AgoraphobiaAPI.Dtos.RoomMerchantConsumableSaleStatus;
+using AgoraphobiaAPI.Dtos.RoomMerchantConsumableSaleStatus;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaAPI.Repositories;
@@ -79,6 +80,40 @@ namespace AgoraphobiaAPI.Controllers
             };
             await _consumableSaleStatusRepository.CreateAsync(status);
             return Created("agoraphobia/roomMerchantConsumableSaleStatus", status.ToRoomMerchantConsumableSaleStatusDto());
+        }
+        [HttpDelete]
+        public async Task<IActionResult> RemoveFromConsumableSales([FromBody] ConsumableSaleStatusRequestDto statusDto)
+        {
+            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
+            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
+            var consumable = await _consumableRepository.GetByIdAsync(statusDto.ConsumableId);
+            var merchant = await _merchantRepository.GetByIdAsync(statusDto.MerchantId);
+            if (player is null)
+                return BadRequest("Player not found");
+            if (room is null)
+                return BadRequest("Room not found");
+            if (consumable is null)
+                return BadRequest("Consumable not found");
+            if (merchant is null)
+                return BadRequest("Merchant not found");
+
+            var consumableSaleStatusList = await _consumableSaleStatusRepository.GetConsumableSalesAsync(player.Id);
+            var saleStatus = consumableSaleStatusList.FirstOrDefault(x => x.RoomId == room.Id
+                                                                     && x.ConsumableId == consumable.Id
+                                                                     && x.MerchantId == merchant.Id);
+            if (saleStatus is null)
+                return NotFound();
+
+            if (saleStatus.Quantity > 1)
+            {
+                var updated = await _consumableSaleStatusRepository.RemoveOneAsync(statusDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToRoomMerchantConsumableSaleStatusDto());
+            }
+
+            await _consumableSaleStatusRepository.DeleteAsync(saleStatus);
+            return NoContent();
         }
     }
 }
