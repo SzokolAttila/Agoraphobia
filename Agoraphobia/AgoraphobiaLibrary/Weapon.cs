@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AgoraphobiaLibrary.JoinTables.Weapons;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 
 namespace AgoraphobiaLibrary
 {
@@ -92,5 +93,7 @@ namespace AgoraphobiaLibrary
         public List<WeaponLoot> WeaponLoots { get; set; } = new();
         [JsonIgnore]
         public List<WeaponSale> WeaponSales { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomWeaponLootStatus> RoomWeaponLootStatus { get; set; } = new();
     }
 }
