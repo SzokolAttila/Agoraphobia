@@ -174,7 +174,7 @@ public class Player : INotifyPropertyChanged
         Energy -= weapon.Energy;
         if (target.TakeHit(dmg))
         {
-            target.Death(this);
+            target.Death(this, Room);
         }
         else
         {

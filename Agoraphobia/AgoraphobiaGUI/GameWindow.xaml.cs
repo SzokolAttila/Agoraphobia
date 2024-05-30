@@ -86,10 +86,6 @@ namespace AgoraphobiaGUI
             Main.Children.Remove(Main.Children.OfType<TutorialBox>().First());
         }
 
-        public void Save(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Your progress have been saved!");
-        }
 
         public void SettingsWindow(object sender, RoutedEventArgs e)
         {
@@ -135,6 +131,14 @@ namespace AgoraphobiaGUI
 
         }
 
+        public void CheckEnemyAlive(object sender, RoutedEventArgs e)
+        {
+            if (_enemy.Hp <= 0)
+            {
+                Enemy.Visibility = Visibility.Hidden;
+                Main.Children.Remove(Main.Children.OfType<ItemListUC>().FirstOrDefault());
+            }
+        }
 
         //Intro
         int introWait; // in millisec

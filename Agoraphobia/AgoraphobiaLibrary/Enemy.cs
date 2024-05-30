@@ -103,12 +103,27 @@ namespace AgoraphobiaLibrary
             OriginalHp = hp;
         }
 
-        public void Death(Player player)
+        public void Death(Player player, Room room)
         {
             player.Sanity += Sanity;
             player.DreamCoins += DreamCoins;
-            //Drop Items in room
-            //Remove itself from room
+
+            foreach (var armor in DropArmors())
+            {
+                room.DropArmor(armor);
+            }
+
+            foreach (var weapon in DropWeapons())
+            {
+                room.DropWeapon(weapon);
+            }
+            
+            foreach (var consumable in DropConsumables())
+            {
+                room.DropConsumable(consumable);
+            }
+
+            //room.Enemy = null;
         }
 
         public List<Armor> DropArmors()
