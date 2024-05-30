@@ -2,6 +2,7 @@
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
 using Newtonsoft.Json;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 
 namespace AgoraphobiaLibrary
 {
@@ -44,6 +45,8 @@ namespace AgoraphobiaLibrary
         [JsonIgnore]
         public List<ArmorSale> ArmorSales { get; set; } 
         [JsonIgnore]
-        public List<ConsumableSale> ConsumableSales { get; set; } 
+        public List<ConsumableSale> ConsumableSales { get; set; }
+        [JsonIgnore]
+        public List<RoomMerchantArmorSaleStatus> RoomMerchantArmorSaleStatus { get; set; } = new();
     }
 }

@@ -33,6 +33,8 @@ namespace AgoraphobiaLibrary
         public List<ArmorSale> ArmorSales { get; set; } = new();
         [JsonIgnore]
         public List<RoomArmorLootStatus> RoomArmorLootStatus { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomMerchantArmorSaleStatus> RoomMerchantArmorSaleStatus { get; set; } = new();
 
         [JsonInclude]
         public int ArmorTypeIdx { get => (int)ArmorType; set => ArmorType = (ArmorPiece)value; }

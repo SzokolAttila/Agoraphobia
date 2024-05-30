@@ -39,6 +39,7 @@ namespace AgoraphobiaAPI.Data
         public DbSet<RoomArmorLootStatus> RoomArmorLootStatus { get; set; }
         public DbSet<RoomWeaponLootStatus> RoomWeaponLootStatus { get; set; }
         public DbSet<RoomConsumableLootStatus> RoomConsumableLootStatus { get; set; }
+        public DbSet<RoomMerchantArmorSaleStatus> RoomMerchantArmorSaleStatus { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -204,6 +205,16 @@ namespace AgoraphobiaAPI.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
 
+            builder.Entity<Room>()
+                .HasOne(x => x.Enemy)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Room>()
+                .HasOne(x => x.Merchant)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+
             builder.Entity<RoomArmorLootStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId, y.ArmorId }));
             builder.Entity<RoomArmorLootStatus>()
                 .HasOne(x => x.Room)
@@ -253,6 +264,28 @@ namespace AgoraphobiaAPI.Data
                 .HasOne(x => x.Consumable)
                 .WithMany(x => x.RoomConsumableLootStatus)
                 .HasForeignKey(x => x.ConsumableId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<RoomMerchantArmorSaleStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId, y.MerchantId, y.ArmorId }));
+            builder.Entity<RoomMerchantArmorSaleStatus>()
+                .HasOne(x => x.Room)
+                .WithMany(x => x.RoomMerchantArmorSaleStatus)
+                .HasForeignKey(x => x.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<RoomMerchantArmorSaleStatus>()
+                .HasOne(x => x.Player)
+                .WithMany(x => x.RoomMerchantArmorSaleStatus)
+                .HasForeignKey(x => x.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<RoomMerchantArmorSaleStatus>()
+                .HasOne(x => x.Merchant)
+                .WithMany(x => x.RoomMerchantArmorSaleStatus)
+                .HasForeignKey(x => x.MerchantId)
+                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<RoomMerchantArmorSaleStatus>()
+                .HasOne(x => x.Armor)
+                .WithMany(x => x.RoomMerchantArmorSaleStatus)
+                .HasForeignKey(x => x.ArmorId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
