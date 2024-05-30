@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.JoinTables.Armors;
@@ -11,7 +13,7 @@ using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaLibrary
 {
-    public class Enemy
+    public class Enemy : INotifyPropertyChanged
     {
         private Random r = new Random();
 
@@ -22,7 +24,28 @@ namespace AgoraphobiaLibrary
         public List<WeaponDroprate> WeaponDroprates { get; set; }
         public List<ConsumableDroprate> ConsumableDroprates { get; set; }
         public List<ArmorDroprate> ArmorDroprates { get; set; } = new();
-        public double Hp { get; set; }
+        
+        private double originalHp;
+        [JsonIgnore]
+        public double OriginalHp
+        {
+            get { return originalHp;}
+            set { originalHp = value; OnPropertyChanged("OriginalHp"); }
+        }
+
+        private double hp;
+        public double Hp 
+        {
+            get
+            {
+                return hp;
+            }
+            set
+            {
+                hp = value;
+                OnPropertyChanged("Hp");
+            }
+        }
         public double Defense { get; set; }
         public double Attack { get; set; }
         public double Sanity { get; set; }
@@ -44,6 +67,7 @@ namespace AgoraphobiaLibrary
             WeaponDroprates = weaponDroprates;
             ArmorDroprates = armorDroprates;
             ConsumableDroprates = consumableDroprates;
+            OriginalHp = hp;
         }
 
         public Enemy(string name, string description, double hp, double defense,
@@ -60,6 +84,7 @@ namespace AgoraphobiaLibrary
             WeaponDroprates = weaponDroprates;
             ArmorDroprates = armorDroprates;
             ConsumableDroprates = consumableDroprates;
+            OriginalHp = hp;
         }
 
         public Enemy(string name, string description, double hp, double defense,
@@ -75,6 +100,7 @@ namespace AgoraphobiaLibrary
             WeaponDroprates = new List<WeaponDroprate>();
             ArmorDroprates = new List<ArmorDroprate>();
             ConsumableDroprates = new List<ConsumableDroprate>();
+            OriginalHp = hp;
         }
 
         public void Death(Player player)
@@ -135,6 +161,12 @@ namespace AgoraphobiaLibrary
                 }
             }
             return false;
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
