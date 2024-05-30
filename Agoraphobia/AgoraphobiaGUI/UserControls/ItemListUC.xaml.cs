@@ -20,11 +20,15 @@ namespace AgoraphobiaGUI.UserControls
     /// </summary>
     public partial class ItemListUC : UserControl
     {
-        Canvas _parent;
-        public ItemListUC(List<UserControl> items, List<string> headers, Canvas parent)
+        public enum ListType
+        {
+            Inventory,
+            Loot,
+            Enemy //Only for weapon
+        }
+        public ItemListUC(List<UserControl> items, List<string> headers)
         {
             InitializeComponent();
-            _parent = parent;
 
             for (int i = 0; i<headers.Count; i++)
             {
@@ -33,6 +37,7 @@ namespace AgoraphobiaGUI.UserControls
                 TextBlock header = new TextBlock();
                 Header.ColumnDefinitions.Add(cd);
                 header.Text = headers[i];
+                header.Margin = new Thickness(5);
                 Grid.SetColumn(header, i);
                 Header.Children.Add(header);
             }
@@ -40,11 +45,6 @@ namespace AgoraphobiaGUI.UserControls
             {
                 Items.Children.Add(item);
             }
-        }
-
-        public void StopHover(object sender, MouseEventArgs e)
-        {
-            _parent.Children.Remove(this);
         }
     }
 }

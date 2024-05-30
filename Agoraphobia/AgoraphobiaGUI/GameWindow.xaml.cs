@@ -1,6 +1,7 @@
 ﻿using AgoraphobiaGUI.UserControls;
 using AgoraphobiaGUI.UserControls.ItemUCs;
 using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualBasic;
@@ -11,6 +12,7 @@ using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
@@ -25,6 +27,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using System.Xaml;
+using static AgoraphobiaGUI.UserControls.ItemListUC;
 
 namespace AgoraphobiaGUI
 {
@@ -45,8 +48,6 @@ namespace AgoraphobiaGUI
             { "Door1", "asd" },//Rooms.First(x=>x.Id==Exits[0]).Select(x=>$"{x.Name}\n{x.Description}") },
             { "Door2", "asd" },//Rooms.First(x=>x.Id==Exits[1]).Select(x=>$"{x.Name}\n{x.Description}") },
             { "Door3", "asd" },//Rooms.First(x=>x.Id==Exits[2]).Select(x=>$"{x.Name}\n{x.Description}") },
-            { "Merchant", "asd" },//$"{player.CurrentRoom.Merchant.Name}\n{player.CurrentRoom.Merchant.Description}"  },
-            { "Enemy", "asd" },//$"{player.CurrentRoom.Enemy.Name}\n{player.CurrentRoom.Enemy.Description}"  },
             { "Loot", "Some tasty loot!"  }
         };
 
@@ -58,6 +59,9 @@ namespace AgoraphobiaGUI
                 player = _player,
                 enemy = _enemy
             };
+            infoTxt.Add("Merchant", ""); //$"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}");
+            infoTxt.Add("Enemy", "");//$"{_player.Room.Enemy.Name}\n{_player.Room.Enemy.Description}");
+
             //_player = player;
             //_enemy = player.Room.Enemy;
             PlayIntro();
@@ -86,7 +90,6 @@ namespace AgoraphobiaGUI
             Main.Children.Remove(Main.Children.OfType<TutorialBox>().First());
         }
 
-
         public void SettingsWindow(object sender, RoutedEventArgs e)
         {
             SettingsUC settingsWin = new SettingsUC(Main, Colors.Black, Colors.White);
@@ -98,12 +101,49 @@ namespace AgoraphobiaGUI
 
         public void EffectsWindow(object sender, RoutedEventArgs e)
         {
+            List<UserControl> effects = new List<UserControl>();
+            foreach (var effect in _player.Effects)
+            {
+                effects.Add(new EffectUC(effect));
+            }
 
+            ItemListUC items = new ItemListUC(effects, new List<string>() { "Name", "Energy", "Hp", "Defense", "Attack", "Sanity", "Duration" });
+            ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { items }, Main);
+            Main.Children.Add(nested);
+            nested.UpdateLayout();
+
+            PlaceUCToMouse(nested);
         }
 
         public void InventoryWindow(object sender, RoutedEventArgs e)
         {
+            List<UserControl> weapons = new List<UserControl>();
+            foreach (var weapon in _player.WeaponInventories)
+            {
+                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Inventory));
+            }
+            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy" });
 
+            List<UserControl> armors = new List<UserControl>();
+            foreach (var armor in _player.ArmorInventories)
+            {
+                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Inventory));
+            }
+            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type" });
+
+            List<UserControl> consumables = new List<UserControl>();
+            foreach (var consumable in _player.ConsumableInventories)
+            {
+                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Inventory));
+            }
+            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration" });
+
+            ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { weaponList, armorList, consumableList}, Main);
+
+            Main.Children.Add(nested);
+            nested.UpdateLayout();
+
+            PlaceUCToMouse(nested);
         }
 
         public void TradeWindow(object sender, MouseButtonEventArgs e)
@@ -116,19 +156,47 @@ namespace AgoraphobiaGUI
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.WeaponInventories)
             {
-                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy));
+                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Enemy));
             }
 
-            ItemListUC items = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy"}, Main);
-            Main.Children.Add(items);
-            items.UpdateLayout();
+            ItemListUC items = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy"});
+            ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>(){ items}, Main);
+            
+            Main.Children.Add(nested);
+            nested.UpdateLayout();
 
-            PlaceUCToMouse(items);
+            PlaceUCToMouse(nested);
         }
 
         public void LootWindow(object sender, MouseButtonEventArgs e)
         {
+            List<UserControl> weapons = new List<UserControl>();
+            foreach (var weapon in _player.Room.Weapons)
+            {
+                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Loot));
+            }
+            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy" });
 
+            List<UserControl> armors = new List<UserControl>();
+            foreach (var armor in _player.Room.Armors)
+            {
+                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Loot));
+            }
+            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type" });
+
+            List<UserControl> consumables = new List<UserControl>();
+            foreach (var consumable in _player.Room.Consumables)
+            {
+                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Loot));
+            }
+            ItemListUC consumableList = new ItemListUC(armors, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration" });
+
+            ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { weaponList, armorList, consumableList }, Main);
+
+            Main.Children.Add(nested);
+            nested.UpdateLayout();
+
+            PlaceUCToMouse(nested);
         }
 
         public void CheckEnemyAlive(object sender, RoutedEventArgs e)
@@ -198,7 +266,7 @@ namespace AgoraphobiaGUI
             skipIntro.Cancel();
         }
 
-        public void PlaceUCToMouse(UserControl uc)
+        public void PlaceUCToMouse(FrameworkElement uc)
         {
             System.Windows.Point senderPos = Mouse.GetPosition(Main);
             if (uc.ActualWidth + senderPos.X < Main.ActualWidth)

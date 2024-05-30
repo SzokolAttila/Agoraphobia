@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -18,33 +19,32 @@ using static AgoraphobiaGUI.UserControls.ItemListUC;
 namespace AgoraphobiaGUI.UserControls.ItemUCs
 {
     /// <summary>
-    /// Interaction logic for WeaponUC.xaml
+    /// Interaction logic for ConsumableUC.xaml
     /// </summary>
-    public partial class WeaponUC : UserControl
+    public partial class ConsumableUC : UserControl
     {
-        Player player;
-        Weapon weapon;
-        Enemy enemy;
-        public WeaponUC(Weapon weapon, ref Player player, ref Enemy enemy, ListType type)
+        Consumable _consumable;
+        Player _player;
+        public ConsumableUC(Consumable consumable, ref Player player, ListType type)
         {
             InitializeComponent();
-            Name.Text = weapon.Name;
-            Min.Text = (weapon.MinMultiplier*player.Attack).ToString();
-            Max.Text = (weapon.MaxMultiplier*player.Attack).ToString();
-            Energy.Text = weapon.Energy.ToString();
-            this.weapon = weapon;
-            this.player = player;
-            this.enemy = enemy;
+            Name.Text = consumable.Name;
+            Energy.Text = consumable.Energy.ToString();
+            Hp.Text = consumable.Hp.ToString();
+            Defense.Text = consumable.Defense.ToString();
+            Attack.Text = consumable.Attack.ToString();
+            Sanity.Text = consumable.Sanity.ToString();
+            Duration.Text = consumable.Duration.ToString();
+            _player = player;
+            _consumable = consumable;
             switch (type)
             {
-                case ListType.Enemy:
-                    MouseLeftButtonDown += UseWeapon;
-                    break;
                 case ListType.Loot:
-                    MouseLeftButtonDown += PickupWeapon;
+                    MouseLeftButtonDown += PickupConsumable;
                     break;
                 case ListType.Inventory:
-                    MouseRightButtonDown += DropWeapon;
+                    MouseLeftButtonDown += UseConsumable;
+                    MouseRightButtonDown += DropConsumable;
                     break;
             }
         }
@@ -60,17 +60,17 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }
 
-        public void UseWeapon(object sender, MouseButtonEventArgs e)
-        {
-            player.AttackEnemy(enemy, weapon);
-        }
-
-        public void PickupWeapon(object sender, MouseButtonEventArgs e)
+        public void UseConsumable(object sender, MouseButtonEventArgs e)
         {
             
         }
 
-        public void DropWeapon(object sender, MouseButtonEventArgs e)
+        public void PickupConsumable(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        public void DropConsumable(object sender, MouseButtonEventArgs e)
         {
 
         }
