@@ -48,5 +48,7 @@ namespace AgoraphobiaLibrary
         public List<ConsumableSale> ConsumableSales { get; set; }
         [JsonIgnore]
         public List<RoomMerchantArmorSaleStatus> RoomMerchantArmorSaleStatus { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomMerchantWeaponSaleStatus> RoomMerchantWeaponSaleStatus { get; set; } = new();
     }
 }

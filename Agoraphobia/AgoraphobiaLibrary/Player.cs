@@ -257,4 +257,6 @@ public class Player : INotifyPropertyChanged
     public List<RoomConsumableLootStatus> RoomConsumableLootStatus { get; set; } = new();
     [JsonIgnore]
     public List<RoomMerchantArmorSaleStatus> RoomMerchantArmorSaleStatus { get; set; } = new();
+    [JsonIgnore]
+    public List<RoomMerchantWeaponSaleStatus> RoomMerchantWeaponSaleStatus { get; set; } = new();
 }
