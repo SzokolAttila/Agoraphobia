@@ -1,6 +1,8 @@
-﻿using AgoraphobiaLibrary;
+﻿using AgoraphobiaAPI.Repositories;
+using AgoraphobiaLibrary;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,33 +20,29 @@ using static AgoraphobiaGUI.UserControls.ItemListUC;
 namespace AgoraphobiaGUI.UserControls.ItemUCs
 {
     /// <summary>
-    /// Interaction logic for WeaponUC.xaml
+    /// Interaction logic for ArmorUC.xaml
     /// </summary>
-    public partial class WeaponUC : UserControl
+    public partial class ArmorUC : UserControl
     {
-        Player player;
-        Weapon weapon;
-        Enemy enemy;
-        public WeaponUC(Weapon weapon, ref Player player, ref Enemy enemy, ListType type)
+        Player _player;
+        Armor _armor;
+        public ArmorUC(Armor armor, ref Player player, ListType type)
         {
             InitializeComponent();
-            Name.Text = weapon.Name;
-            Min.Text = (weapon.MinMultiplier*player.Attack).ToString();
-            Max.Text = (weapon.MaxMultiplier*player.Attack).ToString();
-            Energy.Text = weapon.Energy.ToString();
-            this.weapon = weapon;
-            this.player = player;
-            this.enemy = enemy;
+            Name.Text = armor.Name;
+            Hp.Text = armor.Hp.ToString();
+            Defense.Text = armor.Defense.ToString();
+            Type.Text = armor.ArmorType.ToString();
+            _armor = armor;
+            _player = player;
             switch (type)
             {
-                case ListType.Enemy:
-                    MouseLeftButtonDown += UseWeapon;
-                    break;
                 case ListType.Loot:
-                    MouseLeftButtonDown += PickupWeapon;
+                    MouseLeftButtonDown += PickupArmor;
                     break;
                 case ListType.Inventory:
-                    MouseRightButtonDown += DropWeapon;
+                    MouseLeftButtonDown += UseArmor;
+                    MouseRightButtonDown += DropArmor;
                     break;
             }
         }
@@ -60,17 +58,15 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }
 
-        public void UseWeapon(object sender, MouseButtonEventArgs e)
+        public void UseArmor(object sender, MouseButtonEventArgs e)
         {
-            player.AttackEnemy(enemy, weapon);
         }
 
-        public void PickupWeapon(object sender, MouseButtonEventArgs e)
+        public void PickupArmor(object sender, MouseButtonEventArgs e)
         {
-            
         }
 
-        public void DropWeapon(object sender, MouseButtonEventArgs e)
+        public void DropArmor(object sender, MouseButtonEventArgs e)
         {
 
         }

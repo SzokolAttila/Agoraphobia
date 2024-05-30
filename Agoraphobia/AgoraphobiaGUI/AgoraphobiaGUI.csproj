@@ -53,6 +53,18 @@
     <Compile Update="UserControls\CreditsUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UserControls\ItemNestedListUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ItemUCs\ConsumableUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ItemUCs\ArmorUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="UserControls\ItemUCs\EffectUC.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UserControls\TutorialUC.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

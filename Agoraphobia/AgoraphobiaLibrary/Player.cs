@@ -181,6 +181,16 @@ public class Player : INotifyPropertyChanged
             Health -= target.Attack;
         }
 
+        foreach (var effect in Effects)
+        {
+            effect.CurrentDuration--;
+            if (effect.CurrentDuration<=0)
+            {
+                Defense -= effect.Consumable.Defense;
+                Attack -= effect.Consumable.Attack;
+                Effects.Remove(effect);
+            }
+        }
     }
 
     public static Player operator +(Player player, ArmorInventory armor)
