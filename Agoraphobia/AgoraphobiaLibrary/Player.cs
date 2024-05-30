@@ -10,9 +10,10 @@ namespace AgoraphobiaLibrary;
 
 public class Player
 {
-    public Player(int accountId)
+    public Player(int accountId, int roomId)
     {
         AccountId = accountId;
+        RoomId = roomId;
         WeaponInventories = new List<WeaponInventory>();
         ArmorInventories = new List<ArmorInventory>();
         ConsumableInventories = new List<ConsumableInventory>();
@@ -26,7 +27,7 @@ public class Player
         DreamCoins = BASE_DREAMCOINS;
     }
     [JsonConstructor]
-    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<WeaponInventory> weapons, List<ConsumableInventory> consumables, List<ArmorInventory> armors)
+    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<WeaponInventory> weapons, List<ConsumableInventory> consumables, List<ArmorInventory> armors, int currentRoomId) 
     {
         Id = id;
         AccountId = accountId;
@@ -41,6 +42,7 @@ public class Player
         WeaponInventories = weapons;
         ArmorInventories = armors;
         ConsumableInventories = consumables;
+        RoomId = currentRoomId;
     }
     public int Id { get; set; }
     [ForeignKey("AccountId")]
@@ -98,6 +100,9 @@ public class Player
             _dreamCoins = value;
         }
     }
+    [ForeignKey("RoomId")]
+    public int RoomId { get; set; }
+    public Room? Room { get; set; } 
     public List<WeaponInventory> WeaponInventories { get; set; }
     public List<ConsumableInventory> ConsumableInventories { get; set; }
     public List<Effect> Effects { get; set; } = new();

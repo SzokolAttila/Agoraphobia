@@ -10,10 +10,17 @@ namespace AgoraphobiaAPI.Controllers;
 public class PlayerController : ControllerBase
 {
     private readonly IPlayerRepository _playerRepository;
-
-    public PlayerController(IPlayerRepository playerRepository)
+    private readonly IAccountRepository _accountRepository;
+    private readonly IRoomRepository _roomRepository;
+    public PlayerController(
+        IPlayerRepository playerRepository, 
+        IAccountRepository accountRepository, 
+        IRoomRepository roomRepository
+        )
     {
         _playerRepository = playerRepository;
+        _accountRepository = accountRepository;
+        _roomRepository = roomRepository;
     }
 
     [HttpGet]
@@ -37,9 +44,13 @@ public class PlayerController : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreatePlayerRequestDto playerDto)
     {
         var player = playerDto.ToAccountFromCreateDto();
-        var created = await _playerRepository.CreateAsync(player);
-        if (created is null)
+        var account = await _accountRepository.GetByIdAsync(player.AccountId);
+        if (account is null)
             return BadRequest("Account not found");
+        var room = await _roomRepository.GetByIdAsync(player.RoomId);
+        if (room is null)
+            return BadRequest("Room not found");
+        await _playerRepository.CreateAsync(player);
         return CreatedAtAction(nameof(GetById), new { id = player.Id }, player.ToPlayerDto());
     }
 

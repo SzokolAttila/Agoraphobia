@@ -188,11 +188,18 @@ namespace AgoraphobiaAPI.Data
             builder.Entity<RoomEnemyStatus>()
                 .HasOne(x => x.Room)
                 .WithMany(x => x.RoomEnemyStatusList)
-                .HasForeignKey(x => x.RoomId);
+                .HasForeignKey(x => x.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
             builder.Entity<RoomEnemyStatus>()
                 .HasOne(x => x.Player)
                 .WithMany(x => x.RoomEnemyStatusList)
-                .HasForeignKey(x => x.PlayerId);
+                .HasForeignKey(x => x.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Player>()
+                .HasOne(x => x.Room)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

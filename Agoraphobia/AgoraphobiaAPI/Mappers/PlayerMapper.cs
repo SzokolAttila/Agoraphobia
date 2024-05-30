@@ -7,7 +7,7 @@ public static class PlayerMapper
 {
     public static Player ToAccountFromCreateDto(this CreatePlayerRequestDto playerDto)
     {
-        return new Player(playerDto.AccountId);
+        return new Player(playerDto.AccountId, playerDto.RoomId);
     }
 
     public static PlayerDto ToPlayerDto(this Player player)
@@ -27,7 +27,8 @@ public static class PlayerMapper
             Effects = player.Effects.Select(x => x.ToEffectDto()).ToList(),
             Armors = player.ArmorInventories.Select(x => x.ToArmorInventoryDto()).ToList(),
             Weapons = player.WeaponInventories.Select(x => x.ToWeaponInventoryDto()).ToList(),
-            Consumables = player.ConsumableInventories.Select(x => x.ToConsumableInventoryDto()).ToList()
+            Consumables = player.ConsumableInventories.Select(x => x.ToConsumableInventoryDto()).ToList(),
+            CurrentRoom = player.Room!.ToRoomDto()
         };
     }
 }

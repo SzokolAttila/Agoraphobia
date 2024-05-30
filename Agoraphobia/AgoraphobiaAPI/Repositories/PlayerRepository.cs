@@ -24,6 +24,39 @@ public class PlayerRepository : IPlayerRepository
             .ThenInclude(x => x.Consumable)
             .Include(x=>x.Effects)
             .ThenInclude(x=>x.Consumable)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Enemy)
+            .ThenInclude(x => x.ArmorDroprates)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Enemy)
+            .ThenInclude(x => x.ConsumableDroprates)
+            .ThenInclude(x => x.Consumable)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Enemy)
+            .ThenInclude(x => x.WeaponDroprates)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Armors)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Consumables)
+            .ThenInclude(x => x.Consumable)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Weapons)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Merchant)
+            .ThenInclude(x => x.ArmorSales)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Merchant)
+            .ThenInclude(x => x.ConsumableSales)
+            .ThenInclude(x => x.Consumable)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Merchant)
+            .ThenInclude(x => x.WeaponSales)
+            .ThenInclude(x => x.Weapon)
             .ToListAsync();
     }
 
@@ -38,13 +71,44 @@ public class PlayerRepository : IPlayerRepository
             .ThenInclude(x => x.Consumable)
             .Include(x => x.Effects)
             .ThenInclude(x => x.Consumable)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Enemy)
+            .ThenInclude(x => x.ArmorDroprates)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Enemy)
+            .ThenInclude(x => x.ConsumableDroprates)
+            .ThenInclude(x => x.Consumable)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Enemy)
+            .ThenInclude(x => x.WeaponDroprates)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Armors)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Consumables)
+            .ThenInclude(x => x.Consumable)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Weapons)
+            .ThenInclude(x => x.Weapon)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Merchant)
+            .ThenInclude(x => x.ArmorSales)
+            .ThenInclude(x => x.Armor)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Merchant)
+            .ThenInclude(x => x.ConsumableSales)
+            .ThenInclude(x => x.Consumable)
+            .Include(x => x.Room)
+            .ThenInclude(x => x.Merchant)
+            .ThenInclude(x => x.WeaponSales)
+            .ThenInclude(x => x.Weapon)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Player?> CreateAsync(Player player)
     {
-        if (!_context.Accounts.Any(x => x.Id == player.AccountId))
-            return null;
         await _context.Players.AddAsync(player);
         await _context.SaveChangesAsync();
         return player;
@@ -74,6 +138,7 @@ public class PlayerRepository : IPlayerRepository
         player.DreamCoins = playerDto.DreamCoins;
         player.MaxHealth = playerDto.MaxHealth;
         player.Health = playerDto.Health;
+        player.RoomId = playerDto.RoomId;
 
         await _context.SaveChangesAsync();
         return player;

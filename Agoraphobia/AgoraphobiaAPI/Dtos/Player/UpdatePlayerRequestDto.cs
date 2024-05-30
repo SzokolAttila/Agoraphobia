@@ -10,5 +10,6 @@ public class UpdatePlayerRequestDto
     public double Attack { get; set; }
     public double Defense { get; set; }
     public int DreamCoins { get; set; }
+    public int RoomId { get; set; }
 }
  
