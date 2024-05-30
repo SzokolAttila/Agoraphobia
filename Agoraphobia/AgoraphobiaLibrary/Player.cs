@@ -241,14 +241,18 @@ public class Player : INotifyPropertyChanged
         return player;
     }
 
-    [JsonIgnore] public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();
-    [JsonIgnore]
-    public List<RoomArmorLootStatus> RoomArmorLootStatus { get; set; } = new();
-
     //For MVVM binding
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    [JsonIgnore] public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();
+    [JsonIgnore]
+    public List<RoomArmorLootStatus> RoomArmorLootStatus { get; set; } = new();
+    [JsonIgnore]
+    public List<RoomWeaponLootStatus> RoomWeaponLootStatus { get; set; } = new();
+    [JsonIgnore]
+    public List<RoomConsumableLootStatus> RoomConsumableLootStatus { get; set; } = new();
 }

@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaLibrary.Exceptions.Consumable;
 using AgoraphobiaLibrary.JoinTables.Consumables;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,5 +82,7 @@ namespace AgoraphobiaLibrary
         public List<ConsumableSale> ConsumableSales { get; set; } = new();
         [JsonIgnore]
         public List<Effect> Effects { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomConsumableLootStatus> RoomConsumableLootStatus { get; set; } = new();
     }
 }

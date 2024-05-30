@@ -1,22 +1,21 @@
 ﻿using AgoraphobiaAPI.Data;
-using AgoraphobiaAPI.Dtos.RoomArmorLootStatus;
+using AgoraphobiaAPI.Dtos.RoomWeaponLootStatus;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary.JoinTables.Rooms;
-using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgoraphobiaAPI.Repositories
 {
-    public class RoomArmorLootStatusRepository : IRoomArmorLootStatusRepository
+    public class RoomWeaponLootStatusRepository : IRoomWeaponLootStatusRepository
     {
         private readonly ApplicationDBContext _context;
-        public RoomArmorLootStatusRepository(ApplicationDBContext context)
+        public RoomWeaponLootStatusRepository(ApplicationDBContext context)
         {
             _context = context;
         }
-        public async Task<List<RoomArmorLootStatus>> GetRoomArmorLootStatusesAsync(int playerId)
+        public async Task<List<RoomWeaponLootStatus>> GetRoomWeaponLootStatusesAsync(int playerId)
         {
-            return await _context.RoomArmorLootStatus
+            return await _context.RoomWeaponLootStatus
                 .Where(x => x.PlayerId == playerId)
                 .Include(x => x.Room)
                 .ThenInclude(x => x.Weapons)
@@ -51,23 +50,22 @@ namespace AgoraphobiaAPI.Repositories
                 .ThenInclude(x => x.Merchant)
                 .ThenInclude(x => x.ConsumableSales)
                 .ThenInclude(x => x.Consumable)
-                .Include(x => x.Armor)
+                .Include(x => x.Weapon)
                 .ToListAsync();
         }
-
-        public async Task<RoomArmorLootStatus> CreateAsync(RoomArmorLootStatus status)
+        public async Task<RoomWeaponLootStatus> CreateAsync(RoomWeaponLootStatus status)
         {
-            await _context.RoomArmorLootStatus.AddAsync(status);
+            await _context.RoomWeaponLootStatus.AddAsync(status);
             await _context.SaveChangesAsync();
             return status;
         }
 
-        public async Task<RoomArmorLootStatus?> AddOneAsync(ArmorLootStatusRequestDto update)
+        public async Task<RoomWeaponLootStatus?> AddOneAsync(WeaponLootStatusRequestDto update)
         {
-            var status = await _context.RoomArmorLootStatus.FirstOrDefaultAsync(
-                x => x.PlayerId == update.PlayerId && 
-                     x.RoomId == update.RoomId && 
-                     x.ArmorId == update.ArmorId);
+            var status = await _context.RoomWeaponLootStatus.FirstOrDefaultAsync(
+                x => x.PlayerId == update.PlayerId &&
+                     x.RoomId == update.RoomId &&
+                     x.WeaponId == update.WeaponId);
             if (status is null)
                 return null;
 
@@ -75,22 +73,21 @@ namespace AgoraphobiaAPI.Repositories
             await _context.SaveChangesAsync();
             return status;
         }
-
-        public async Task<RoomArmorLootStatus?> DeleteAsync(RoomArmorLootStatus status)
+        public async Task<RoomWeaponLootStatus?> DeleteAsync(RoomWeaponLootStatus status)
         {
-            var statusModel = _context.RoomArmorLootStatus.FirstOrDefault(
-                x => x.ArmorId == status.ArmorId && x.PlayerId == status.PlayerId && x.RoomId == status.RoomId );
+            var statusModel = _context.RoomWeaponLootStatus.FirstOrDefault(
+                x => x.WeaponId == status.WeaponId && x.PlayerId == status.PlayerId && x.RoomId == status.RoomId);
             if (statusModel is null)
                 return null;
-            _context.RoomArmorLootStatus.Remove(status);
+            _context.RoomWeaponLootStatus.Remove(status);
             await _context.SaveChangesAsync();
             return statusModel;
         }
 
-        public async Task<RoomArmorLootStatus?> RemoveOneAsync(ArmorLootStatusRequestDto update)
+        public async Task<RoomWeaponLootStatus?> RemoveOneAsync(WeaponLootStatusRequestDto update)
         {
-            var status = await _context.RoomArmorLootStatus.FirstOrDefaultAsync(
-                x => x.ArmorId == update.ArmorId && x.PlayerId == update.PlayerId && x.RoomId == update.RoomId);
+            var status = await _context.RoomWeaponLootStatus.FirstOrDefaultAsync(
+                x => x.WeaponId == update.WeaponId && x.PlayerId == update.PlayerId && x.RoomId == update.RoomId);
             if (status is null)
                 return null;
 
