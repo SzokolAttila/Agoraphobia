@@ -1,5 +1,8 @@
-﻿using AgoraphobiaAPI.Interfaces;
+﻿using AgoraphobiaAPI.Dtos.RoomMerchantWeaponSaleStatus;
+using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
+using AgoraphobiaAPI.Repositories;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgoraphobiaAPI.Controllers
@@ -37,6 +40,45 @@ namespace AgoraphobiaAPI.Controllers
                 return NotFound();
             var saleStatuses = await _weaponSaleStatusRepository.GetWeaponSalesAsync(player.Id);
             return Ok(saleStatuses.Select(x => x.ToRoomMerchantWeaponSaleStatusDto()));
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddToWeaponSales([FromBody] WeaponSaleStatusRequestDto statusDto)
+        {
+            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
+            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
+            var weapon = await _weaponRepository.GetByIdAsync(statusDto.WeaponId);
+            var merchant = await _merchantRepository.GetByIdAsync(statusDto.MerchantId);
+            if (player is null)
+                return BadRequest("Player not found");
+            if (room is null)
+                return BadRequest("Room not found");
+            if (weapon is null)
+                return BadRequest("Weapon not found");
+            if (merchant is null)
+                return BadRequest("Merchant not found");
+
+            var weaponSaleStatuses = await _weaponSaleStatusRepository.GetWeaponSalesAsync(statusDto.PlayerId);
+            if (weaponSaleStatuses.Exists(x => x.RoomId == room.Id && x.WeaponId == weapon.Id && x.MerchantId == merchant.Id))
+            {
+                var updated = await _weaponSaleStatusRepository.AddOneAsync(statusDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToRoomMerchantWeaponSaleStatusDto());
+            }
+            var status = new RoomMerchantWeaponSaleStatus
+            {
+                Weapon = weapon,
+                Quantity = 1,
+                WeaponId = weapon.Id,
+                Player = player,
+                PlayerId = player.Id,
+                Room = room,
+                RoomId = room.Id,
+                Merchant = merchant,
+                MerchantId = merchant.Id
+            };
+            await _weaponSaleStatusRepository.CreateAsync(status);
+            return Created("agoraphobia/roomMerchantWeaponSaleStatus", status.ToRoomMerchantWeaponSaleStatusDto());
         }
     }
 }
