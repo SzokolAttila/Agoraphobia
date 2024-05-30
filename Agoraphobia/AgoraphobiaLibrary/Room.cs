@@ -32,7 +32,9 @@ namespace AgoraphobiaLibrary
         [ForeignKey("MerchantId")]
         public int MerchantId { get; set; }
         [JsonIgnore] public Merchant? Merchant { get; set; }
-        
+
+        [JsonIgnore]
+        public List<RoomArmorLootStatus> RoomArmorLootStatus { get; set; } = new();
         public enum RoomOrientation
         {
             Good,

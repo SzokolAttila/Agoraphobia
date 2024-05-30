@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.JoinTables.Armors;
+using AgoraphobiaLibrary.JoinTables.Rooms;
 
 namespace AgoraphobiaLibrary
 {
@@ -30,6 +31,8 @@ namespace AgoraphobiaLibrary
         public List<ArmorLoot> ArmorLoots { get; set; } = new();        
         [JsonIgnore]
         public List<ArmorSale> ArmorSales { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomArmorLootStatus> RoomArmorLootStatus { get; set; } = new();
 
         [JsonInclude]
         public int ArmorTypeIdx { get => (int)ArmorType; set => ArmorType = (ArmorPiece)value; }

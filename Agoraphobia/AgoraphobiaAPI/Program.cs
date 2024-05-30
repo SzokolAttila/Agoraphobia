@@ -40,6 +40,7 @@ builder.Services.AddScoped<IArmorSaleRepository, ArmorSaleRepository>();
 builder.Services.AddScoped<IWeaponSaleRepository, WeaponSaleRepository>();
 builder.Services.AddScoped<IConsumableSaleRepository, ConsumableSaleRepository>();
 builder.Services.AddScoped<IRoomEnemyStatusRepository, RoomEnemyStatusRepository>();
+builder.Services.AddScoped<IRoomArmorLootStatusRepository, RoomArmorLootStatusRepository>();
 builder.Services.AddScoped<IEffectRepository, EffectRepository>();
 
 var app = builder.Build();
