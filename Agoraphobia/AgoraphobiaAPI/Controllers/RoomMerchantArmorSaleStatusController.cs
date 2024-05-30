@@ -80,5 +80,39 @@ namespace AgoraphobiaAPI.Controllers
             await _armorSaleStatusRepository.CreateAsync(status);
             return Created("agoraphobia/roomMerchantArmorSaleStatus", status.ToRoomMerchantArmorSaleStatusDto());
         }
+        [HttpDelete]
+        public async Task<IActionResult> RemoveFromArmorSales([FromBody] ArmorSaleStatusRequestDto statusDto)
+        {
+            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
+            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
+            var armor = await _armorRepository.GetByIdAsync(statusDto.ArmorId);
+            var merchant = await _merchantRepository.GetByIdAsync(statusDto.MerchantId);
+            if (player is null)
+                return BadRequest("Player not found");
+            if (room is null)
+                return BadRequest("Room not found");
+            if (armor is null)
+                return BadRequest("Armor not found");
+            if (merchant is null)
+                return BadRequest("Merchant not found");
+
+            var armorSaleStatusList = await _armorSaleStatusRepository.GetArmorSalesAsync(player.Id);
+            var saleStatus = armorSaleStatusList.FirstOrDefault(x => x.RoomId == room.Id 
+                                                                     && x.ArmorId == armor.Id
+                                                                     && x.MerchantId == merchant.Id);
+            if (saleStatus is null)
+                return NotFound();
+
+            if (saleStatus.Quantity > 1)
+            {
+                var updated = await _armorSaleStatusRepository.RemoveOneAsync(statusDto);
+                if (updated is null)
+                    return BadRequest("Something unexpected happened");
+                return Ok(updated.ToRoomMerchantArmorSaleStatusDto());
+            }
+
+            await _armorSaleStatusRepository.DeleteAsync(saleStatus);
+            return NoContent();
+        }
     }
 }
