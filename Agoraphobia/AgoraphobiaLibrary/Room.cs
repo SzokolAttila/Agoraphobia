@@ -39,6 +39,10 @@ namespace AgoraphobiaLibrary
         public List<RoomWeaponLootStatus> RoomWeaponLootStatus { get; set; } = new();
         [JsonIgnore]
         public List<RoomConsumableLootStatus> RoomConsumableLootStatus { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomMerchantArmorSaleStatus> RoomMerchantArmorSaleStatus { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomMerchantWeaponSaleStatus> RoomMerchantWeaponSaleStatus { get; set; } = new();
         public enum RoomOrientation
         {
             Good,

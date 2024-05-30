@@ -95,5 +95,7 @@ namespace AgoraphobiaLibrary
         public List<WeaponSale> WeaponSales { get; set; } = new();
         [JsonIgnore]
         public List<RoomWeaponLootStatus> RoomWeaponLootStatus { get; set; } = new();
+        [JsonIgnore]
+        public List<RoomMerchantWeaponSaleStatus> RoomMerchantWeaponSaleStatus { get; set; } = new();
     }
 }
