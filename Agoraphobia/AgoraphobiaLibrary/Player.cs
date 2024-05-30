@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using AgoraphobiaLibrary.Exceptions.Player;
 using AgoraphobiaLibrary.JoinTables.Armors;
@@ -8,7 +10,7 @@ using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaLibrary;
 
-public class Player
+public class Player : INotifyPropertyChanged
 {
     public Player(int accountId, int roomId)
     {
@@ -59,9 +61,16 @@ public class Player
             else if (value < 0)
                 _sanity = 0;
             else _sanity = value;
+            OnPropertyChanged("Sanity");
         }
     }
-    public double MaxHealth { get; set; }
+
+    private double _maxHealth;
+    public double MaxHealth 
+    { 
+        get { return _maxHealth; }
+        set { _maxHealth = value; OnPropertyChanged("MaxHealth"); }
+    }
     private double _health;
     public double Health
     {
@@ -73,9 +82,17 @@ public class Player
             else if (value < 0)
                 _health = 0;
             else _health = value;
+            OnPropertyChanged("Health");
         }
     }
-    public int MaxEnergy { get; set; }
+    
+    private int _maxEnergy;
+    public int MaxEnergy 
+    { 
+        get { return _maxEnergy; }
+        set { _maxEnergy = value; OnPropertyChanged("MaxEnergy"); }
+    }
+    
     private int _energy;
     public int Energy
     {
@@ -85,10 +102,22 @@ public class Player
             if (value < 0)
                 throw new NotEnoughEnergyException();
             _energy = value > MaxEnergy ? MaxEnergy : value;
+            OnPropertyChanged("Energy");
         }
     }
-    public double Attack { get; set; }
-    public double Defense { get; set; }
+    private double _attack;
+    public double Attack 
+    {
+        get { return _attack; }
+        set { _attack = value; OnPropertyChanged("Attack"); }
+    }
+
+    private double _defense;
+    public double Defense
+    {
+        get { return _defense; }
+        set { _defense = value; OnPropertyChanged("Defense"); }
+    }
     private int _dreamCoins;
     public int DreamCoins
     {
@@ -98,6 +127,7 @@ public class Player
             if (value < 0)
                 throw new NotEnoughDreamCoinsException();
             _dreamCoins = value;
+            OnPropertyChanged("DreamCoins");
         }
     }
     [ForeignKey("RoomId")]
@@ -144,7 +174,7 @@ public class Player
         Energy -= weapon.Energy;
         if (target.TakeHit(dmg))
         {
-            target.Death(this);
+            target.Death(this, Room);
         }
         else
         {
@@ -209,6 +239,13 @@ public class Player
         }
 
         return player;
+    }
+
+    //For MVVM binding
+    public event PropertyChangedEventHandler? PropertyChanged;
+    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     [JsonIgnore] public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();

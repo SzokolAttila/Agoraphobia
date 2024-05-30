@@ -1,12 +1,17 @@
 ﻿using AgoraphobiaGUI.UserControls;
+using AgoraphobiaGUI.UserControls.ItemUCs;
+using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using System.Xaml;
 
 namespace AgoraphobiaGUI
 {
@@ -28,29 +34,37 @@ namespace AgoraphobiaGUI
     public partial class GameWindow : Window
     {
         readonly Grid container;
-
-        Dictionary<string, string> tutorialTxt = new Dictionary<string, string>()
+        Player _player = new Player(1, 1);
+        public List<int> Exits;
+        Enemy _enemy = new Enemy("Kitten", "Just a cute kitten", 10, 1, 1, 4, 0);
+        Dictionary<string, string> infoTxt = new Dictionary<string, string>()
         {
-            { "Health", "Health bar represents your current health points to your maximum. When it goes down to zero you die, but not permanently. It lowers your sanity, but you don't necessarily lose the game."},
-            { "Sanity", "Sanity bar represents your current sanity on a scale of 0 to 100. When you hit zero, you go insane and lose the game. If you can reach 100 you successfully stay sane throughout your dreams and you win. Doesn't sound that difficult, right?" },
-            { "Energy", "Energy works as your stamina. For using your weapons you spend your energy. However, as you take a rest or use some consumables you can regain it." },
             { "Defense", "Surprisingly if you hit an enemy, they're going to fight you back. Defense reduces the damage you suffer from the hit, so you should keep that number high enough." },
             { "Attack", "The higher attack you have, the harder you hit your target. Building on that stat is fun, believe me!" },
             { "DreamCoins", "This is the official currency of the game. Merchants give you stuff for DreamCoins, it's that simple." },
-            { "Effects", "Consumables can give you some effects, for example buff your attacks. You can open this panel to see what effects do you have and how long will they last." },
-            { "Inventory", "Here you can see all the handy stuff you gathered on this road of yours." },
-            { "BadDoor", "One of the three holds bigger challenges. (Obviously you don't know which one.)" },
-            { "NeutralDoor", "The other one offers you a fair trial. (Still no clue which.)" },
-            { "GoodDoor", "And the third one gives you the blessing. (Well, not consequently the third.)" },
-            { "Merchant", "Give me some DreamCoins so I'll give you some useful stuff! Fair deal, isn't it?" },
-            { "Enemy", "Arrhh gaaawrr I'm going to be a real pain in the a$$" },
-            { "Loot", "Besides all these tough enemies, you can always find some time for a good ol' looting." }
+            { "Door1", "asd" },//Rooms.First(x=>x.Id==Exits[0]).Select(x=>$"{x.Name}\n{x.Description}") },
+            { "Door2", "asd" },//Rooms.First(x=>x.Id==Exits[1]).Select(x=>$"{x.Name}\n{x.Description}") },
+            { "Door3", "asd" },//Rooms.First(x=>x.Id==Exits[2]).Select(x=>$"{x.Name}\n{x.Description}") },
+            { "Merchant", "asd" },//$"{player.CurrentRoom.Merchant.Name}\n{player.CurrentRoom.Merchant.Description}"  },
+            { "Enemy", "asd" },//$"{player.CurrentRoom.Enemy.Name}\n{player.CurrentRoom.Enemy.Description}"  },
+            { "Loot", "Some tasty loot!"  }
         };
-        public GameWindow()
+
+        public GameWindow() //Player player as param
         {
             InitializeComponent();
-
+            DataContext = new
+            {
+                player = _player,
+                enemy = _enemy
+            };
+            //_player = player;
+            //_enemy = player.Room.Enemy;
             PlayIntro();
+
+            //Just for testing
+            _player.WeaponInventories.Add(new WeaponInventory() { 
+                Weapon = new Weapon("stick", "just a stick", 0, 1, 0.8, 1.8, 1), Quantity=1});
         }
         public void Back(object sender, RoutedEventArgs e)
         {
@@ -58,41 +72,20 @@ namespace AgoraphobiaGUI
             Close();
         }
 
-        public void ShowTutorial(object sender, RoutedEventArgs e)
+        public void ShowInfo(object sender, RoutedEventArgs e)
         {
             System.Windows.Point senderPos = Mouse.GetPosition(Main);
-            TutorialBox tb = new TutorialBox(tutorialTxt[((FrameworkElement)sender).Name]);
+            TutorialBox tb = new TutorialBox(infoTxt[((FrameworkElement)sender).Name]);
             Main.Children.Add(tb);
             tb.UpdateLayout();
-
-            if (tb.ActualWidth + senderPos.X < Main.ActualWidth)
-            {
-                Canvas.SetLeft(tb, senderPos.X);
-            }
-            else
-            {
-                Canvas.SetLeft(tb, senderPos.X - tb.ActualWidth);
-            }
-
-            if (tb.ActualHeight + senderPos.Y < Main.ActualHeight)
-            {
-                Canvas.SetTop(tb, senderPos.Y);
-            }
-            else
-            {
-                Canvas.SetTop(tb, senderPos.Y - tb.ActualHeight);
-            }
+            PlaceUCToMouse(tb);
         }
 
-        public void HideTutorial(object sender, RoutedEventArgs e)
+        public void HideInfo(object sender, RoutedEventArgs e)
         {
             Main.Children.Remove(Main.Children.OfType<TutorialBox>().First());
         }
 
-        public void Save(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Your progress have been saved!");
-        }
 
         public void SettingsWindow(object sender, RoutedEventArgs e)
         {
@@ -113,20 +106,41 @@ namespace AgoraphobiaGUI
 
         }
 
-        public void TradeWindow(object sender, RoutedEventArgs e)
+        public void TradeWindow(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        public void FightWindow(object sender, RoutedEventArgs e)
+        public void FightWindow(object sender, MouseButtonEventArgs e)
+        {
+            List<UserControl> weapons = new List<UserControl>();
+            foreach (var weapon in _player.WeaponInventories)
+            {
+                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy));
+            }
+
+            ItemListUC items = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy"}, Main);
+            Main.Children.Add(items);
+            items.UpdateLayout();
+
+            PlaceUCToMouse(items);
+        }
+
+        public void LootWindow(object sender, MouseButtonEventArgs e)
         {
 
         }
 
-        public void LootWindow(object sender, RoutedEventArgs e)
+        public void CheckEnemyAlive(object sender, RoutedEventArgs e)
         {
-
+            if (_enemy.Hp <= 0)
+            {
+                Enemy.Visibility = Visibility.Hidden;
+                Main.Children.Remove(Main.Children.OfType<ItemListUC>().FirstOrDefault());
+            }
         }
+
+        //Intro
         int introWait; // in millisec
         CancellationTokenSource skipIntro = new();
         List<string> intro = new List<string>()
@@ -139,6 +153,7 @@ namespace AgoraphobiaGUI
             "As his mind starts producing countless ideas, each better than the last, his wretchedness starts to fade away, replaced by a welcomed feeling of triumph.",
             "For it is this strange dream that might help him prevail and come up with an idea worthy of his name... he needs only survive."
         };
+
 
         public async void PlayIntro()
         {
@@ -181,6 +196,28 @@ namespace AgoraphobiaGUI
         public void IntroClicked(object sender, MouseButtonEventArgs e)
         {
             skipIntro.Cancel();
+        }
+
+        public void PlaceUCToMouse(UserControl uc)
+        {
+            System.Windows.Point senderPos = Mouse.GetPosition(Main);
+            if (uc.ActualWidth + senderPos.X < Main.ActualWidth)
+            {
+                Canvas.SetLeft(uc, senderPos.X);
+            }
+            else
+            {
+                Canvas.SetLeft(uc, senderPos.X - uc.ActualWidth);
+            }
+
+            if (uc.ActualHeight + senderPos.Y < Main.ActualHeight)
+            {
+                Canvas.SetTop(uc, senderPos.Y);
+            }
+            else
+            {
+                Canvas.SetTop(uc, senderPos.Y - uc.ActualHeight);
+            }
         }
     }
 }

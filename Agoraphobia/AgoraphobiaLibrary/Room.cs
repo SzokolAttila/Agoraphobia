@@ -128,6 +128,69 @@ namespace AgoraphobiaLibrary
             }
             return consumable.Consumable;
         }
+
+        public void DropWeapon(Weapon weapon)
+        {
+            List<WeaponLoot> wls = Weapons.Where(x => x.Weapon.Id == weapon.Id).ToList();
+            if (wls.Count() == 0)
+            {
+                WeaponLoot wl = new WeaponLoot()
+                {
+                    Weapon = weapon,
+                    WeaponId = weapon.Id,
+                    Quantity = 1,
+                    Room = this,
+                    RoomId = Id
+                };
+                Weapons.Add(wl);
+            }
+            else
+            {
+                wls.First().Quantity++;
+            }
+        }
+
+        public void DropArmor(Armor armor)
+        {
+            List<ArmorLoot> als = Armors.Where(x => x.Armor.Id == armor.Id).ToList();
+            if (als.Count() == 0)
+            {
+                ArmorLoot al = new ArmorLoot()
+                {
+                    Armor = armor,
+                    ArmorId = armor.Id,
+                    Quantity = 1,
+                    Room = this,
+                    RoomId = Id
+                };
+                Armors.Add(al);
+            }
+            else
+            {
+                als.First().Quantity++;
+            }
+        }
+
+        public void DropConsumable(Consumable consumable)
+        {
+            List<ConsumableLoot> cls = Consumables.Where(x => x.Consumable.Id == consumable.Id).ToList();
+            if (cls.Count() == 0)
+            {
+                ConsumableLoot cl = new ConsumableLoot()
+                {
+                    Consumable = consumable,
+                    ConsumableId = consumable.Id,
+                    Quantity = 1,
+                    Room = this,
+                    RoomId = Id
+                };
+                Consumables.Add(cl);
+            }
+            else
+            {
+                cls.First().Quantity++;
+            }
+        }
         [JsonIgnore] public List<RoomEnemyStatus> RoomEnemyStatusList { get; set; } = new();
     }
 }
