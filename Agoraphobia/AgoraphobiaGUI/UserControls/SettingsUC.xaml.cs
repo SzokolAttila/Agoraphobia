@@ -15,12 +15,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaLibrary;
 
 namespace AgoraphobiaGUI.UserControls
 {
     public partial class SettingsUC : UserControl, INotifyPropertyChanged
     {
         Panel container;
+        private readonly Account _account;
         Color? Bg;
 
         public double MainVolume
@@ -35,11 +37,15 @@ namespace AgoraphobiaGUI.UserControls
                 OnPropertyChanged("MainVolume");
             }
         }
-        public SettingsUC(Panel container, Color? bg = null, Color? border = null)
+
+        private MainWindow _window;
+        public SettingsUC(Panel container, Account account, MainWindow window, Color? bg = null, Color? border = null)
         {
             InitializeComponent();
             DataContext = this;
             this.container = container;
+            _account = account;
+            _window = window;
             Main.Background = new SolidColorBrush(bg ?? Colors.Transparent);
             Main.BorderBrush = new SolidColorBrush(border ?? Colors.Transparent);
             Bg = bg;
@@ -55,7 +61,7 @@ namespace AgoraphobiaGUI.UserControls
         {
             if (Bg==null)
             {
-                container.Children.Add(new MainMenuUC((Grid)container));
+                container.Children.Add(new MainMenuUC((Grid)container, _account, _window));
             }
             container.Children.Remove(this);
         }

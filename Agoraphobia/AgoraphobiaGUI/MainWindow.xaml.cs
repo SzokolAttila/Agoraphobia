@@ -15,6 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using AgoraphobiaAPI.HttpClients;
+using System.Net.Http;
+using AgoraphobiaLibrary;
 
 namespace AgoraphobiaGUI
 {
@@ -23,14 +26,15 @@ namespace AgoraphobiaGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        
         public MainWindow()
         {
             InitializeComponent();
-            Container.Children.Add(new RegisterUC(Container));
-            
+            Container.Children.Add(new LogInUC(Container, this));
+        }      
+        public MainWindow(Account account)
+        {
+            InitializeComponent();
+            Container.Children.Add(new MainMenuUC(Container, account, this));
         }
-
-        
     }
 }

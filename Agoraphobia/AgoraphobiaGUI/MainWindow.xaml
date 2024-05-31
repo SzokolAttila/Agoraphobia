@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AgoraphobiaGUI"
         mc:Ignorable="d"
         Background="{StaticResource Background}"
-        Title="Agoraphobia" WindowState="Maximized" MinHeight="600" MinWidth="600">
+        Title="Agoraphobia" WindowState="Maximized" ResizeMode="NoResize" MinHeight="600" MinWidth="600">
     <!--ResizeMode="NoResize"-->
     <Grid x:Name="Container" Margin="0 60">
         

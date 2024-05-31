@@ -30,10 +30,12 @@ namespace AgoraphobiaGUI.UserControls
         private readonly Brush _red = new SolidColorBrush(Colors.Red);
         private readonly Brush _green = new SolidColorBrush(Colors.Green);
         private readonly Grid _container;
-        public RegisterUC(Grid container)
+        private MainWindow _window;
+        public RegisterUC(Grid container, MainWindow window)
         {
             InitializeComponent();
             _container = container;
+            _window = window;
             _levels.Add(16, Long);
             _levels.Add(8, Special);
             _levels.Add(4, Digit);
@@ -43,7 +45,7 @@ namespace AgoraphobiaGUI.UserControls
 
         private void LoginWindow(object sender, RoutedEventArgs e)
         {
-            _container.Children.Add(new LogInUC(_container));
+            _container.Children.Add(new LogInUC(_container, _window));
             _container.Children.Remove(this);
         }
         private async void Register(object sender, RoutedEventArgs e)
@@ -60,7 +62,7 @@ namespace AgoraphobiaGUI.UserControls
                 MessageBox.Show(ex.Message, "Account could not be created", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-            _container.Children.Add(new LogInUC(_container));
+            _container.Children.Add(new LogInUC(_container, _window));
             _container.Children.Remove(this);
         }
         private void StrengthLevel(object sender, RoutedEventArgs e)

@@ -11,6 +11,7 @@ public class PlayerDto
 {
     public int Id { get; set; }
     public int AccountId { get; set; }
+    public int SlotId { get; set; }
     public double Sanity { get; set; }
     public double MaxHealth { get; set; }
     public double Health { get; set; }

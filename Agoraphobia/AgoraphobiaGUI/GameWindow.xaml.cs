@@ -37,7 +37,9 @@ namespace AgoraphobiaGUI
     public partial class GameWindow : Window
     {
         readonly Grid container;
-        Player _player = new Player(1, 1);
+        private Player _player;
+        private Account _account;
+        private MainWindow _window;
         public List<int> Exits;
         Enemy _enemy = new Enemy("Kitten", "Just a cute kitten", 10, 1, 1, 4, 0);
         Dictionary<string, string> infoTxt = new Dictionary<string, string>()
@@ -51,8 +53,11 @@ namespace AgoraphobiaGUI
             { "Loot", "Some tasty loot!"  }
         };
 
-        public GameWindow() //Player player as param
+        public GameWindow(Account account, Player player, MainWindow window) //Player player as param
         {
+            _account = account;
+            _player = player;
+            _window = window;
             InitializeComponent();
             DataContext = new
             {
@@ -64,7 +69,7 @@ namespace AgoraphobiaGUI
 
             //_player = player;
             //_enemy = player.Room.Enemy;
-            PlayIntro();
+            //PlayIntro();
 
             //Just for testing
             _player.WeaponInventories.Add(new WeaponInventory() { 
@@ -72,7 +77,7 @@ namespace AgoraphobiaGUI
         }
         public void Back(object sender, RoutedEventArgs e)
         {
-            new MainWindow().Show();
+            new MainWindow(_account).Show();
             Close();
         }
 
@@ -92,7 +97,7 @@ namespace AgoraphobiaGUI
 
         public void SettingsWindow(object sender, RoutedEventArgs e)
         {
-            SettingsUC settingsWin = new SettingsUC(Main, Colors.Black, Colors.White);
+            SettingsUC settingsWin = new SettingsUC(Main, _account, _window,Colors.Black, Colors.White);
             Main.Children.Add(settingsWin);
             settingsWin.HorizontalAlignment = HorizontalAlignment.Stretch;
             settingsWin.VerticalAlignment = VerticalAlignment.Stretch;

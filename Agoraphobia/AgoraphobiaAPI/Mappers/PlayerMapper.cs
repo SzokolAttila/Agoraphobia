@@ -7,7 +7,7 @@ public static class PlayerMapper
 {
     public static Player ToAccountFromCreateDto(this CreatePlayerRequestDto playerDto)
     {
-        return new Player(playerDto.AccountId, playerDto.RoomId);
+        return new Player(playerDto.AccountId, playerDto.RoomId, playerDto.SlotId);
     }
 
     public static PlayerDto ToPlayerDto(this Player player)
@@ -16,6 +16,7 @@ public static class PlayerMapper
         {
             Id = player.Id,
             AccountId = player.AccountId,
+            SlotId = player.SlotId,
             Attack = player.Attack,
             Defense = player.Defense,
             Sanity = player.Sanity,

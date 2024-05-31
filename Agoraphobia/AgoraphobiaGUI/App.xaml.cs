@@ -4,10 +4,16 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Media;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using AgoraphobiaAPI.HttpClients;
 using AgoraphobiaLibrary;
+using Microsoft.SqlServer.Server;
+using Newtonsoft.Json;
 
 namespace AgoraphobiaGUI
 {
@@ -40,11 +46,26 @@ namespace AgoraphobiaGUI
             }
         }
 
-        public static Account? Account;
         public App()
         {
             InitializeComponent();
             StartBackgroundMusic();
+            InitConnection();
+        }
+
+        private async void InitConnection()
+        {
+            try
+            {
+                var client = new AccountHttpClient(new HttpClient());
+                var response = await client.GetAccounts();
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                MessageBox.Show(e.Message, "Could not initiate connection with the database",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void StartBackgroundMusic()

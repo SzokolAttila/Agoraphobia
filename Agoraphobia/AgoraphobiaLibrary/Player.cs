@@ -12,7 +12,7 @@ namespace AgoraphobiaLibrary;
 
 public class Player : INotifyPropertyChanged
 {
-    public Player(int accountId, int roomId)
+    public Player(int accountId, int roomId, int slotId)
     {
         AccountId = accountId;
         RoomId = roomId;
@@ -27,9 +27,10 @@ public class Player : INotifyPropertyChanged
         Defense = BASE_DEFENSE;
         Attack = BASE_ATTACK;
         DreamCoins = BASE_DREAMCOINS;
+        SlotId = slotId;
     }
     [JsonConstructor]
-    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<WeaponInventory> weapons, List<ConsumableInventory> consumables, List<ArmorInventory> armors, int currentRoomId) 
+    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<WeaponInventory> weapons, List<ConsumableInventory> consumables, List<ArmorInventory> armors, int currentRoomId, int slotId) 
     {
         Id = id;
         AccountId = accountId;
@@ -45,6 +46,7 @@ public class Player : INotifyPropertyChanged
         ArmorInventories = armors;
         ConsumableInventories = consumables;
         RoomId = currentRoomId;
+        SlotId = slotId;
     }
     public int Id { get; set; }
     [ForeignKey("AccountId")]
@@ -132,7 +134,8 @@ public class Player : INotifyPropertyChanged
     }
     [ForeignKey("RoomId")]
     public int RoomId { get; set; }
-    public Room? Room { get; set; } 
+    public Room? Room { get; set; }
+    public int SlotId { get; set; }
     public List<WeaponInventory> WeaponInventories { get; set; }
     public List<ConsumableInventory> ConsumableInventories { get; set; }
     public List<Effect> Effects { get; set; } = new();

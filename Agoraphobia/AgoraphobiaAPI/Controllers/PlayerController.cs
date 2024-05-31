@@ -50,6 +50,11 @@ public class PlayerController : ControllerBase
         var room = await _roomRepository.GetByIdAsync(player.RoomId);
         if (room is null)
             return BadRequest("Room not found");
+        if (account.Players.Exists(x => x.SlotId == playerDto.SlotId))
+        {
+            await _playerRepository.DeleteAsync(
+                account.Players.Find(x => x.SlotId == playerDto.SlotId)!.Id);
+        }
         await _playerRepository.CreateAsync(player);
         return CreatedAtAction(nameof(GetById), new { id = player.Id }, player.ToPlayerDto());
     }

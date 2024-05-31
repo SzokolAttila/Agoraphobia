@@ -17,12 +17,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaLibrary;
 
 namespace AgoraphobiaGUI.UserControls
 {
     public partial class TutorialUC : UserControl
     {
         readonly Grid container;
+        private readonly Account _account;
+        private MainWindow _window;
         
         Dictionary<string, string> tutorialTxt = new Dictionary<string, string>()
         {
@@ -41,16 +44,17 @@ namespace AgoraphobiaGUI.UserControls
             { "Enemy", "Arrhh gaaawrr I'm going to be a real pain in the a$$" },
             { "Loot", "Besides all these tough enemies, you can always find some time for a good ol' looting." }
         };
-
-        public TutorialUC(Grid container)
+        public TutorialUC(Grid container, Account account, MainWindow window)
         {
             InitializeComponent();
             this.container = container;
+            _account = account;
+            _window = window;
         }
 
         public void Back(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new MainMenuUC(container));
+            container.Children.Add(new MainMenuUC(container, _account, _window));
             container.Children.Remove(this);
         }
 
@@ -92,7 +96,7 @@ namespace AgoraphobiaGUI.UserControls
 
         public void SettingsWindow(object sender, RoutedEventArgs e)
         {
-            SettingsUC settingsWin = new SettingsUC(Main, Colors.Black, Colors.White);
+            SettingsUC settingsWin = new SettingsUC(Main, _account, _window, Colors.Black, Colors.White);
             Main.Children.Add(settingsWin);
             settingsWin.HorizontalAlignment = HorizontalAlignment.Stretch;
             settingsWin.VerticalAlignment = VerticalAlignment.Stretch;

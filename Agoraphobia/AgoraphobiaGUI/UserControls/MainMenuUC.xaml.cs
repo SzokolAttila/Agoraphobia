@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaLibrary;
 
 namespace AgoraphobiaGUI.UserControls
 {
@@ -21,39 +22,43 @@ namespace AgoraphobiaGUI.UserControls
     public partial class MainMenuUC : UserControl
     {
         readonly Grid container;
-        public MainMenuUC(Grid container)
+        private readonly Account _account;
+        private MainWindow _window;
+        public MainMenuUC(Grid container, Account account, MainWindow window)
         {
             InitializeComponent();
             this.container = container;
+            _account = account;
+            _window = window;
         }
 
         public void ContinueWindow(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new ContinueUC(container));
+            container.Children.Add(new ContinueUC(container, _account, _window));
             container.Children.Remove(this);
         }
 
         public void NewGameWindow(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new NewGameUC(container));
+            container.Children.Add(new NewGameUC(container, _account, _window));
             container.Children.Remove(this);
         }
 
         public void SettingsWindow(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new SettingsUC(container));
+            container.Children.Add(new SettingsUC(container, _account, _window));
             container.Children.Remove(this);
         }
 
         public void TutorialWindow(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new TutorialUC(container));
+            container.Children.Add(new TutorialUC(container, _account, _window));
             container.Children.Remove(this);
         }
 
         public void CreditsWindow(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new CreditsUC(container));
+            container.Children.Add(new CreditsUC(container, _account, _window));
             container.Children.Remove(this);
         }
 

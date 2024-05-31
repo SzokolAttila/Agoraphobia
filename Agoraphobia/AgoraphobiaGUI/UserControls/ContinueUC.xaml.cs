@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaLibrary;
 
 namespace AgoraphobiaGUI.UserControls
 {
@@ -22,10 +23,14 @@ namespace AgoraphobiaGUI.UserControls
     public partial class ContinueUC : UserControl
     {
         readonly Grid container;
-        public ContinueUC(Grid container)
+        private readonly Account _account;
+        private MainWindow _window;
+        public ContinueUC(Grid container, Account account, MainWindow window)
         {
             InitializeComponent();
             this.container = container;
+            _account = account;
+            _window = window;
         }
 
         public void SlotSelect(object sender, RoutedEventArgs e)
@@ -35,7 +40,7 @@ namespace AgoraphobiaGUI.UserControls
 
         public void Back(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new MainMenuUC(container));
+            container.Children.Add(new MainMenuUC(container, _account, _window));
             container.Children.Remove(this);
         }
     }

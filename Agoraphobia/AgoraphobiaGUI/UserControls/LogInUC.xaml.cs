@@ -23,31 +23,32 @@ namespace AgoraphobiaGUI.UserControls
     public partial class LogInUC : UserControl
     {
         private readonly Grid _container;
-        public LogInUC(Grid container)
+        private MainWindow _window;
+        public LogInUC(Grid container, MainWindow window)
         {
             InitializeComponent();
             _container = container;
+            _window = window;
         }
         private async void LogIn(object sender, RoutedEventArgs e)
         {
             var client = new AccountHttpClient(new HttpClient());
             try
             {
-                App.Account = await client.LogIn(Username.Text, PasswordBox.Password, false);
+                var account = await client.LogIn(Username.Text, PasswordBox.Password, false);
                 MessageBox.Show("Logging in was successful, good luck on your journey!", "Successful login", MessageBoxButton.OK,
                     MessageBoxImage.Information);
+                _container.Children.Add(new MainMenuUC(_container, account, _window));
+                _container.Children.Remove(this);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Login failed", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
             }
-            _container.Children.Add(new MainMenuUC(_container));
-            _container.Children.Remove(this);
         }
         private void RegisterWindow(object sender, RoutedEventArgs e)
         {
-            _container.Children.Add(new RegisterUC(_container));
+            _container.Children.Add(new RegisterUC(_container, _window));
             _container.Children.Remove(this);
         }
     }
