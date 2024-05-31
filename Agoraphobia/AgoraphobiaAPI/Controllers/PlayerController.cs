@@ -62,6 +62,9 @@ public class PlayerController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdatePlayerRequestDto playerDto)
     {
+        var room = await _roomRepository.GetByIdAsync(playerDto.RoomId);
+        if (room is null)
+            return BadRequest("Room not found");
         var player = await _playerRepository.UpdateAsync(id, playerDto);
         if (player is null)
             return NotFound();
