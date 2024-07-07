@@ -65,6 +65,7 @@ namespace AgoraphobiaLibrary
             OrientationId = orientationId;
             EnemyId = enemyId;
             MerchantId = merchantId;
+            //Enemy = enemy;
         }
         public Room(string name, string description, List<WeaponLoot> weapons,
             List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, int enemyId, int merchantId)

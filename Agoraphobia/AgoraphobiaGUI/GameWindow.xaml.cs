@@ -41,7 +41,7 @@ namespace AgoraphobiaGUI
         private Account _account;
         private MainWindow _window;
         public List<int> Exits;
-        Enemy _enemy = new Enemy("Kitten", "Just a cute kitten", 10, 1, 1, 4, 0);
+        Enemy _enemy;
         Dictionary<string, string> infoTxt = new Dictionary<string, string>()
         {
             { "Defense", "Surprisingly if you hit an enemy, they're going to fight you back. Defense reduces the damage you suffer from the hit, so you should keep that number high enough." },
@@ -53,27 +53,27 @@ namespace AgoraphobiaGUI
             { "Loot", "Some tasty loot!"  }
         };
 
-        public GameWindow(Account account, Player player, MainWindow window) //Player player as param
+        public GameWindow(Account account, Player player, MainWindow window)
         {
             _account = account;
-            _player = player;
             _window = window;
+            _player = player;
+            _enemy = player.Room.Enemy;
+
             InitializeComponent();
             DataContext = new
             {
                 player = _player,
                 enemy = _enemy
             };
-            infoTxt.Add("Merchant", ""); //$"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}");
-            infoTxt.Add("Enemy", "");//$"{_player.Room.Enemy.Name}\n{_player.Room.Enemy.Description}");
+            
+            //infoTxt.Add("Merchant", $"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}");
+            infoTxt.Add("Enemy", $"{_enemy.Name}\n{_player.Room.Enemy.Description}");
 
-            //_player = player;
-            //_enemy = player.Room.Enemy;
-            //PlayIntro();
 
-            //Just for testing
+            //For starter
             _player.WeaponInventories.Add(new WeaponInventory() { 
-                Weapon = new Weapon("stick", "just a stick", 0, 1, 0.8, 1.8, 1), Quantity=1});
+                Weapon = new Weapon("fist", "sometimes comes handy", 0, 0, 0.5, 1.5, 0), Quantity=1});
         }
         public void Back(object sender, RoutedEventArgs e)
         {
@@ -106,6 +106,7 @@ namespace AgoraphobiaGUI
 
         public void EffectsWindow(object sender, RoutedEventArgs e)
         {
+            Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
             List<UserControl> effects = new List<UserControl>();
             foreach (var effect in _player.Effects)
             {
@@ -122,6 +123,7 @@ namespace AgoraphobiaGUI
 
         public void InventoryWindow(object sender, RoutedEventArgs e)
         {
+            Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.WeaponInventories)
             {
@@ -153,11 +155,13 @@ namespace AgoraphobiaGUI
 
         public void TradeWindow(object sender, MouseButtonEventArgs e)
         {
+            Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
 
         }
 
         public void FightWindow(object sender, MouseButtonEventArgs e)
         {
+            Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.WeaponInventories)
             {
@@ -175,6 +179,7 @@ namespace AgoraphobiaGUI
 
         public void LootWindow(object sender, MouseButtonEventArgs e)
         {
+            Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.Room.Weapons)
             {
