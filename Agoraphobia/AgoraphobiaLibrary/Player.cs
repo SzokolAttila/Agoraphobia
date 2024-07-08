@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using AgoraphobiaLibrary.Exceptions.Player;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;

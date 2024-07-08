@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 using AgoraphobiaLibrary.JoinTables.Rooms;
@@ -16,7 +16,7 @@ namespace AgoraphobiaLibrary
     {
         [JsonIgnore]
         private double minMultiplier = -1;
-        [JsonInclude]
+      
         public double MinMultiplier
         {
             get
@@ -42,7 +42,7 @@ namespace AgoraphobiaLibrary
 
         [JsonIgnore]
         private double maxMultiplier = -1;
-        [JsonInclude]
+        
         public double MaxMultiplier
         {
             get
@@ -66,7 +66,6 @@ namespace AgoraphobiaLibrary
             }
         }
 
-        [JsonInclude]
         public int Energy {  get; set; }
 
         [JsonConstructor]

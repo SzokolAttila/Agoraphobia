@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Rooms;
 
@@ -14,10 +14,8 @@ namespace AgoraphobiaLibrary
             Boots
         }
 
-        [JsonInclude]
         public int Defense { get; set; }
         
-        [JsonInclude]
         public int Hp { get; set; }
 
         [JsonIgnore]
@@ -36,7 +34,6 @@ namespace AgoraphobiaLibrary
         [JsonIgnore]
         public List<RoomMerchantArmorSaleStatus> RoomMerchantArmorSaleStatus { get; set; } = new();
 
-        [JsonInclude]
         public int ArmorTypeIdx { get => (int)ArmorType; set => ArmorType = (ArmorPiece)value; }
         [JsonConstructor]
         public Armor(int id, string name, string description, int rarityIdx, int price,

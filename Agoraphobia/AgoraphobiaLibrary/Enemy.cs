@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
 using AgoraphobiaLibrary.JoinTables.Weapons;
@@ -51,6 +51,7 @@ namespace AgoraphobiaLibrary
         public double Sanity { get; set; }
         public int DreamCoins { get; set; }
 
+
         [JsonConstructor]
         public Enemy(int id, string name, string description, double hp, double defense,
             double attack, double sanity, int dreamCoins, List<WeaponDroprate> weaponDroprates,
@@ -67,7 +68,7 @@ namespace AgoraphobiaLibrary
             WeaponDroprates = weaponDroprates;
             ArmorDroprates = armorDroprates;
             ConsumableDroprates = consumableDroprates;
-            OriginalHp = hp;
+            OriginalHp = Hp;
         }
 
         public Enemy(string name, string description, double hp, double defense,
@@ -84,7 +85,7 @@ namespace AgoraphobiaLibrary
             WeaponDroprates = weaponDroprates;
             ArmorDroprates = armorDroprates;
             ConsumableDroprates = consumableDroprates;
-            OriginalHp = hp;
+            OriginalHp = Hp;
         }
 
         public Enemy(string name, string description, double hp, double defense,
@@ -100,7 +101,7 @@ namespace AgoraphobiaLibrary
             WeaponDroprates = new List<WeaponDroprate>();
             ArmorDroprates = new List<ArmorDroprate>();
             ConsumableDroprates = new List<ConsumableDroprate>();
-            OriginalHp = hp;
+            OriginalHp = Hp;
         }
 
         public void Death(Player player, Room room)

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace AgoraphobiaLibrary
@@ -19,13 +19,11 @@ namespace AgoraphobiaLibrary
             Fabled
         }
 
-        [JsonInclude]
         public int RarityIdx { get => (int)Rarity; set => Rarity = (ItemRarity)value; }
 
         [JsonIgnore]
         public ItemRarity Rarity { get; set; }
 
-        [JsonInclude]
         public int Price { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

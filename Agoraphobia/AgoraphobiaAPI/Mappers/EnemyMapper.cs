@@ -16,14 +16,16 @@ public static class EnemyMapper
         return new EnemyDto()
         {
             Id = enemy.Id,
+            Name = enemy.Name,
+            Description = enemy.Description,
             Attack = enemy.Attack,
             Defense = enemy.Defense,
             Sanity = enemy.Sanity,
             Hp = enemy.Hp,
             DreamCoins = enemy.DreamCoins,
-            Armors = enemy.ArmorDroprates.Select(x => x.ToArmorDroprateDto()).ToList(),
-            Weapons = enemy.WeaponDroprates.Select(x => x.ToWeaponDroprateDto()).ToList(),
-            Consumables = enemy.ConsumableDroprates.Select(x => x.ToConsumableDroprateDto()).ToList()
+            ArmorDroprates = enemy.ArmorDroprates.Select(x => x.ToArmorDroprateDto()).ToList(),
+            WeaponDroprates = enemy.WeaponDroprates.Select(x => x.ToWeaponDroprateDto()).ToList(),
+            ConsumableDroprates = enemy.ConsumableDroprates.Select(x => x.ToConsumableDroprateDto()).ToList()
         };
     }
 }

@@ -59,7 +59,7 @@ namespace AgoraphobiaGUI
             _window = window;
             _player = player;
             _enemy = player.Room.Enemy;
-
+                
             InitializeComponent();
             DataContext = new
             {
@@ -67,7 +67,7 @@ namespace AgoraphobiaGUI
                 enemy = _enemy
             };
             
-            //infoTxt.Add("Merchant", $"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}");
+            infoTxt.Add("Merchant", $"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}");
             infoTxt.Add("Enemy", $"{_enemy.Name}\n{_player.Room.Enemy.Description}");
 
 

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using AgoraphobiaLibrary.Exceptions;
 using AgoraphobiaLibrary.Exceptions.Account;
 
@@ -36,7 +36,6 @@ namespace AgoraphobiaLibrary
                 _username = value;
             }
         }
-        [JsonInclude]
         public string Passwd
         {
             get => Password.Passwd;
@@ -45,7 +44,6 @@ namespace AgoraphobiaLibrary
                 
             }
         }
-        [JsonInclude] 
         public bool IsPasswordHashed
         {
             get => Password.IsHashed;

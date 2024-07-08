@@ -21,6 +21,8 @@ namespace AgoraphobiaLibrary
             ArmorSales = new();
             ConsumableSales = new();
         }
+
+        [JsonConstructor]
         public Merchant(int id, string name, string description, List<WeaponSale> weaponSales, List<ArmorSale> armorSales, List<ConsumableSale> consumableSales)
         {
             Id = id;

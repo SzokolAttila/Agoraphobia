@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
@@ -52,9 +52,10 @@ namespace AgoraphobiaLibrary
             Evil
         }
 
+
         [JsonConstructor]
         public Room(int id, string name, string description, List<WeaponLoot> weapons,
-            List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, int enemyId, int merchantId)
+            List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, Enemy enemy, Merchant merchant)
         {
             Id = id;
             Name = name;
@@ -63,10 +64,12 @@ namespace AgoraphobiaLibrary
             Armors = armors;
             Consumables = consumables;
             OrientationId = orientationId;
-            EnemyId = enemyId;
-            MerchantId = merchantId;
-            //Enemy = enemy;
+            EnemyId = 1;
+            MerchantId = 1;
+            Enemy = enemy;
+            Merchant = merchant;
         }
+
         public Room(string name, string description, List<WeaponLoot> weapons,
             List<ArmorLoot> armors, List<ConsumableLoot> consumables, int orientationId, int enemyId, int merchantId)
         {

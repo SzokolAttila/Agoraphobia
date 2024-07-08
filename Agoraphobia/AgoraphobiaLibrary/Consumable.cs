@@ -5,28 +5,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace AgoraphobiaLibrary
 {
     public sealed record Consumable : Item
     {
-        [JsonInclude]
         public int Energy { get; set; }
 
-        [JsonInclude]
         public int Hp { get; set; }
 
-        [JsonInclude]
         public int Defense { get; set; }
 
-        [JsonInclude]
         public int Attack { get; set; }
 
         [JsonIgnore]
         private int duration;
-        [JsonInclude]
         public int Duration
         {
             get
@@ -46,7 +41,6 @@ namespace AgoraphobiaLibrary
             }
         }
         
-        [JsonInclude]
         public int Sanity { get; set; }
 
         [JsonConstructor]
