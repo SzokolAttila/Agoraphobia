@@ -11,5 +11,6 @@
         <TextBlock x:Name="Hp" Margin="3" TextTrimming="CharacterEllipsis"></TextBlock>
         <TextBlock x:Name="Defense" Margin="3" TextTrimming="CharacterEllipsis"></TextBlock>
         <TextBlock x:Name="Type" Margin="3" TextTrimming="CharacterEllipsis"></TextBlock>
+        <TextBlock x:Name="Qty" Margin="3" TextTrimming="CharacterEllipsis" Visibility="Collapsed"></TextBlock>
     </UniformGrid>
 </UserControl>

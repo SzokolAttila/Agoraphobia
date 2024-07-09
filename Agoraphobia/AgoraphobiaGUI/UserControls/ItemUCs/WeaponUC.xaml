@@ -11,5 +11,6 @@
         <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Min"></TextBlock>
         <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Max"></TextBlock>
         <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Energy"></TextBlock>
+        <TextBlock x:Name="Qty" Margin="3" TextTrimming="CharacterEllipsis" Visibility="Collapsed"></TextBlock>
     </UniformGrid>
 </UserControl>

@@ -1,4 +1,6 @@
 ﻿using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Armors;
+using AgoraphobiaLibrary.JoinTables.Consumables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +27,8 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
     {
         Consumable _consumable;
         Player _player;
-        public ConsumableUC(Consumable consumable, ref Player player, ListType type)
+        int _qty;
+        public ConsumableUC(Consumable consumable, ref Player player, ListType type, int qty)
         {
             InitializeComponent();
             Name.Text = consumable.Name;
@@ -37,18 +40,26 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Duration.Text = consumable.Duration.ToString();
             _player = player;
             _consumable = consumable;
+            _qty = qty;
             switch (type)
             {
                 case ListType.Loot:
                     MouseLeftButtonDown += PickupConsumable;
+                    HaveQty();
                     break;
                 case ListType.Inventory:
                     MouseLeftButtonDown += UseConsumable;
                     MouseRightButtonDown += DropConsumable;
+                    HaveQty();
                     break;
             }
         }
 
+        private void HaveQty()
+        {
+            Qty.Visibility = Visibility.Visible;
+            Qty.Text = _qty.ToString();
+        }
 
         public void HoverStart(object sender, MouseEventArgs e)
         {
@@ -67,7 +78,31 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public void PickupConsumable(object sender, MouseButtonEventArgs e)
         {
+            try
+            {
+                int _idx = _player.Room.Consumables.FindIndex(x => x.Consumable.Id == _consumable.Id);
 
+                ConsumableInventory picked = new ConsumableInventory();
+                picked.ConsumableId = _consumable.Id;
+                picked.Consumable = _player.Room.PickupConsumable(_idx);
+                picked.PlayerId = _player.Id;
+                picked.Player = _player;
+                picked.Quantity = 1;
+                _player += picked;
+
+                if (_player.Room.Consumables.Select(x => x.Consumable.Id).Contains(_consumable.Id))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void DropConsumable(object sender, MouseButtonEventArgs e)

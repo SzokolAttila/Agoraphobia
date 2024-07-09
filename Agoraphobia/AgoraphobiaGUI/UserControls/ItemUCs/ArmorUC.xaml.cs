@@ -27,7 +27,8 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
     {
         Player _player;
         Armor _armor;
-        public ArmorUC(Armor armor, ref Player player, ListType type)
+        int _qty;
+        public ArmorUC(Armor armor, ref Player player, ListType type, int qty)
         {
             InitializeComponent();
             Name.Text = armor.Name;
@@ -36,19 +37,27 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Type.Text = armor.ArmorType.ToString();
             _armor = armor;
             _player = player;
+            _qty = qty;
             switch (type)
             {
                 case ListType.Loot:
                     MouseLeftButtonDown += PickupArmor;
+                    HaveQty();
                     break;
                 case ListType.Inventory:
                     MouseLeftButtonDown += UseArmor;
                     MouseRightButtonDown += DropArmor;
+                    HaveQty();
                     break;
             }
         }
 
-
+        private void HaveQty()
+        {
+            Qty.Visibility = Visibility.Visible;
+            Qty.Text = _qty.ToString();
+        }
+        
         public void HoverStart(object sender, MouseEventArgs e)
         {
             Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
@@ -76,7 +85,15 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 picked.Player = _player;
                 picked.Quantity = 1;
                 _player += picked;
-                Visibility = Visibility.Collapsed;
+
+                if (_player.Room.Armors.Select(x=>x.Armor.Id).Contains(_armor.Id))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
             }
             catch (Exception ex)
             {

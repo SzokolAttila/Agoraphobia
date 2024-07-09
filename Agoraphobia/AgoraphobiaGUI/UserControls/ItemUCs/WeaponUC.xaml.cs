@@ -1,4 +1,6 @@
 ﻿using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Armors;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +24,21 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
     /// </summary>
     public partial class WeaponUC : UserControl
     {
-        Player player;
-        Weapon weapon;
-        Enemy enemy;
-        public WeaponUC(Weapon weapon, ref Player player, ref Enemy enemy, ListType type)
+        Player _player;
+        Weapon _weapon;
+        Enemy _enemy;
+        int _qty;
+        public WeaponUC(Weapon weapon, ref Player player, ref Enemy enemy, ListType type, int qty)
         {
             InitializeComponent();
             Name.Text = weapon.Name;
             Min.Text = (weapon.MinMultiplier*player.Attack).ToString("#.##");
             Max.Text = (weapon.MaxMultiplier*player.Attack).ToString("#.##");
             Energy.Text = weapon.Energy.ToString();
-            this.weapon = weapon;
-            this.player = player;
-            this.enemy = enemy;
+            _weapon = weapon;
+            _player = player;
+            _enemy = enemy;
+            _qty = qty;
             switch (type)
             {
                 case ListType.Enemy:
@@ -42,13 +46,20 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     break;
                 case ListType.Loot:
                     MouseLeftButtonDown += PickupWeapon;
+                    HaveQty();
                     break;
                 case ListType.Inventory:
                     MouseRightButtonDown += DropWeapon;
+                    HaveQty();
                     break;
             }
         }
 
+        private void HaveQty()
+        {
+            Qty.Visibility = Visibility.Visible;
+            Qty.Text = _qty.ToString();
+        }
 
         public void HoverStart(object sender, MouseEventArgs e)
         {
@@ -62,12 +73,36 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public void UseWeapon(object sender, MouseButtonEventArgs e)
         {
-            player.AttackEnemy(enemy, weapon);
+            _player.AttackEnemy(_enemy, _weapon);
         }
 
         public void PickupWeapon(object sender, MouseButtonEventArgs e)
         {
-            
+            try
+            {
+                int _idx = _player.Room.Weapons.FindIndex(x => x.Weapon.Id == _weapon.Id);
+
+                WeaponInventory picked = new WeaponInventory();
+                picked.WeaponId = _weapon.Id;
+                picked.Weapon = _player.Room.PickupWeapon(_idx);
+                picked.PlayerId = _player.Id;
+                picked.Player = _player;
+                picked.Quantity = 1;
+                _player += picked;
+
+                if (_player.Room.Weapons.Select(x => x.Weapon.Id).Contains(_weapon.Id))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void DropWeapon(object sender, MouseButtonEventArgs e)

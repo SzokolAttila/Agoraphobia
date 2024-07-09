@@ -127,23 +127,23 @@ namespace AgoraphobiaGUI
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.WeaponInventories)
             {
-                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Inventory));
+                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Inventory, weapon.Quantity));
             }
-            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy" });
+            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Qty" });
 
             List<UserControl> armors = new List<UserControl>();
             foreach (var armor in _player.ArmorInventories)
             {
-                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Inventory));
+                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Inventory, armor.Quantity));
             }
-            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type" });
+            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Qty"});
 
             List<UserControl> consumables = new List<UserControl>();
             foreach (var consumable in _player.ConsumableInventories)
             {
-                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Inventory));
+                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Inventory, consumable.Quantity));
             }
-            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration" });
+            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration", "Qty" });
 
             ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { weaponList, armorList, consumableList}, Main);
 
@@ -165,7 +165,7 @@ namespace AgoraphobiaGUI
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.WeaponInventories)
             {
-                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Enemy));
+                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Enemy, 0));
             }
 
             ItemListUC items = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy"});
@@ -183,23 +183,23 @@ namespace AgoraphobiaGUI
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.Room.Weapons)
             {
-                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Loot));
+                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Loot, weapon.Quantity));
             }
-            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy" });
+            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Qty" });
 
             List<UserControl> armors = new List<UserControl>();
             foreach (var armor in _player.Room.Armors)
             {
-                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Loot));
+                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Loot, armor.Quantity));
             }
-            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type" });
+            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Qty" });
 
             List<UserControl> consumables = new List<UserControl>();
             foreach (var consumable in _player.Room.Consumables)
             {
-                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Loot));
+                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Loot, consumable.Quantity));
             }
-            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration" });
+            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration", "Qty" });
 
             ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { weaponList, armorList, consumableList }, Main);
 
