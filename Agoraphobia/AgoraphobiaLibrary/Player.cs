@@ -7,6 +7,7 @@ using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
 using AgoraphobiaLibrary.JoinTables.Rooms;
 using AgoraphobiaLibrary.JoinTables.Weapons;
+using AgoraphobiaLibrary.Exceptions.Armor;
 
 namespace AgoraphobiaLibrary;
 
@@ -201,6 +202,11 @@ public class Player : INotifyPropertyChanged
         if ((player.InventoryCount+armor.Quantity)>INVENTORY_CAPACITY)
         {
             throw new InventoryAlreadyFullException();
+        }
+
+        if (player.ArmorInventories.Select(x=>x.Armor.ArmorType).Contains(armor.Armor.ArmorType))
+        {
+            throw new SameArmorTypeException();
         }
 
         if (player.ArmorInventories.Select(x=>x.ArmorId).Contains(armor.ArmorId))

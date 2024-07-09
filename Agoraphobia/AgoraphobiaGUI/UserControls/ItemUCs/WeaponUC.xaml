@@ -7,9 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" MouseEnter="HoverStart" MouseLeave="HoverEnd">
     <UniformGrid Rows="1" HorizontalAlignment="Stretch">
-        <TextBlock Margin="3" x:Name="Name"></TextBlock>
-        <TextBlock Margin="3" x:Name="Min"></TextBlock>
-        <TextBlock Margin="3" x:Name="Max"></TextBlock>
-        <TextBlock Margin="3" x:Name="Energy"></TextBlock>
+        <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Name"></TextBlock>
+        <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Min"></TextBlock>
+        <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Max"></TextBlock>
+        <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Energy"></TextBlock>
     </UniformGrid>
 </UserControl>

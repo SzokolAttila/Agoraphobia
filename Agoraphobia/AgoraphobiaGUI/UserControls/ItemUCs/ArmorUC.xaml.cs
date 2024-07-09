@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaAPI.Repositories;
 using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.JoinTables.Armors;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,6 +65,23 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public void PickupArmor(object sender, MouseButtonEventArgs e)
         {
+            try
+            {
+                int _idx = _player.Room.Armors.FindIndex(x=>x.Armor.Id == _armor.Id);
+
+                ArmorInventory picked = new ArmorInventory();
+                picked.ArmorId = _armor.Id;
+                picked.Armor = _player.Room.PickupArmor(_idx);
+                picked.PlayerId = _player.Id;
+                picked.Player = _player;
+                picked.Quantity = 1;
+                _player += picked;
+                Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void DropArmor(object sender, MouseButtonEventArgs e)
