@@ -6,17 +6,10 @@
              xmlns:local="clr-namespace:AgoraphobiaGUI.UserControls.ItemUCs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" MouseEnter="HoverStart" MouseLeave="HoverEnd">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-
-        <TextBlock Grid.Column="0" x:Name="Name"></TextBlock>
-        <TextBlock Grid.Column="1" x:Name="Min"></TextBlock>
-        <TextBlock Grid.Column="2" x:Name="Max"></TextBlock>
-        <TextBlock Grid.Column="3" x:Name="Energy"></TextBlock>
-    </Grid>
+    <UniformGrid Rows="1" HorizontalAlignment="Stretch">
+        <TextBlock Margin="3" x:Name="Name"></TextBlock>
+        <TextBlock Margin="3" x:Name="Min"></TextBlock>
+        <TextBlock Margin="3" x:Name="Max"></TextBlock>
+        <TextBlock Margin="3" x:Name="Energy"></TextBlock>
+    </UniformGrid>
 </UserControl>

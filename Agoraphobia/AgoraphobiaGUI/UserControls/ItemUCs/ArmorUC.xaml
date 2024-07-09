@@ -5,18 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AgoraphobiaGUI.UserControls.ItemUCs"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" MouseEnter="HoverStart" MouseLeave="HoverEnd">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-
-        <TextBlock Grid.Column="0" x:Name="Name"></TextBlock>
-        <TextBlock Grid.Column="1" x:Name="Hp"></TextBlock>
-        <TextBlock Grid.Column="2" x:Name="Defense"></TextBlock>
-        <TextBlock Grid.Column="3" x:Name="Type"></TextBlock>
-    </Grid>
+             d:DesignHeight="20" d:DesignWidth="130" MouseEnter="HoverStart" MouseLeave="HoverEnd">
+    <UniformGrid Rows="1" HorizontalAlignment="Stretch">
+        <TextBlock x:Name="Name" Margin="3" TextTrimming="CharacterEllipsis"></TextBlock>
+        <TextBlock x:Name="Hp" Margin="3" TextTrimming="CharacterEllipsis"></TextBlock>
+        <TextBlock x:Name="Defense" Margin="3" TextTrimming="CharacterEllipsis"></TextBlock>
+        <TextBlock x:Name="Type" Margin="3" TextTrimming="CharacterEllipsis"></TextBlock>
+    </UniformGrid>
 </UserControl>

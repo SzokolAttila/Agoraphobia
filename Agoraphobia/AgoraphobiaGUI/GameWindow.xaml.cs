@@ -183,23 +183,32 @@ namespace AgoraphobiaGUI
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.Room.Weapons)
             {
-                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Loot));
+                for (int i = 0; i<weapon.Quantity; i++)
+                {
+                    weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Loot));
+                }
             }
             ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy" });
 
             List<UserControl> armors = new List<UserControl>();
             foreach (var armor in _player.Room.Armors)
             {
-                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Loot));
+                for (int i = 0; i < armor.Quantity; i++)
+                {
+                    armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Loot));
+                }
             }
             ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type" });
 
             List<UserControl> consumables = new List<UserControl>();
             foreach (var consumable in _player.Room.Consumables)
             {
-                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Loot));
+                for (int i = 0; i < consumable.Quantity; i++)
+                {
+                    consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Loot));
+                }
             }
-            ItemListUC consumableList = new ItemListUC(armors, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration" });
+            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration" });
 
             ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { weaponList, armorList, consumableList }, Main);
 

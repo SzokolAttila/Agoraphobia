@@ -6,24 +6,13 @@
              xmlns:local="clr-namespace:AgoraphobiaGUI.UserControls.ItemUCs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" MouseEnter="HoverStart" MouseLeave="HoverEnd">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-
-        <TextBlock Grid.Column="0" x:Name="Name"/>
-        <TextBlock Grid.Column="1" x:Name="Energy"/>
-        <TextBlock Grid.Column="2" x:Name="Hp"/>
-        <TextBlock Grid.Column="3" x:Name="Defense"/>
-        <TextBlock Grid.Column="4" x:Name="Attack"/>
-        <TextBlock Grid.Column="5" x:Name="Sanity"/>
-        <TextBlock Grid.Column="6" x:Name="Duration"/>
-    </Grid>
+    <UniformGrid Rows="1" HorizontalAlignment="Stretch">
+        <TextBlock Margin="3" x:Name="Name"/>
+        <TextBlock Margin="3" x:Name="Energy"/>
+        <TextBlock Margin="3" x:Name="Hp"/>
+        <TextBlock Margin="3" x:Name="Defense"/>
+        <TextBlock Margin="3" x:Name="Attack"/>
+        <TextBlock Margin="3" x:Name="Sanity"/>
+        <TextBlock Margin="3" x:Name="Duration"/>
+    </UniformGrid>
 </UserControl>

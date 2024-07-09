@@ -29,8 +29,8 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             InitializeComponent();
             Name.Text = weapon.Name;
-            Min.Text = (weapon.MinMultiplier*player.Attack).ToString();
-            Max.Text = (weapon.MaxMultiplier*player.Attack).ToString();
+            Min.Text = (weapon.MinMultiplier*player.Attack).ToString("#.##");
+            Max.Text = (weapon.MaxMultiplier*player.Attack).ToString("#.##");
             Energy.Text = weapon.Energy.ToString();
             this.weapon = weapon;
             this.player = player;
