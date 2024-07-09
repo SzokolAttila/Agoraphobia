@@ -214,7 +214,8 @@ namespace AgoraphobiaGUI
             if (_enemy.Hp <= 0)
             {
                 Enemy.Visibility = Visibility.Hidden;
-                Main.Children.Remove(Main.Children.OfType<ItemListUC>().FirstOrDefault());
+                ItemNestedListUC itemList = Main.Children.OfType<ItemNestedListUC>().First();
+                Main.Children.Remove(itemList);
             }
         }
 
