@@ -129,21 +129,21 @@ namespace AgoraphobiaGUI
             {
                 weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Inventory, weapon.Quantity));
             }
-            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Qty" });
+            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Price", "Qty" });
 
             List<UserControl> armors = new List<UserControl>();
             foreach (var armor in _player.ArmorInventories)
             {
                 armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Inventory, armor.Quantity));
             }
-            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Qty"});
+            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Price", "Qty" });
 
             List<UserControl> consumables = new List<UserControl>();
             foreach (var consumable in _player.ConsumableInventories)
             {
                 consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Inventory, consumable.Quantity));
             }
-            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration", "Qty" });
+            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration", "Price", "Qty" });
 
             ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { weaponList, armorList, consumableList}, Main);
 
@@ -156,7 +156,33 @@ namespace AgoraphobiaGUI
         public void TradeWindow(object sender, MouseButtonEventArgs e)
         {
             Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
+            List<UserControl> weapons = new List<UserControl>();
+            foreach (var weapon in _player.Room.Merchant.WeaponSales)
+            {
+                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Merchant, weapon.Quantity));
+            }
+            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Price", "Qty" });
 
+            List<UserControl> armors = new List<UserControl>();
+            foreach (var armor in _player.Room.Merchant.ArmorSales)
+            {
+                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Merchant, armor.Quantity));
+            }
+            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Price", "Qty" });
+
+            List<UserControl> consumables = new List<UserControl>();
+            foreach (var consumable in _player.Room.Merchant.ConsumableSales)
+            {
+                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Merchant, consumable.Quantity));
+            }
+            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration", "Price", "Qty" });
+
+            ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { weaponList, armorList, consumableList }, Main);
+
+            Main.Children.Add(nested);
+            nested.UpdateLayout();
+
+            PlaceUCToMouse(nested);
         }
 
         public void FightWindow(object sender, MouseButtonEventArgs e)
@@ -168,7 +194,7 @@ namespace AgoraphobiaGUI
                 weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Enemy, 0));
             }
 
-            ItemListUC items = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy"});
+            ItemListUC items = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Price"});
             ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>(){ items}, Main);
             
             Main.Children.Add(nested);
@@ -185,21 +211,21 @@ namespace AgoraphobiaGUI
             {
                 weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Loot, weapon.Quantity));
             }
-            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Qty" });
+            ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Price", "Qty" });
 
             List<UserControl> armors = new List<UserControl>();
             foreach (var armor in _player.Room.Armors)
             {
                 armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Loot, armor.Quantity));
             }
-            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Qty" });
+            ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Price", "Qty" });
 
             List<UserControl> consumables = new List<UserControl>();
             foreach (var consumable in _player.Room.Consumables)
             {
                 consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Loot, consumable.Quantity));
             }
-            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration", "Qty" });
+            ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration", "Price", "Qty" });
 
             ItemNestedListUC nested = new ItemNestedListUC(new List<ItemListUC>() { weaponList, armorList, consumableList }, Main);
 
@@ -280,22 +306,24 @@ namespace AgoraphobiaGUI
         public void PlaceUCToMouse(FrameworkElement uc)
         {
             System.Windows.Point senderPos = Mouse.GetPosition(Main);
-            if (uc.ActualWidth + senderPos.X < Main.ActualWidth)
+            double screenWidthError = (uc.ActualWidth + senderPos.X) - Main.ActualWidth;
+            if (screenWidthError<=0)
             {
                 Canvas.SetLeft(uc, senderPos.X);
             }
             else
             {
-                Canvas.SetLeft(uc, senderPos.X - uc.ActualWidth);
+                Canvas.SetLeft(uc, senderPos.X - screenWidthError);//(uc, Main.ActualWidth - uc.ActualWidth) >> simplified math
             }
 
-            if (uc.ActualHeight + senderPos.Y < Main.ActualHeight)
+            double screenHeightError = (uc.ActualHeight + senderPos.Y) - Main.ActualHeight;
+            if (screenHeightError<=0)
             {
                 Canvas.SetTop(uc, senderPos.Y);
             }
             else
             {
-                Canvas.SetTop(uc, senderPos.Y - uc.ActualHeight);
+                Canvas.SetTop(uc, senderPos.Y - screenHeightError);
             }
         }
     }

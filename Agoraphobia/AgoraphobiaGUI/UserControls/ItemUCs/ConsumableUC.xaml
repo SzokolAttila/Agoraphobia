@@ -14,6 +14,7 @@
         <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Attack"/>
         <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Sanity"/>
         <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Duration"/>
+        <TextBlock Margin="3" TextTrimming="CharacterEllipsis" x:Name="Price"/>
         <TextBlock x:Name="Qty" Margin="3" TextTrimming="CharacterEllipsis" Visibility="Collapsed"></TextBlock>
     </UniformGrid>
 </UserControl>

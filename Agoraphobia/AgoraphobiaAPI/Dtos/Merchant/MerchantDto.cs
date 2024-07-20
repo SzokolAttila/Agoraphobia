@@ -9,8 +9,8 @@ namespace AgoraphobiaAPI.Dtos.Merchant
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public List<ArmorSaleDto> Armors { get; set; } = new();
-        public List<WeaponSaleDto> Weapons { get; set; } = new();
-        public List<ConsumableSaleDto> Consumables { get; set; } = new();
+        public List<ArmorSaleDto> ArmorSales { get; set; } = new();
+        public List<WeaponSaleDto> WeaponSales { get; set; } = new();
+        public List<ConsumableSaleDto> ConsumableSales { get; set; } = new();
     }
 }

@@ -35,6 +35,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Min.Text = (weapon.MinMultiplier*player.Attack).ToString("#.##");
             Max.Text = (weapon.MaxMultiplier*player.Attack).ToString("#.##");
             Energy.Text = weapon.Energy.ToString();
+            Price.Text = weapon.Price.ToString();
             _weapon = weapon;
             _player = player;
             _enemy = enemy;
@@ -50,6 +51,10 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     break;
                 case ListType.Inventory:
                     MouseRightButtonDown += DropWeapon;
+                    HaveQty();
+                    break;
+                case ListType.Merchant:
+                    MouseLeftButtonDown += BuyWeapon;
                     HaveQty();
                     break;
             }
@@ -74,6 +79,36 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         public void UseWeapon(object sender, MouseButtonEventArgs e)
         {
             _player.AttackEnemy(_enemy, _weapon);
+        }
+
+        public void BuyWeapon(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                int _idx = _player.Room.Merchant.WeaponSales.FindIndex(x => x.Weapon.Id == _weapon.Id);
+                _player.DreamCoins -= _weapon.Price;
+
+                WeaponInventory bought = new WeaponInventory();
+                bought.WeaponId = _weapon.Id;
+                bought.Weapon = _player.Room.Merchant.BuyWeapon(_idx);
+                bought.PlayerId = _player.Id;
+                bought.Player = _player;
+                bought.Quantity = 1;
+                _player += bought;
+
+                if (_player.Room.Merchant.WeaponSales.Select(x => x.Weapon.Id).Contains(_weapon.Id))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void PickupWeapon(object sender, MouseButtonEventArgs e)

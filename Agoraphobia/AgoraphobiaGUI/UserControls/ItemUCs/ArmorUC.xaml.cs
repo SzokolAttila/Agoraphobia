@@ -35,6 +35,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Hp.Text = armor.Hp.ToString();
             Defense.Text = armor.Defense.ToString();
             Type.Text = armor.ArmorType.ToString();
+            Price.Text = armor.Price.ToString();
             _armor = armor;
             _player = player;
             _qty = qty;
@@ -45,8 +46,11 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     HaveQty();
                     break;
                 case ListType.Inventory:
-                    MouseLeftButtonDown += UseArmor;
                     MouseRightButtonDown += DropArmor;
+                    HaveQty();
+                    break;
+                case ListType.Merchant:
+                    MouseLeftButtonDown += BuyArmor;
                     HaveQty();
                     break;
             }
@@ -68,8 +72,34 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }
 
-        public void UseArmor(object sender, MouseButtonEventArgs e)
+        public void BuyArmor(object sender, MouseButtonEventArgs e)
         {
+            try
+            {
+                int _idx = _player.Room.Merchant.ArmorSales.FindIndex(x => x.Armor.Id == _armor.Id);
+                _player.DreamCoins -= _armor.Price;
+
+                ArmorInventory bought = new ArmorInventory();
+                bought.ArmorId = _armor.Id;
+                bought.Armor = _player.Room.Merchant.BuyArmor(_idx);
+                bought.PlayerId = _player.Id;
+                bought.Player = _player;
+                bought.Quantity = 1;
+                _player += bought;
+
+                if (_player.Room.Merchant.ArmorSales.Select(x => x.Armor.Id).Contains(_armor.Id))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void PickupArmor(object sender, MouseButtonEventArgs e)

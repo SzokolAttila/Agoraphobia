@@ -24,7 +24,8 @@ namespace AgoraphobiaGUI.UserControls
         {
             Inventory,
             Loot,
-            Enemy //Only for weapon
+            Enemy, //Only for weapons
+            Merchant
         }
         public ItemListUC(List<UserControl> items, List<string> headers)
         {

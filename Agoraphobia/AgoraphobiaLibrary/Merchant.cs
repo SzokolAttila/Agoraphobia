@@ -42,6 +42,48 @@ namespace AgoraphobiaLibrary
             ConsumableSales = new();
         }
 
+        public Weapon BuyWeapon(int index)
+        {
+            WeaponSale weapon = WeaponSales.ElementAt(index);
+            if (weapon.Quantity == 1)
+            {
+                WeaponSales.RemoveAt(index);
+            }
+            else
+            {
+                weapon.Quantity--;
+            }
+            return weapon.Weapon;
+        }
+
+        public Armor BuyArmor(int index)
+        {
+            ArmorSale armor = ArmorSales.ElementAt(index);
+            if (armor.Quantity == 1)
+            {
+                ArmorSales.RemoveAt(index);
+            }
+            else
+            {
+                armor.Quantity--;
+            }
+            return armor.Armor;
+        }
+
+        public Consumable BuyConsumable(int index)
+        {
+            ConsumableSale consumable = ConsumableSales.ElementAt(index);
+            if (consumable.Quantity == 1)
+            {
+                ConsumableSales.RemoveAt(index);
+            }
+            else
+            {
+                consumable.Quantity--;
+            }
+            return consumable.Consumable;
+        }
+
         [JsonIgnore]
         public List<WeaponSale> WeaponSales { get; set; } 
         [JsonIgnore]

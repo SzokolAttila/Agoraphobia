@@ -12,9 +12,9 @@ namespace AgoraphobiaAPI.Mappers
                 Id = merchant.Id,
                 Name = merchant.Name,
                 Description = merchant.Description,
-                Armors = merchant.ArmorSales.Select(x => x.ToArmorSaleDto()).ToList(),
-                Consumables = merchant.ConsumableSales.Select(x => x.ToConsumableSaleDto()).ToList(),
-                Weapons = merchant.WeaponSales.Select(x => x.ToWeaponSaleDto()).ToList()
+                ArmorSales = merchant.ArmorSales.Select(x => x.ToArmorSaleDto()).ToList(),
+                ConsumableSales = merchant.ConsumableSales.Select(x => x.ToConsumableSaleDto()).ToList(),
+                WeaponSales = merchant.WeaponSales.Select(x => x.ToWeaponSaleDto()).ToList()
             };
         }
 

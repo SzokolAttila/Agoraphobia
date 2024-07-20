@@ -197,6 +197,7 @@ public class Player : INotifyPropertyChanged
         }
     }
 
+
     public static Player operator +(Player player, ArmorInventory armor)
     {
         if ((player.InventoryCount+armor.Quantity)>INVENTORY_CAPACITY)
@@ -239,7 +240,6 @@ public class Player : INotifyPropertyChanged
 
         return player;
     }
-
 
     public static Player operator +(Player player, WeaponInventory weapon)
     {
