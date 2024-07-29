@@ -8,6 +8,7 @@ using AgoraphobiaLibrary.JoinTables.Consumables;
 using AgoraphobiaLibrary.JoinTables.Rooms;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 using AgoraphobiaLibrary.Exceptions.Armor;
+using System.Numerics;
 
 namespace AgoraphobiaLibrary;
 
@@ -219,6 +220,8 @@ public class Player : INotifyPropertyChanged
             player.ArmorInventories.Add(armor);
         }
 
+        player.AddArmorStats(armor.Armor);
+
         return player;
     }
 
@@ -258,6 +261,61 @@ public class Player : INotifyPropertyChanged
         }
 
         return player;
+    }
+
+    public bool DropArmor(Armor armor)
+    {
+        SubtractArmorStats(armor);
+        Room.DropArmor(armor);
+        
+        ArmorInventory armorOfPlayer = ArmorInventories.First(x=>x.ArmorId == armor.Id);
+        if (armorOfPlayer.Quantity>1)
+        {
+            ArmorInventories.First(x => x.ArmorId == armor.Id).Quantity--;
+            return true; // still have some on true value
+        }
+        ArmorInventories.Remove(armorOfPlayer);
+        return false;
+    }
+
+    public bool DropConsumable(Consumable consumable)
+    {
+        Room.DropConsumable(consumable);
+        
+        ConsumableInventory consumableOfPlayer = ConsumableInventories.First(x => x.ConsumableId == consumable.Id);
+        if (consumableOfPlayer.Quantity > 1)
+        {
+            ConsumableInventories.First(x => x.ConsumableId == consumable.Id).Quantity--;
+            return true; // still have some on true value
+        }
+        ConsumableInventories.Remove(consumableOfPlayer);
+        return false;
+    }
+
+    public bool DropWeapon(Weapon weapon)
+    {
+        Room.DropWeapon(weapon);
+        
+        WeaponInventory weaponOfPlayer = WeaponInventories.First(x => x.WeaponId == weapon.Id);
+        if (weaponOfPlayer.Quantity > 1)
+        {
+            WeaponInventories.First(x => x.WeaponId == weapon.Id).Quantity--;
+            return true; // still have some on true value
+        }
+        WeaponInventories.Remove(weaponOfPlayer);
+        return false;
+    }
+
+    public void AddArmorStats(Armor armor)
+    {
+        Defense += armor.Defense;
+        MaxHealth += armor.Hp;
+    }
+
+    public void SubtractArmorStats(Armor armor)
+    {
+        Defense = Math.Round(Defense - armor.Defense, 1);
+        MaxHealth = Math.Round(MaxHealth - armor.Hp, 1);
     }
 
     //For MVVM binding

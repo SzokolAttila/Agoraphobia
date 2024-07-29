@@ -133,7 +133,14 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public void DropArmor(object sender, MouseButtonEventArgs e)
         {
-
+            if (_player.DropArmor(_armor))
+            {
+                Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+            }
+            else
+            {
+                Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

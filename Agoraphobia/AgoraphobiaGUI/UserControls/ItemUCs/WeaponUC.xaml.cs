@@ -142,7 +142,14 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public void DropWeapon(object sender, MouseButtonEventArgs e)
         {
-
+            if (_player.DropWeapon(_weapon))
+            {
+                Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+            }
+            else
+            {
+                Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

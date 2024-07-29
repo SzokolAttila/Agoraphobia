@@ -142,7 +142,14 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public void DropConsumable(object sender, MouseButtonEventArgs e)
         {
-
+            if (_player.DropConsumable(_consumable))
+            {
+                Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+            }
+            else
+            {
+                Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

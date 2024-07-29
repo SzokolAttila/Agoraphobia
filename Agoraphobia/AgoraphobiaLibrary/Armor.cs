@@ -14,9 +14,9 @@ namespace AgoraphobiaLibrary
             Boots
         }
 
-        public int Defense { get; set; }
+        public double Defense { get; set; }
         
-        public int Hp { get; set; }
+        public double Hp { get; set; }
 
         [JsonIgnore]
         public ArmorPiece ArmorType { get; set; }
@@ -37,7 +37,7 @@ namespace AgoraphobiaLibrary
         public int ArmorTypeIdx { get => (int)ArmorType; set => ArmorType = (ArmorPiece)value; }
         [JsonConstructor]
         public Armor(int id, string name, string description, int rarityIdx, int price,
-            int defense, int hp, int armorTypeIdx) : base(id, name, description, rarityIdx, price)
+            double defense, double hp, int armorTypeIdx) : base(id, name, description, rarityIdx, price)
         {
             Defense = defense;
             Hp = hp;
@@ -45,7 +45,7 @@ namespace AgoraphobiaLibrary
         }
 
         public Armor(string name, string description, int rarityIdx, int price,
-            int defense, int hp, int armorTypeIdx) : base(name, description, rarityIdx, price)
+            double defense, double hp, int armorTypeIdx) : base(name, description, rarityIdx, price)
         {
             Defense = defense;
             Hp = hp;

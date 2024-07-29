@@ -7,7 +7,7 @@ public class ArmorDto
     public string Description { get; set; } = string.Empty;
     public int RarityIdx { get; set; }
     public int Price { get; set; }
-    public int Defense { get; set; }
-    public int Hp { get; set; }
+    public double Defense { get; set; }
+    public double Hp { get; set; }
     public int ArmorTypeIdx { get; set; }
 }
