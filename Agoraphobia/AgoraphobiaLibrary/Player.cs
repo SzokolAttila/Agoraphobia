@@ -32,7 +32,7 @@ public class Player : INotifyPropertyChanged
         SlotId = slotId;
     }
     [JsonConstructor]
-    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<WeaponInventory> weapons, List<ConsumableInventory> consumables, List<ArmorInventory> armors, int currentRoomId, int slotId) 
+    public Player(int id, int accountId, double sanity, double maxHealth, double health, int maxEnergy, int energy, double attack, double defense, int dreamCoins, List<WeaponInventory> weapons, List<ConsumableInventory> consumables, List<ArmorInventory> armors, List<Effect> effects, int currentRoomId, int slotId) 
     {
         Id = id;
         AccountId = accountId;
@@ -47,6 +47,7 @@ public class Player : INotifyPropertyChanged
         WeaponInventories = weapons;
         ArmorInventories = armors;
         ConsumableInventories = consumables;
+        Effects = effects;
         RoomId = currentRoomId;
         SlotId = slotId;
     }
@@ -186,7 +187,12 @@ public class Player : INotifyPropertyChanged
             Health -= target.Attack;
         }
 
+        List<Effect> effects = new List<Effect>();
         foreach (var effect in Effects)
+        {
+            effects.Add(effect);
+        }
+        foreach (var effect in effects)
         {
             effect.CurrentDuration--;
             if (effect.CurrentDuration<=0)
@@ -316,6 +322,38 @@ public class Player : INotifyPropertyChanged
     {
         Defense = Math.Round(Defense - armor.Defense, 1);
         MaxHealth = Math.Round(MaxHealth - armor.Hp, 1);
+        //Health = Health;
+    }
+
+    public bool UseConsumable(Consumable consumable)
+    {
+        Effect effect = new Effect();
+        effect.Consumable = consumable;
+        effect.ConsumableId = consumable.Id;
+        effect.Player = this;
+        effect.PlayerId = Id;
+        effect.CurrentDuration = consumable.Duration;
+        Effects.Add(effect);
+
+        Energy += consumable.Energy;
+        Health += consumable.Hp;
+        Defense += consumable.Defense;
+        Attack += consumable.Attack;
+        Sanity += consumable.Sanity;
+
+        return RemoveConsumable(consumable);
+    }
+
+    private bool RemoveConsumable(Consumable consumable)
+    {
+        ConsumableInventory consumableOfPlayer = ConsumableInventories.First(x => x.ConsumableId == consumable.Id);
+        if (consumableOfPlayer.Quantity > 1)
+        {
+            ConsumableInventories.First(x => x.ConsumableId == consumable.Id).Quantity--;
+            return true; // still have some on true value
+        }
+        ConsumableInventories.Remove(consumableOfPlayer);
+        return false;
     }
 
     //For MVVM binding

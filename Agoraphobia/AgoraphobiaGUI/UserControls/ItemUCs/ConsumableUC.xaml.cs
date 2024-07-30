@@ -78,7 +78,14 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public void UseConsumable(object sender, MouseButtonEventArgs e)
         {
-            
+            if (_player.UseConsumable(_consumable))
+            {
+                Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+            }
+            else
+            {
+                Visibility = Visibility.Collapsed;
+            }
         }
 
         public void BuyConsumable(object sender, MouseButtonEventArgs e)
