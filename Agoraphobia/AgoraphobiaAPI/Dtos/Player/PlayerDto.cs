@@ -20,6 +20,7 @@ public class PlayerDto
     public double Attack { get; set; }
     public double Defense { get; set; }
     public int DreamCoins { get; set; }
+    public int RoomId { get; set; }
     public RoomDto CurrentRoom { get; set; } = new();
     public List<WeaponInventoryDto> Weapons { get; set; } = new();
     public List<ConsumableInventoryDto> Consumables { get; set; } = new();

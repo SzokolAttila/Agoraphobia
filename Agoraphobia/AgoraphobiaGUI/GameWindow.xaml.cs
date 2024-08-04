@@ -12,6 +12,7 @@ using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -27,6 +28,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using System.Xaml;
+using AgoraphobiaAPI.HttpClients;
 using static AgoraphobiaGUI.UserControls.ItemListUC;
 
 namespace AgoraphobiaGUI
@@ -74,9 +76,12 @@ namespace AgoraphobiaGUI
             //For starter
             _player.WeaponInventories.Add(new WeaponInventory() { 
                 Weapon = new Weapon("fist", "sometimes comes handy", 0, 0, 0.5, 1.5, 0), Quantity=1});
+            _player.Health -= 3;
         }
-        public void Back(object sender, RoutedEventArgs e)
+        public async void Back(object sender, RoutedEventArgs e)
         {
+            var playerHttpClient = new PlayerHttpClient(new HttpClient());
+            await playerHttpClient.Save(_player);
             new MainWindow(_account).Show();
             Close();
         }

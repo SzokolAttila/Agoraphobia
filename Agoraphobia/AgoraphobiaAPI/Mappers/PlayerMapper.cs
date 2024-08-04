@@ -29,7 +29,8 @@ public static class PlayerMapper
             Armors = player.ArmorInventories.Select(x => x.ToArmorInventoryDto()).ToList(),
             Weapons = player.WeaponInventories.Select(x => x.ToWeaponInventoryDto()).ToList(),
             Consumables = player.ConsumableInventories.Select(x => x.ToConsumableInventoryDto()).ToList(),
-            CurrentRoom = player.Room!.ToRoomDto()
+            CurrentRoom = player.Room!.ToRoomDto(),
+            RoomId = player.RoomId,
         };
     }
 }
