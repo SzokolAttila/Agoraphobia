@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaAPI.HttpClients;
 using AgoraphobiaLibrary;
 
 namespace AgoraphobiaGUI.UserControls
@@ -22,26 +24,39 @@ namespace AgoraphobiaGUI.UserControls
     /// </summary>
     public partial class ContinueUC : UserControl
     {
-        readonly Grid container;
+        readonly Grid _container;
         private readonly Account _account;
         private MainWindow _window;
         public ContinueUC(Grid container, Account account, MainWindow window)
         {
             InitializeComponent();
-            this.container = container;
+            _container = container;
             _account = account;
             _window = window;
         }
 
-        public void SlotSelect(object sender, RoutedEventArgs e)
+        public async void SlotSelect(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"{Grid.GetRow((UIElement)sender)}. slot selected");
+            try
+            {
+                var slotId = Convert.ToInt32(char.GetNumericValue((sender as Button)!.Content.ToString()![0]));
+                var httpClient = new PlayerHttpClient(new HttpClient());
+                var player = await httpClient.LoadPlayer(_account.Id, slotId);
+                var gameWindow = new GameWindow(_account, player, _window);
+                _container.Children.Remove(this);
+                _window.Close();
+                gameWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void Back(object sender, RoutedEventArgs e)
         {
-            container.Children.Add(new MainMenuUC(container, _account, _window));
-            container.Children.Remove(this);
+            _container.Children.Add(new MainMenuUC(_container, _account, _window));
+            _container.Children.Remove(this);
         }
     }
 }

@@ -76,7 +76,6 @@ namespace AgoraphobiaGUI
             //For starter
             _player.WeaponInventories.Add(new WeaponInventory() { 
                 Weapon = new Weapon("fist", "sometimes comes handy", 0, 0, 0.5, 1.5, 0), Quantity=1});
-            _player.Health -= 3;
         }
         public async void Back(object sender, RoutedEventArgs e)
         {

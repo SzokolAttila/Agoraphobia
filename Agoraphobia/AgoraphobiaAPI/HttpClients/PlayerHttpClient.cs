@@ -21,13 +21,14 @@ namespace AgoraphobiaAPI.HttpClients
 
         private const string ROUTE = "http://localhost:5172/agoraphobia/";
 
-        public async Task<Player> AddNewPlayer(int accountId, int roomId, int slotId)
+        public async Task<Player> AddNewPlayer(int accountId, int slotId)
         {
-            var accounts = await _httpClient.GetAsync($"{ROUTE}accounts");
-            var account = accounts.Content.ReadFromJsonAsync<List<AccountDto>>().Result!.Find(x => x.Id == accountId);
+            var accountResp = await _httpClient.GetAsync($"{ROUTE}accounts/{accountId}");
+            var accountJson = await accountResp.Content.ReadAsStringAsync();
+            var account = JsonConvert.DeserializeObject<Account>(accountJson);
             if (account is null)
                 throw new ArgumentException("Account not found");
-            var roomResp = await _httpClient.GetAsync($"{ROUTE}rooms/{roomId}");
+            var roomResp = await _httpClient.GetAsync($"{ROUTE}rooms/{1}");
             var roomJson = await roomResp.Content.ReadAsStringAsync();
             var room = JsonConvert.DeserializeObject<Room>(roomJson);
             if (room is null)
@@ -36,20 +37,13 @@ namespace AgoraphobiaAPI.HttpClients
             var content = new StringContent(JsonConvert.SerializeObject(new CreatePlayerRequestDto()
             {
                 AccountId = accountId,
-                RoomId = roomId,
+                RoomId = 1,
                 SlotId = slotId
             }), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync($"{ROUTE}players", content);
             response.EnsureSuccessStatusCode();
-
-            var playersResponse = await _httpClient.GetAsync($"{ROUTE}players");
-            var playersJson = await playersResponse.Content.ReadAsStringAsync();
-            var players = JsonConvert.DeserializeObject<List<Player>>(playersJson);
-            var player = players!.Find(x =>
-                x.AccountId == accountId && x.SlotId == slotId);
-            if (player is null)
-                throw new ArgumentException("Player not found");
-            player.Room = room;
+            var playerJson = await response.Content.ReadAsStringAsync();
+            var player = JsonConvert.DeserializeObject<Player>(playerJson);
             return player;
         }
 
@@ -70,6 +64,17 @@ namespace AgoraphobiaAPI.HttpClients
             var httpContent = new StringContent(playerJson, Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync($"{ROUTE}players/{player.Id}", httpContent);
             response.EnsureSuccessStatusCode();
+        }
+
+        public async Task<Player> LoadPlayer(int accountId, int slotId)
+        {
+            var playersResponse = await _httpClient.GetAsync($"{ROUTE}players");
+            var playersJson = await playersResponse.Content.ReadAsStringAsync();
+            var players = JsonConvert.DeserializeObject<List<Player>>(playersJson);
+            var player = players!.Find(x => x.AccountId == accountId && x.SlotId == slotId);
+            if (player is null)
+                return await AddNewPlayer(accountId, slotId);
+            return player;
         }
     }
 }
