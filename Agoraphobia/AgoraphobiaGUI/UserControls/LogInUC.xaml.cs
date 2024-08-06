@@ -32,10 +32,9 @@ namespace AgoraphobiaGUI.UserControls
         }
         private async void LogIn(object sender, RoutedEventArgs e)
         {
-            var client = new AccountHttpClient(new HttpClient());
             try
             {
-                var account = await client.LogIn(Username.Text, PasswordBox.Password, false);
+                var account = await AccountHttpClient.LogIn(Username.Text, PasswordBox.Password, false);
                 MessageBox.Show("Logging in was successful, good luck on your journey!", "Successful login", MessageBoxButton.OK,
                     MessageBoxImage.Information);
                 _container.Children.Add(new MainMenuUC(_container, account, _window));

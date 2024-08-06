@@ -50,10 +50,9 @@ namespace AgoraphobiaGUI.UserControls
         }
         private async void Register(object sender, RoutedEventArgs e)
         {
-            var client = new AccountHttpClient(new HttpClient());
             try
             {
-                await client.Register(Username.Text, PasswordBox.Password, false);
+                await AccountHttpClient.Register(Username.Text, PasswordBox.Password, false);
                 MessageBox.Show("Account successfully created, time to log in!", "Account created", MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }

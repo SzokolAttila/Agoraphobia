@@ -41,8 +41,7 @@ namespace AgoraphobiaGUI.UserControls
                 try
                 {
                     var slotId = Convert.ToInt32(char.GetNumericValue((sender as Button)!.Content.ToString()![0]));
-                    var httpClient = new PlayerHttpClient(new HttpClient());
-                    var player = await httpClient.AddNewPlayer(_account.Id, slotId);
+                    var player = await PlayerHttpClient.AddNewPlayer(_account.Id, slotId);
                     var gameWindow = new GameWindow(_account, player, _window);
                     _container.Children.Remove(this);
                     _window.Close();

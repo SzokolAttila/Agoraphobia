@@ -9,8 +9,9 @@ namespace AgoraphobiaAPI.Mappers
         {
             return new RoomEnemyStatusDto
             {
-                Room = status.Room!.ToRoomDto(),
-                EnemyHp = status.EnemyHp
+                EnemyHp = status.EnemyHp, 
+                PlayerId = status.PlayerId,
+                RoomId = status.RoomId
             };
         }
 

@@ -57,8 +57,7 @@ namespace AgoraphobiaGUI
         {
             try
             {
-                var client = new AccountHttpClient(new HttpClient());
-                var response = await client.GetAccounts();
+                var response = await AccountHttpClient.GetAccounts();
                 response.EnsureSuccessStatusCode();
             }
             catch (HttpRequestException e)

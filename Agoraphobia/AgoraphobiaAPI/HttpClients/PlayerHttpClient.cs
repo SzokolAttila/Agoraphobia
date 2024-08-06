@@ -11,24 +11,20 @@ using AgoraphobiaAPI.Mappers;
 
 namespace AgoraphobiaAPI.HttpClients
 {
-    public class PlayerHttpClient
+    public static class PlayerHttpClient
     {
-        private readonly HttpClient _httpClient;
-        public PlayerHttpClient(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-        }
+        private static readonly HttpClient HttpClient = new();
 
         private const string ROUTE = "http://localhost:5172/agoraphobia/";
 
-        public async Task<Player> AddNewPlayer(int accountId, int slotId)
+        public static async Task<Player> AddNewPlayer(int accountId, int slotId)
         {
-            var accountResp = await _httpClient.GetAsync($"{ROUTE}accounts/{accountId}");
+            var accountResp = await HttpClient.GetAsync($"{ROUTE}accounts/{accountId}");
             var accountJson = await accountResp.Content.ReadAsStringAsync();
             var account = JsonConvert.DeserializeObject<Account>(accountJson);
             if (account is null)
                 throw new ArgumentException("Account not found");
-            var roomResp = await _httpClient.GetAsync($"{ROUTE}rooms/{1}");
+            var roomResp = await HttpClient.GetAsync($"{ROUTE}rooms/{1}");
             var roomJson = await roomResp.Content.ReadAsStringAsync();
             var room = JsonConvert.DeserializeObject<Room>(roomJson);
             if (room is null)
@@ -40,14 +36,14 @@ namespace AgoraphobiaAPI.HttpClients
                 RoomId = 1,
                 SlotId = slotId
             }), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{ROUTE}players", content);
+            var response = await HttpClient.PostAsync($"{ROUTE}players", content);
             response.EnsureSuccessStatusCode();
             var playerJson = await response.Content.ReadAsStringAsync();
             var player = JsonConvert.DeserializeObject<Player>(playerJson);
             return player;
         }
 
-        public async Task Save(Player player)
+        public static async Task Save(Player player)
         {
             var playerJson = JsonConvert.SerializeObject(new UpdatePlayerRequestDto()
             { 
@@ -62,13 +58,13 @@ namespace AgoraphobiaAPI.HttpClients
                 RoomId = player.RoomId, 
             }).Replace("\"", "'");
             var httpContent = new StringContent(playerJson, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"{ROUTE}players/{player.Id}", httpContent);
+            var response = await HttpClient.PutAsync($"{ROUTE}players/{player.Id}", httpContent);
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<Player> LoadPlayer(int accountId, int slotId)
+        public static async Task<Player> LoadPlayer(int accountId, int slotId)
         {
-            var playersResponse = await _httpClient.GetAsync($"{ROUTE}players");
+            var playersResponse = await HttpClient.GetAsync($"{ROUTE}players");
             var playersJson = await playersResponse.Content.ReadAsStringAsync();
             var players = JsonConvert.DeserializeObject<List<Player>>(playersJson);
             var player = players!.Find(x => x.AccountId == accountId && x.SlotId == slotId);

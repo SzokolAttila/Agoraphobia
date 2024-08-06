@@ -79,8 +79,8 @@ namespace AgoraphobiaGUI
         }
         public async void Back(object sender, RoutedEventArgs e)
         {
-            var playerHttpClient = new PlayerHttpClient(new HttpClient());
-            await playerHttpClient.Save(_player);
+            await PlayerHttpClient.Save(_player);
+            await RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
             new MainWindow(_account).Show();
             Close();
         }
