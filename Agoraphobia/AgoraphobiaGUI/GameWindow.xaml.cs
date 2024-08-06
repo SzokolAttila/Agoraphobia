@@ -82,6 +82,7 @@ namespace AgoraphobiaGUI
             var roomEnemyStatus = await RoomEnemyStatusHttpClient.GetEnemyStatus(_player.Id, _player.RoomId);
             if (roomEnemyStatus != null)
                 _enemy.Hp = roomEnemyStatus.EnemyHp;
+
         }
         public async void Back(object sender, RoutedEventArgs e)
         {

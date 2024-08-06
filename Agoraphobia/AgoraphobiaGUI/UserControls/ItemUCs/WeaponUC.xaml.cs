@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaAPI.HttpClients;
 using static AgoraphobiaGUI.UserControls.ItemListUC;
 
 namespace AgoraphobiaGUI.UserControls.ItemUCs
@@ -111,7 +112,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             }
         }
 
-        public void PickupWeapon(object sender, MouseButtonEventArgs e)
+        public async void PickupWeapon(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -124,6 +125,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 picked.Player = _player;
                 picked.Quantity = 1;
                 _player += picked;
+                await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
 
                 if (_player.Room.Weapons.Select(x => x.Weapon.Id).Contains(_weapon.Id))
                 {
