@@ -83,8 +83,6 @@ namespace AgoraphobiaGUI
             if (roomEnemyStatus != null)
                 _enemy.Hp = roomEnemyStatus.EnemyHp;
             var weapons = await WeaponInventoryHttpClient.GetWeapons(_player.Id);
-            foreach (var weapon in weapons)
-                _player += weapon;
         }
         public async void Back(object sender, RoutedEventArgs e)
         {

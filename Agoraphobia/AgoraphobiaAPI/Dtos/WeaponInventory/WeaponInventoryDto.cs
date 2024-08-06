@@ -5,6 +5,7 @@ namespace AgoraphobiaAPI.Dtos.WeaponInventory;
 
 public class WeaponInventoryDto
 {
+    public int Id { get; set; }
     public int WeaponId { get; set; }
     public WeaponDto? Weapon { get; set; }
     public int PlayerId { get; set; }

@@ -142,8 +142,9 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             }
         }
 
-        public void DropWeapon(object sender, MouseButtonEventArgs e)
+        public async void DropWeapon(object sender, MouseButtonEventArgs e)
         {
+            await WeaponInventoryHttpClient.RemoveItem(_player.Id, _weapon.Id);
             if (_player.DropWeapon(_weapon))
             {
                 Qty.Text = (int.Parse(Qty.Text) - 1).ToString();

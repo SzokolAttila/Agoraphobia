@@ -1,7 +1,6 @@
 ﻿using AgoraphobiaAPI.Data;
 using AgoraphobiaAPI.Dtos.WeaponInventory;
 using AgoraphobiaAPI.Interfaces;
-using AgoraphobiaLibrary.JoinTables;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +24,13 @@ public class WeaponInventoryRepository : IWeaponInventoryRepository
         await _context.WeaponInventories.AddAsync(weaponInventory);
         await _context.SaveChangesAsync();
         return weaponInventory;
+    }
+
+    public async Task<WeaponInventory?> GetByIdAsync(int weaponInventoryId)
+    {
+        return await _context.WeaponInventories
+            .Include(x => x.Weapon)
+            .FirstOrDefaultAsync(x => x.Id == weaponInventoryId);
     }
 
     public async Task<WeaponInventory?> AddOneAsync(WeaponInventoryRequestDto update)

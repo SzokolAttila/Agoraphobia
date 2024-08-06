@@ -10,6 +10,7 @@ public static class WeaponInventoryMapper
     {
         return new WeaponInventoryDto
         {
+            Id = weaponInventory.Id,
             Quantity = weaponInventory.Quantity,
             PlayerId = weaponInventory.PlayerId,
             Weapon = weaponInventory.Weapon!.ToWeaponDto(),
