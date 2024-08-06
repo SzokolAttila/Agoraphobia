@@ -38,12 +38,11 @@ namespace AgoraphobiaGUI
     /// </summary>
     public partial class GameWindow : Window
     {
-        readonly Grid container;
         private Player _player;
         private Account _account;
         private MainWindow _window;
         public List<int> Exits;
-        Enemy _enemy;
+        private Enemy _enemy;
         Dictionary<string, string> infoTxt = new Dictionary<string, string>()
         {
             { "Defense", "Surprisingly if you hit an enemy, they're going to fight you back. Defense reduces the damage you suffer from the hit, so you should keep that number high enough." },
@@ -60,7 +59,7 @@ namespace AgoraphobiaGUI
             _account = account;
             _window = window;
             _player = player;
-            _enemy = player.Room.Enemy;
+            _enemy = player.Room!.Enemy!;
                 
             InitializeComponent();
             DataContext = new
@@ -72,10 +71,17 @@ namespace AgoraphobiaGUI
             infoTxt.Add("Merchant", $"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}");
             infoTxt.Add("Enemy", $"{_enemy.Name}\n{_player.Room.Enemy.Description}");
 
-
+            RetrieveStatuses();
             //For starter
             _player.WeaponInventories.Add(new WeaponInventory() { 
                 Weapon = new Weapon("fist", "sometimes comes handy", 0, 0, 0.5, 1.5, 0), Quantity=1});
+        }
+
+        private async Task RetrieveStatuses()
+        {
+            var roomEnemyStatus = await RoomEnemyStatusHttpClient.GetEnemyStatus(_player.Id, _player.RoomId);
+            if (roomEnemyStatus != null)
+                _enemy.Hp = roomEnemyStatus.EnemyHp;
         }
         public async void Back(object sender, RoutedEventArgs e)
         {

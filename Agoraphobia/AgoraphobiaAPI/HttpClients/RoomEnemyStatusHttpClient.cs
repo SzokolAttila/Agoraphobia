@@ -40,5 +40,15 @@ namespace AgoraphobiaAPI.HttpClients
             if (!statusResp.IsSuccessStatusCode)
                 await CreateStatus(playerId, roomId, health);
         }
+        public static async Task<RoomEnemyStatus?> GetEnemyStatus(int playerId, int roomId)
+        {
+            var statusResponses = await HttpClient.GetAsync($"{ROUTE}roomEnemyStatus/{playerId}");
+            var statusJson = await statusResponses.Content.ReadAsStringAsync();
+            var statuses = JsonConvert.DeserializeObject<List<RoomEnemyStatus>>(statusJson);
+            if (statuses is null)
+                throw new ArgumentException("Player not found");
+            var status = statuses.Find(x => x.RoomId == roomId);
+            return status;
+        }
     }
 }

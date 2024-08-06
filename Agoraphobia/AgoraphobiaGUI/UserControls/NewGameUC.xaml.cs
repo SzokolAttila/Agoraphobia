@@ -22,9 +22,9 @@ namespace AgoraphobiaGUI.UserControls
     
     public partial class NewGameUC : UserControl
     {
-        readonly Grid _container;
+        private readonly Grid _container;
         private readonly Account _account;
-        private MainWindow _window;
+        private readonly MainWindow _window;
         public NewGameUC(Grid container, Account account, MainWindow window)
         {
             InitializeComponent();
