@@ -7,12 +7,8 @@ using Newtonsoft.Json;
 
 namespace AgoraphobiaAPI.HttpClients
 {
-    public static class AccountHttpClient
+    public class AccountHttpClient : HttpClientBase
     {
-        private static readonly HttpClient HttpClient = new();
-
-        private const string ROUTE = "http://localhost:5172/agoraphobia/";
-
         public static async Task<Account> Register(string username, string password, bool isPasswordHashed)
         {
             var accounts = await HttpClient.GetAsync($"{ROUTE}accounts");

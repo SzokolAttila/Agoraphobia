@@ -11,12 +11,8 @@ using AgoraphobiaAPI.Mappers;
 
 namespace AgoraphobiaAPI.HttpClients
 {
-    public static class PlayerHttpClient
+    public class PlayerHttpClient : HttpClientBase
     {
-        private static readonly HttpClient HttpClient = new();
-
-        private const string ROUTE = "http://localhost:5172/agoraphobia/";
-
         public static async Task<Player> AddNewPlayer(int accountId, int slotId)
         {
             var accountResp = await HttpClient.GetAsync($"{ROUTE}accounts/{accountId}");
