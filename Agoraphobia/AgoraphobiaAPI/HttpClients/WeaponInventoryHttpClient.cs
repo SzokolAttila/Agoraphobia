@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Runtime.CompilerServices;
+using System.Text;
 using AgoraphobiaAPI.Dtos.WeaponInventory;
+using AgoraphobiaLibrary.JoinTables.Weapons;
 using Newtonsoft.Json;
 
 namespace AgoraphobiaAPI.HttpClients
@@ -17,6 +19,17 @@ namespace AgoraphobiaAPI.HttpClients
             var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await HttpClient.PostAsync($"{ROUTE}weaponInventories", stringContent);
             response.EnsureSuccessStatusCode();
+        }
+
+        public static async Task<List<WeaponInventory>> GetWeapons(int playerId)
+        {
+            var weaponsResp = await HttpClient.GetAsync($"{ROUTE}weaponInventories/{playerId}");
+            weaponsResp.EnsureSuccessStatusCode();
+            var weaponsJson = await weaponsResp.Content.ReadAsStringAsync();
+            var weapons = JsonConvert.DeserializeObject<List<WeaponInventory>>(weaponsJson);
+            if (weapons is null)
+                throw new ArgumentException("Player not found");
+            return weapons;
         }
     }
 }

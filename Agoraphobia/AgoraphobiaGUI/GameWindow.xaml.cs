@@ -71,18 +71,20 @@ namespace AgoraphobiaGUI
             infoTxt.Add("Merchant", $"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}");
             infoTxt.Add("Enemy", $"{_enemy.Name}\n{_player.Room.Enemy.Description}");
 
-            RetrieveStatuses();
+            LoadData();
             //For starter
             _player.WeaponInventories.Add(new WeaponInventory() { 
                 Weapon = new Weapon("fist", "sometimes comes handy", 0, 0, 0.5, 1.5, 0), Quantity=1});
         }
 
-        private async Task RetrieveStatuses()
+        private async Task LoadData()
         {
             var roomEnemyStatus = await RoomEnemyStatusHttpClient.GetEnemyStatus(_player.Id, _player.RoomId);
             if (roomEnemyStatus != null)
                 _enemy.Hp = roomEnemyStatus.EnemyHp;
-
+            var weapons = await WeaponInventoryHttpClient.GetWeapons(_player.Id);
+            foreach (var weapon in weapons)
+                _player += weapon;
         }
         public async void Back(object sender, RoutedEventArgs e)
         {

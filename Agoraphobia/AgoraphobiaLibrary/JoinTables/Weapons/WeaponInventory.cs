@@ -1,4 +1,6 @@
-﻿namespace AgoraphobiaLibrary.JoinTables.Weapons;
+﻿using Newtonsoft.Json;
+
+namespace AgoraphobiaLibrary.JoinTables.Weapons;
 
 public class WeaponInventory
 {
