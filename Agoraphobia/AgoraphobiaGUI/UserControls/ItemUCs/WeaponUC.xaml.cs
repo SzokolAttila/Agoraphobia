@@ -116,18 +116,18 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                int _idx = _player.Room.Weapons.FindIndex(x => x.Weapon.Id == _weapon.Id);
-
-                WeaponInventory picked = new WeaponInventory();
-                picked.WeaponId = _weapon.Id;
-                picked.Weapon = _player.Room.PickupWeapon(_idx);
-                picked.PlayerId = _player.Id;
-                picked.Player = _player;
-                picked.Quantity = 1;
+                var picked = new WeaponInventory()
+                {
+                    WeaponId = _weapon.Id,
+                    PlayerId = _player.Id,
+                    Quantity = 1,
+                    Weapon = _weapon
+                };
                 _player += picked;
                 await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
+                await RoomWeaponLootStatusHttpClient.RemoveItem(_player.Id, _weapon.Id, _player.RoomId);
 
-                if (_player.Room.Weapons.Select(x => x.Weapon.Id).Contains(_weapon.Id))
+                if (_qty > 1)
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }
@@ -145,6 +145,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         public async void DropWeapon(object sender, MouseButtonEventArgs e)
         {
             await WeaponInventoryHttpClient.RemoveItem(_player.Id, _weapon.Id);
+            await RoomWeaponLootStatusHttpClient.AddItem(_player.Id, _weapon.Id, _player.RoomId);
             if (_player.DropWeapon(_weapon))
             {
                 Qty.Text = (int.Parse(Qty.Text) - 1).ToString();

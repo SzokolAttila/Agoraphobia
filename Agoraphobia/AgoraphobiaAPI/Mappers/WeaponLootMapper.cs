@@ -11,7 +11,9 @@ public static class WeaponLootMapper
         return new WeaponLootDto
         {
             Quantity = weaponLoot.Quantity,
-            Weapon = weaponLoot.Weapon!.ToWeaponDto()
+            Weapon = weaponLoot.Weapon!.ToWeaponDto(),
+            RoomId = weaponLoot.RoomId,
+            WeaponId = weaponLoot.WeaponId
         };
     }
 

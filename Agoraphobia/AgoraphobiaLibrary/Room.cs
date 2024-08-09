@@ -95,20 +95,6 @@ namespace AgoraphobiaLibrary
             MerchantId = merchantId;
         }
 
-        public Weapon PickupWeapon(int index)
-        {
-            WeaponLoot weapon = Weapons.ElementAt(index);
-            if (weapon.Quantity == 1)
-            {
-                Weapons.RemoveAt(index);
-            }
-            else
-            {
-                weapon.Quantity--;
-            }
-            return weapon.Weapon;
-        }
-
         public Armor PickupArmor(int index)
         {
             ArmorLoot armor = Armors.ElementAt(index);

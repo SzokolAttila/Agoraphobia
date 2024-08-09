@@ -73,34 +73,27 @@ namespace AgoraphobiaAPI.Controllers
             await _weaponStatusRepository.CreateAsync(status);
             return Created("agoraphobia/roomWeaponLootStatus", status.ToRoomWeaponLootStatusDto());
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromWeaponLoot([FromBody] WeaponLootStatusRequestDto statusDto)
+        [HttpDelete("{roomWeaponLootStatusId}")]
+        public async Task<IActionResult> RemoveFromWeaponLoot([FromRoute] int roomWeaponLootStatusId)
         {
-            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
-            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
-            var weapon = await _weaponRepository.GetByIdAsync(statusDto.WeaponId);
-            if (player is null)
-                return BadRequest("Player not found");
-            if (room is null)
-                return BadRequest("Room not found");
-            if (weapon is null)
-                return BadRequest("Weapon not found");
-
-            var lootStatuses = await _weaponStatusRepository.GetRoomWeaponLootStatusesAsync(player.Id);
-            var lootStatus = lootStatuses.FirstOrDefault(x => x.RoomId == room.Id && x.WeaponId == weapon.Id);
+            var lootStatus = await _weaponStatusRepository.GetByIdAsync(roomWeaponLootStatusId);
             if (lootStatus is null)
                 return NotFound();
 
-            if (lootStatus.Quantity > 1)
+            if (lootStatus.Quantity > 0)
             {
-                var updated = await _weaponStatusRepository.RemoveOneAsync(statusDto);
+                var updated = await _weaponStatusRepository.RemoveOneAsync(new WeaponLootStatusRequestDto()
+                {
+                    PlayerId = lootStatus.PlayerId,
+                    RoomId = lootStatus.RoomId,
+                    WeaponId = lootStatus.WeaponId
+                });
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
                 return Ok(updated.ToRoomWeaponLootStatusDto());
             }
 
-            await _weaponStatusRepository.DeleteAsync(lootStatus);
-            return NoContent();
+            return BadRequest("Item not found in inventory");
         }
     }
 }

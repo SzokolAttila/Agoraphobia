@@ -13,7 +13,9 @@ namespace AgoraphobiaAPI.Mappers
                 Weapon = status.Weapon!.ToWeaponDto(),
                 PlayerId = status.PlayerId,
                 Quantity = status.Quantity,
-                Room = status.Room!.ToRoomDto()
+                RoomId = status.RoomId,
+                Id = status.Id,
+                WeaponId = status.WeaponId
             };
         }
     }

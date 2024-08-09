@@ -72,9 +72,6 @@ namespace AgoraphobiaGUI
             infoTxt.Add("Enemy", $"{_enemy.Name}\n{_player.Room.Enemy.Description}");
 
             LoadData();
-            //For starter
-            _player.WeaponInventories.Add(new WeaponInventory() { 
-                Weapon = new Weapon("fist", "sometimes comes handy", 0, 0, 0.5, 1.5, 0), Quantity=1});
         }
 
         private async Task LoadData()
@@ -82,7 +79,7 @@ namespace AgoraphobiaGUI
             var roomEnemyStatus = await RoomEnemyStatusHttpClient.GetEnemyStatus(_player.Id, _player.RoomId);
             if (roomEnemyStatus != null)
                 _enemy.Hp = roomEnemyStatus.EnemyHp;
-            var weapons = await WeaponInventoryHttpClient.GetWeapons(_player.Id);
+            await RoomWeaponLootStatusHttpClient.EnterRoom(_player.Id, _player.RoomId);
         }
         public async void Back(object sender, RoutedEventArgs e)
         {
@@ -214,11 +211,12 @@ namespace AgoraphobiaGUI
             PlaceUCToMouse(nested);
         }
 
-        public void LootWindow(object sender, MouseButtonEventArgs e)
+        public async void LootWindow(object sender, MouseButtonEventArgs e)
         {
             Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
             List<UserControl> weapons = new List<UserControl>();
-            foreach (var weapon in _player.Room.Weapons)
+            var weaponLootStatuslList = await RoomWeaponLootStatusHttpClient.GetWeapons(_player.Id, _player.RoomId);
+            foreach (var weapon in weaponLootStatuslList.Where(x => x.Quantity > 0))
             {
                 weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Loot, weapon.Quantity));
             }
