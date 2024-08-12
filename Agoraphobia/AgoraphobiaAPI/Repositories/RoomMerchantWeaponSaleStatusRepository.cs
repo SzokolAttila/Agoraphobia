@@ -61,6 +61,12 @@ namespace AgoraphobiaAPI.Repositories
             return status;
         }
 
+        public async Task<RoomMerchantWeaponSaleStatus?> GetByIdAsync(int id)
+        {
+            return await _context.RoomMerchantWeaponSaleStatus
+                .Include(x => x.Weapon)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
         public async Task<RoomMerchantWeaponSaleStatus?> AddOneAsync(WeaponSaleStatusRequestDto update)
         {
             var status = await _context.RoomMerchantWeaponSaleStatus.FirstOrDefaultAsync(

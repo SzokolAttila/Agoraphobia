@@ -15,6 +15,7 @@ namespace AgoraphobiaAPI.Dtos.Room
         public List<ArmorLootDto> Armors { get; set; }
         public List<ConsumableLootDto> Consumables { get; set; }
         public EnemyDto Enemy { get; set; }
+        public int MerchantId { get; set; }
         public MerchantDto Merchant { get; set; } = new();
         public int OrientationId { get; set; }
     }

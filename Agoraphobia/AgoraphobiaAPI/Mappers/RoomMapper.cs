@@ -19,6 +19,7 @@ public static class RoomMapper
             Description = room.Description,
             OrientationId = room.OrientationId,
             Merchant = room.Merchant!.ToMerchantDto(),
+            MerchantId = room.MerchantId, 
             Enemy = room.Enemy!.ToEnemyDto(),
             Weapons = room.Weapons.Select(x => x.ToWeaponLootDto()).ToList(),
             Armors = room.Armors.Select(x => x.ToArmorLootDto()).ToList(),

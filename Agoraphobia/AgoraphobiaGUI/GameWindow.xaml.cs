@@ -79,12 +79,11 @@ namespace AgoraphobiaGUI
             var roomEnemyStatus = await RoomEnemyStatusHttpClient.GetEnemyStatus(_player.Id, _player.RoomId);
             if (roomEnemyStatus != null)
                 _enemy.Hp = roomEnemyStatus.EnemyHp;
-            await RoomWeaponLootStatusHttpClient.EnterRoom(_player.Id, _player.RoomId);
+            await RoomWeaponLootStatusHttpClient.CopyWeapons(_player.Id, _player.RoomId);
+            await WeaponSaleStatusHttpClient.CopyWeapons(_player.Id, _player.RoomId, _player.Room!.MerchantId);
         }
-        public async void Back(object sender, RoutedEventArgs e)
+        public void Back(object sender, RoutedEventArgs e)
         {
-            await PlayerHttpClient.Save(_player);
-            await RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
             new MainWindow(_account).Show();
             Close();
         }
@@ -161,11 +160,13 @@ namespace AgoraphobiaGUI
             PlaceUCToMouse(nested);
         }
 
-        public void TradeWindow(object sender, MouseButtonEventArgs e)
+        public async void TradeWindow(object sender, MouseButtonEventArgs e)
         {
             Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
             List<UserControl> weapons = new List<UserControl>();
-            foreach (var weapon in _player.Room.Merchant.WeaponSales)
+            var weaponSaleStatusList = await WeaponSaleStatusHttpClient
+                .GetWeapons(_player.Id, _player.RoomId, _player.Room.MerchantId);
+            foreach (var weapon in weaponSaleStatusList.Where(x => x.Quantity > 0))
             {
                 weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Merchant, weapon.Quantity));
             }

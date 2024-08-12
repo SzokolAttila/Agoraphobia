@@ -12,7 +12,9 @@ namespace AgoraphobiaAPI.Mappers
             return new WeaponSaleDto
             {
                 Weapon = weaponSale.Weapon!.ToWeaponDto(),
-                Quantity = weaponSale.Quantity
+                Quantity = weaponSale.Quantity,
+                MerchantId = weaponSale.MerchantId,
+                WeaponId = weaponSale.WeaponId
             };
         }
         public static UpdateWeaponSaleRequestDto ToUpdateWeaponSaleRequestDto(this WeaponSale weaponSale)

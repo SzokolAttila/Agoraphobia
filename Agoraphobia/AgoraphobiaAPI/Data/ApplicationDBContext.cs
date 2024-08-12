@@ -290,7 +290,8 @@ namespace AgoraphobiaAPI.Data
                 .HasForeignKey(x => x.ArmorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<RoomMerchantWeaponSaleStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId, y.MerchantId, y.WeaponId }));
+            builder.Entity<RoomMerchantWeaponSaleStatus>(x => 
+                x.HasKey(y => y.Id));
             builder.Entity<RoomMerchantWeaponSaleStatus>()
                 .HasOne(x => x.Room)
                 .WithMany(x => x.RoomMerchantWeaponSaleStatus)

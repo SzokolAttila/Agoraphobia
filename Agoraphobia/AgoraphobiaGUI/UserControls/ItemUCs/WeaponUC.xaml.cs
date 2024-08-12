@@ -77,27 +77,39 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }
 
-        public void UseWeapon(object sender, MouseButtonEventArgs e)
-        {
-            _player.AttackEnemy(_enemy, _weapon);
-        }
-
-        public void BuyWeapon(object sender, MouseButtonEventArgs e)
+        public async void UseWeapon(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                int _idx = _player.Room.Merchant.WeaponSales.FindIndex(x => x.Weapon.Id == _weapon.Id);
+                _player.AttackEnemy(_enemy, _weapon);
+                await PlayerHttpClient.Save(_player);
+                await RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public async void BuyWeapon(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
                 _player.DreamCoins -= _weapon.Price;
 
-                WeaponInventory bought = new WeaponInventory();
-                bought.WeaponId = _weapon.Id;
-                bought.Weapon = _player.Room.Merchant.BuyWeapon(_idx);
-                bought.PlayerId = _player.Id;
-                bought.Player = _player;
-                bought.Quantity = 1;
+                var bought = new WeaponInventory()
+                {
+                    PlayerId = _player.Id,
+                    Quantity = 1,
+                    WeaponId = _weapon.Id,
+                    Weapon = _weapon
+                };
                 _player += bought;
-
-                if (_player.Room.Merchant.WeaponSales.Select(x => x.Weapon.Id).Contains(_weapon.Id))
+                await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
+                await WeaponSaleStatusHttpClient
+                    .RemoveItem(_player.Id, _weapon.Id, _player.RoomId, _player.Room!.MerchantId);
+                await PlayerHttpClient.Save(_player);
+                if (_qty > 1)
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }

@@ -81,39 +81,29 @@ namespace AgoraphobiaAPI.Controllers
             await _weaponSaleStatusRepository.CreateAsync(status);
             return Created("agoraphobia/roomMerchantWeaponSaleStatus", status.ToRoomMerchantWeaponSaleStatusDto());
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromWeaponSales([FromBody] WeaponSaleStatusRequestDto statusDto)
+        [HttpDelete("{weaponSaleStatusId}")]
+        public async Task<IActionResult> RemoveFromWeaponSales([FromRoute] int weaponSaleStatusId)
         {
-            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
-            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
-            var weapon = await _weaponRepository.GetByIdAsync(statusDto.WeaponId);
-            var merchant = await _merchantRepository.GetByIdAsync(statusDto.MerchantId);
-            if (player is null)
-                return BadRequest("Player not found");
-            if (room is null)
-                return BadRequest("Room not found");
-            if (weapon is null)
-                return BadRequest("Weapon not found");
-            if (merchant is null)
-                return BadRequest("Merchant not found");
-
-            var weaponSaleStatusList = await _weaponSaleStatusRepository.GetWeaponSalesAsync(player.Id);
-            var saleStatus = weaponSaleStatusList.FirstOrDefault(x => x.RoomId == room.Id
-                                                                     && x.WeaponId == weapon.Id
-                                                                     && x.MerchantId == merchant.Id);
+            var saleStatus = await _weaponSaleStatusRepository.GetByIdAsync(weaponSaleStatusId);
             if (saleStatus is null)
                 return NotFound();
 
-            if (saleStatus.Quantity > 1)
+            if (saleStatus.Quantity > 0)
             {
-                var updated = await _weaponSaleStatusRepository.RemoveOneAsync(statusDto);
+                var updated = await _weaponSaleStatusRepository
+                    .RemoveOneAsync(new WeaponSaleStatusRequestDto()
+                {
+                    RoomId = saleStatus.RoomId,
+                    MerchantId = saleStatus.MerchantId,
+                    PlayerId = saleStatus.PlayerId,
+                    WeaponId = saleStatus.WeaponId,
+                });
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
                 return Ok(updated.ToRoomMerchantWeaponSaleStatusDto());
             }
 
-            await _weaponSaleStatusRepository.DeleteAsync(saleStatus);
-            return NoContent();
+            return BadRequest("Weapon not available for sale");
         }
     }
 }

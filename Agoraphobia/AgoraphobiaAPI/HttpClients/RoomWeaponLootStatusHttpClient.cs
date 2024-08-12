@@ -36,7 +36,7 @@ namespace AgoraphobiaAPI.HttpClients
             var response = await HttpClient.DeleteAsync($"{ROUTE}roomWeaponLootStatus/{weaponLootStatus.Id}");
             response.EnsureSuccessStatusCode();
         }
-        public static async Task EnterRoom(int playerId, int roomId)
+        public static async Task CopyWeapons(int playerId, int roomId)
         {
             var statusesResp = await HttpClient.GetAsync($"{ROUTE}roomWeaponLootStatus/{playerId}");
             statusesResp.EnsureSuccessStatusCode();
