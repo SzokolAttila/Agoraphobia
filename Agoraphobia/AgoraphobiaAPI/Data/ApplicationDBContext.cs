@@ -147,7 +147,7 @@ namespace AgoraphobiaAPI.Data
                 .WithMany(x => x.ConsumableDroprates)
                 .HasForeignKey(x => x.ConsumableId);
 
-            builder.Entity<Effect>(x => x.HasKey(y => new { y.PlayerId, y.ConsumableId }));
+            builder.Entity<Effect>(x => x.HasKey(y => y.Id));
             builder.Entity<Effect>()
                 .HasOne(x => x.Player)
                 .WithMany(x => x.Effects)

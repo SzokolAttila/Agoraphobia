@@ -26,16 +26,11 @@ public class EffectRepository : IEffectRepository
         return effect;
     }
 
-    public async Task<Effect?> AddOneAsync(EffectRequestDto update)
+    public async Task<Effect?> GetByIdAsync(int id)
     {
-        var effect = await _context.Effects.FirstOrDefaultAsync(
-            x => x.ConsumableId == update.ConsumableId && x.PlayerId == update.PlayerId);
-        if (effect is null)
-            return null;
-
-        effect.CurrentDuration = effect.Consumable.Duration;
-        await _context.SaveChangesAsync();
-        return effect;
+        return await _context.Effects
+            .Include(x => x.Consumable)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Effect?> DeleteAsync(Effect effect)
@@ -49,14 +44,13 @@ public class EffectRepository : IEffectRepository
         return effectModel;
     }
 
-    public async Task<Effect?> RemoveOneAsync(EffectRequestDto update)
+    public async Task<Effect?> RemoveOneAsync(int id)
     {
-        var effect = await _context.Effects.FirstOrDefaultAsync(
-            x => x.ConsumableId == update.ConsumableId && x.PlayerId == update.PlayerId);
+        var effect = await _context.Effects.FirstOrDefaultAsync(x => x.Id == id);
         if (effect is null)
             return null;
 
-        effect.CurrentDuration -= 1;
+        effect.CurrentDuration--;
         await _context.SaveChangesAsync();
         return effect;
     }

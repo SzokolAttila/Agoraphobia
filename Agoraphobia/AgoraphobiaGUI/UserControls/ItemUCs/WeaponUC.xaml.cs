@@ -82,6 +82,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             try
             {
                 _player.AttackEnemy(_enemy, _weapon);
+                await ConsumableInventoryHttpClient.DecreaseDuration(_player.Id);
                 await PlayerHttpClient.Save(_player);
                 await RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
             }
@@ -105,9 +106,9 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     Weapon = _weapon
                 };
                 _player += bought;
-                await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
                 await WeaponSaleStatusHttpClient
                     .RemoveItem(_player.Id, _weapon.Id, _player.RoomId, _player.Room!.MerchantId);
+                await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
                 await PlayerHttpClient.Save(_player);
                 if (_qty > 1)
                 {
@@ -135,9 +136,9 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     Quantity = 1,
                     Weapon = _weapon
                 };
-                _player += picked;
-                await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
                 await RoomWeaponLootStatusHttpClient.RemoveItem(_player.Id, _weapon.Id, _player.RoomId);
+                await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
+                _player += picked;
 
                 if (_qty > 1)
                 {
@@ -156,15 +157,22 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public async void DropWeapon(object sender, MouseButtonEventArgs e)
         {
-            await WeaponInventoryHttpClient.RemoveItem(_player.Id, _weapon.Id);
-            await RoomWeaponLootStatusHttpClient.AddItem(_player.Id, _weapon.Id, _player.RoomId);
-            if (_player.DropWeapon(_weapon))
+            try
             {
-                Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                await WeaponInventoryHttpClient.RemoveItem(_player.Id, _weapon.Id);
+                await RoomWeaponLootStatusHttpClient.AddItem(_player.Id, _weapon.Id, _player.RoomId);
+                if (_player.DropWeapon(_weapon))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Visibility = Visibility.Collapsed;
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

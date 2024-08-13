@@ -77,15 +77,24 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }
 
-        public void UseConsumable(object sender, MouseButtonEventArgs e)
+        public async void UseConsumable(object sender, MouseButtonEventArgs e)
         {
-            if (_player.UseConsumable(_consumable))
+            try
             {
-                Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                await ConsumableInventoryHttpClient.ApplyEffect(_player.Id, _consumable.Id);
+                if (_player.UseConsumable(_consumable))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
+                await PlayerHttpClient.Save(_player);
             }
-            else
+            catch (Exception ex)
             {
-                Visibility = Visibility.Collapsed;
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -130,13 +139,14 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     PlayerId = _player.Id,
                     Quantity = 1
                 };
-                _player += picked;
-                await ConsumableInventoryHttpClient.AddItem(_player.Id, _consumable.Id);
                 await ConsumableLootStatusHttpClient.RemoveItem(_player.Id, _consumable.Id, _player.RoomId);
+                await ConsumableInventoryHttpClient.AddItem(_player.Id, _consumable.Id);
+                _player += picked;
 
                 if (_qty > 1)
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                    _qty--;
                 }
                 else
                 {
@@ -151,15 +161,22 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
 
         public async void DropConsumable(object sender, MouseButtonEventArgs e)
         {
-            await ConsumableInventoryHttpClient.RemoveItem(_player.Id, _consumable.Id);
-            await ConsumableLootStatusHttpClient.AddItem(_player.Id, _consumable.Id, _player.RoomId);
-            if (_player.DropConsumable(_consumable))
+            try
             {
-                Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                await ConsumableInventoryHttpClient.RemoveItem(_player.Id, _consumable.Id);
+                await ConsumableLootStatusHttpClient.AddItem(_player.Id, _consumable.Id, _player.RoomId);
+                if (_player.DropConsumable(_consumable))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Visibility = Visibility.Collapsed;
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

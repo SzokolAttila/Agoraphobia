@@ -10,7 +10,10 @@ public static class EffectMapper
         return new EffectDto
         {
             CurrentDuration = effect.CurrentDuration,
-            Consumable = effect.Consumable!.ToConsumableDto()
+            Consumable = effect.Consumable!.ToConsumableDto(),
+            PlayerId = effect.PlayerId,
+            ConsumableId = effect.ConsumableId,
+            Id = effect.Id
         };
     }
 

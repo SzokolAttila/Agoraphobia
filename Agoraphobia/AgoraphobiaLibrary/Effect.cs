@@ -8,12 +8,11 @@ namespace AgoraphobiaLibrary
 {
     public class Effect
     {
+        public int Id { get; set; }
         public int ConsumableId { get; set; }
-        public Consumable Consumable { get; set; }
+        public Consumable? Consumable { get; set; }
         public int PlayerId { get; set; }
-        public Player Player { get; set; }
+        public Player? Player { get; set; }
         public int CurrentDuration { get; set; }
-
-
     }
 }

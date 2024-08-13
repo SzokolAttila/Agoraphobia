@@ -184,7 +184,7 @@ public class Player : INotifyPropertyChanged
         }
         else
         {
-            Health -= target.Attack;
+            Health -= (target.Attack - Defense);
         }
 
         List<Effect> effects = new List<Effect>();

@@ -14,11 +14,11 @@ namespace AgoraphobiaLibrary
     {
         public int Energy { get; set; }
 
-        public int Hp { get; set; }
+        public double Hp { get; set; }
 
-        public int Defense { get; set; }
+        public double Defense { get; set; }
 
-        public int Attack { get; set; }
+        public double Attack { get; set; }
 
         [JsonIgnore]
         private int duration;
@@ -41,11 +41,11 @@ namespace AgoraphobiaLibrary
             }
         }
         
-        public int Sanity { get; set; }
+        public double Sanity { get; set; }
 
         [JsonConstructor]
         public Consumable(int id, string name, string description, int rarityIdx, int price,
-            int energy, int hp, int defense, int attack, int duration, int sanity) : base(id, name, description, rarityIdx, price)
+            int energy, double hp, double defense, double attack, int duration, double sanity) : base(id, name, description, rarityIdx, price)
         {
             Energy = energy;
             Hp = hp;
@@ -56,7 +56,7 @@ namespace AgoraphobiaLibrary
         }
 
         public Consumable(string name, string description, int rarityIdx, int price,
-            int energy, int hp, int defense, int attack, int duration, int sanity) : base(name, description, rarityIdx, price)
+            int energy, double hp, double defense, double attack, int duration, double sanity) : base(name, description, rarityIdx, price)
         {
             Energy = energy;
             Hp = hp;

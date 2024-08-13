@@ -36,7 +36,7 @@ public class EffectController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddToEffect(EffectRequestDto effectRequestDto)
+    public async Task<IActionResult> AddEffect(EffectRequestDto effectRequestDto)
     {
         var player = await _playerRepository.GetByIdAsync(effectRequestDto.PlayerId);
         var consumable = await _consumableRepository.GetByIdAsync(effectRequestDto.ConsumableId);
@@ -45,15 +45,7 @@ public class EffectController : ControllerBase
         if (consumable is null)
             return BadRequest("Consumable not found");
         
-        var effects = await _effectRepository.GetEffectsAsync(player.Id);
-        if (effects.Exists(x => x.ConsumableId == consumable.Id))
-        {
-            var updated = await _effectRepository.AddOneAsync(effectRequestDto);
-            if (updated is null)
-                return BadRequest("Something unexpected happened");
-            return Ok(updated.ToUpdateEffectRequestDto());
-        }
-        var effect = new Effect()
+        var newEffect = new Effect()
         {
             PlayerId = player.Id,
             ConsumableId = consumable.Id,
@@ -61,28 +53,20 @@ public class EffectController : ControllerBase
             Player = player,
             Consumable = consumable
         };
-        await _effectRepository.CreateAsync(effect);
-        return Created("agoraphobia/effects", effect.ToUpdateEffectRequestDto());
+        await _effectRepository.CreateAsync(newEffect);
+        return Created("agoraphobia/effects", newEffect.ToUpdateEffectRequestDto());
     }
     
-    [HttpDelete]
-    public async Task<IActionResult> RemoveFromEffect([FromBody] EffectRequestDto effectRequestDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromEffect([FromRoute] int id)
     {
-        var player = await _playerRepository.GetByIdAsync(effectRequestDto.PlayerId);
-        var consumable = await _consumableRepository.GetByIdAsync(effectRequestDto.ConsumableId);
-        if (player is null)
-            return BadRequest("Player not found");
-        if (consumable is null)
-            return BadRequest("Consumable not found");
-
-        var effects = await _effectRepository.GetEffectsAsync(player.Id);
-        var effect = effects.FirstOrDefault(x => x.ConsumableId == consumable.Id);
+        var effect = await _effectRepository.GetByIdAsync(id);
         if (effect is null)
             return NotFound();
         
         if (effect.CurrentDuration > 1)
         {
-            var updated = await _effectRepository.RemoveOneAsync(effectRequestDto);
+            var updated = await _effectRepository.RemoveOneAsync(id);
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
             return Ok(updated.ToUpdateEffectRequestDto());
