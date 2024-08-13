@@ -80,6 +80,7 @@ namespace AgoraphobiaGUI
             if (roomEnemyStatus != null)
                 _enemy.Hp = roomEnemyStatus.EnemyHp;
             await RoomWeaponLootStatusHttpClient.CopyWeapons(_player.Id, _player.RoomId);
+            await ConsumableLootStatusHttpClient.CopyConsumables(_player.Id, _player.RoomId);
             await WeaponSaleStatusHttpClient.CopyWeapons(_player.Id, _player.RoomId, _player.Room!.MerchantId);
         }
         public void Back(object sender, RoutedEventArgs e)
@@ -231,7 +232,9 @@ namespace AgoraphobiaGUI
             ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Price", "Qty" });
 
             List<UserControl> consumables = new List<UserControl>();
-            foreach (var consumable in _player.Room.Consumables)
+            var consumableLootStatusList = await ConsumableLootStatusHttpClient
+                .GetConsumables(_player.Id, _player.RoomId);
+            foreach (var consumable in consumableLootStatusList.Where(x => x.Quantity > 0))
             {
                 consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Loot, consumable.Quantity));
             }

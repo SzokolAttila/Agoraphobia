@@ -73,34 +73,28 @@ namespace AgoraphobiaAPI.Controllers
             await _consumableStatusRepository.CreateAsync(status);
             return Created("agoraphobia/roomConsumableLootStatus", status.ToRoomConsumableLootStatusDto());
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromConsumableLoot([FromBody] ConsumableLootStatusRequestDto statusDto)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveFromConsumableLoot([FromRoute] int id)
         {
-            var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
-            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
-            var consumable = await _consumableRepository.GetByIdAsync(statusDto.ConsumableId);
-            if (player is null)
-                return BadRequest("Player not found");
-            if (room is null)
-                return BadRequest("Room not found");
-            if (consumable is null)
-                return BadRequest("Consumable not found");
-
-            var lootStatuses = await _consumableStatusRepository.GetRoomConsumableLootStatusesAsync(player.Id);
-            var lootStatus = lootStatuses.FirstOrDefault(x => x.RoomId == room.Id && x.ConsumableId == consumable.Id);
+            var lootStatus = await _consumableStatusRepository.GetByIdAsync(id);
             if (lootStatus is null)
                 return NotFound();
 
-            if (lootStatus.Quantity > 1)
+            if (lootStatus.Quantity > 0)
             {
-                var updated = await _consumableStatusRepository.RemoveOneAsync(statusDto);
+                var updated = await _consumableStatusRepository
+                    .RemoveOneAsync(new ConsumableLootStatusRequestDto()
+                {
+                    RoomId = lootStatus.RoomId,
+                    ConsumableId = lootStatus.ConsumableId,
+                    PlayerId = lootStatus.PlayerId
+                });
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
                 return Ok(updated.ToRoomConsumableLootStatusDto());
             }
 
-            await _consumableStatusRepository.DeleteAsync(lootStatus);
-            return NoContent();
+            return BadRequest("Consumable not found in room");
         }
     }
 }

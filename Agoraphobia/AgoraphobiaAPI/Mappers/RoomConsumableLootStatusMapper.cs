@@ -12,7 +12,9 @@ namespace AgoraphobiaAPI.Mappers
                 Consumable = status.Consumable!.ToConsumableDto(),
                 PlayerId = status.PlayerId,
                 Quantity = status.Quantity,
-                Room = status.Room!.ToRoomDto()
+                ConsumableId = status.ConsumableId,
+                Id = status.Id,
+                RoomId = status.RoomId,
             };
         }
     }

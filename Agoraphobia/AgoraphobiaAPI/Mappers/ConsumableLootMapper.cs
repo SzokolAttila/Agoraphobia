@@ -10,7 +10,9 @@ public static class ConsumableLootMapper
         return new ConsumableLootDto
         {
             Quantity = consumableLoot.Quantity,
-            Consumable = consumableLoot.Consumable!.ToConsumableDto()
+            Consumable = consumableLoot.Consumable!.ToConsumableDto(),
+            RoomId = consumableLoot.RoomId,
+            ConsumableId = consumableLoot.ConsumableId
         };
     }
 

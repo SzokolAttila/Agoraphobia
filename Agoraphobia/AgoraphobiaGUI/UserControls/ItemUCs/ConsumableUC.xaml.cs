@@ -132,6 +132,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 };
                 _player += picked;
                 await ConsumableInventoryHttpClient.AddItem(_player.Id, _consumable.Id);
+                await ConsumableLootStatusHttpClient.RemoveItem(_player.Id, _consumable.Id, _player.RoomId);
 
                 if (_qty > 1)
                 {
@@ -151,6 +152,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         public async void DropConsumable(object sender, MouseButtonEventArgs e)
         {
             await ConsumableInventoryHttpClient.RemoveItem(_player.Id, _consumable.Id);
+            await ConsumableLootStatusHttpClient.AddItem(_player.Id, _consumable.Id, _player.RoomId);
             if (_player.DropConsumable(_consumable))
             {
                 Qty.Text = (int.Parse(Qty.Text) - 1).ToString();

@@ -9,7 +9,7 @@ namespace AgoraphobiaAPI.Interfaces
         public Task<List<RoomConsumableLootStatus>> GetRoomConsumableLootStatusesAsync(int playerId);
         public Task<RoomConsumableLootStatus> CreateAsync(RoomConsumableLootStatus status);
         public Task<RoomConsumableLootStatus?> AddOneAsync(ConsumableLootStatusRequestDto update);
-        public Task<RoomConsumableLootStatus?> DeleteAsync(RoomConsumableLootStatus status);
+        public Task<RoomConsumableLootStatus?> GetByIdAsync(int id);
         public Task<RoomConsumableLootStatus?> RemoveOneAsync(ConsumableLootStatusRequestDto update);
     }
 }
