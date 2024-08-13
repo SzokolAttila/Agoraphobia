@@ -109,20 +109,6 @@ namespace AgoraphobiaLibrary
             return armor.Armor;
         }
 
-        public Consumable PickupConsumable(int index)
-        {
-            ConsumableLoot consumable = Consumables.ElementAt(index);
-            if (consumable.Quantity == 1)
-            {
-                Consumables.RemoveAt(index);
-            }
-            else
-            {
-                consumable.Quantity--;
-            }
-            return consumable.Consumable;
-        }
-
         public void DropWeapon(Weapon weapon)
         {
             List<WeaponLoot> wls = Weapons.Where(x => x.Weapon.Id == weapon.Id).ToList();

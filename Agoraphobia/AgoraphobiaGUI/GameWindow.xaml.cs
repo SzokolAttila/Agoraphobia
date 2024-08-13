@@ -82,6 +82,7 @@ namespace AgoraphobiaGUI
             await RoomWeaponLootStatusHttpClient.CopyWeapons(_player.Id, _player.RoomId);
             await ConsumableLootStatusHttpClient.CopyConsumables(_player.Id, _player.RoomId);
             await WeaponSaleStatusHttpClient.CopyWeapons(_player.Id, _player.RoomId, _player.Room!.MerchantId);
+            await ConsumableSaleStatusHttpClient.CopyConsumables(_player.Id, _player.RoomId, _player.Room!.MerchantId);
         }
         public void Back(object sender, RoutedEventArgs e)
         {
@@ -181,7 +182,9 @@ namespace AgoraphobiaGUI
             ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Price", "Qty" });
 
             List<UserControl> consumables = new List<UserControl>();
-            foreach (var consumable in _player.Room.Merchant.ConsumableSales)
+            var consumableSaleStatusList = await ConsumableSaleStatusHttpClient
+                .GetConsumables(_player.Id, _player.RoomId, _player.Room.MerchantId);
+            foreach (var consumable in consumableSaleStatusList.Where(x => x.Quantity > 0))
             {
                 consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Merchant, consumable.Quantity));
             }

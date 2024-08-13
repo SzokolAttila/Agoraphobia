@@ -98,22 +98,27 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             }
         }
 
-        public void BuyConsumable(object sender, MouseButtonEventArgs e)
+        public async void BuyConsumable(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                int _idx = _player.Room.Merchant.ConsumableSales.FindIndex(x => x.Consumable.Id == _consumable.Id);
                 _player.DreamCoins -= _consumable.Price;
 
-                ConsumableInventory bought = new ConsumableInventory();
-                bought.ConsumableId = _consumable.Id;
-                bought.Consumable = _player.Room.Merchant.BuyConsumable(_idx);
-                bought.PlayerId = _player.Id;
-                bought.Player = _player;
-                bought.Quantity = 1;
+                var bought = new ConsumableInventory()
+                {
+                    ConsumableId = _consumable.Id,
+                    Consumable = _consumable,
+                    PlayerId = _player.Id,
+                    Quantity = 1
+                };
                 _player += bought;
 
-                if (_player.Room.Merchant.ConsumableSales.Select(x => x.Consumable.Id).Contains(_consumable.Id))
+                await ConsumableSaleStatusHttpClient
+                    .RemoveItem(_player.Id, _consumable.Id, _player.RoomId, _player.Room!.MerchantId);
+                await ConsumableInventoryHttpClient.AddItem(_player.Id, _consumable.Id);
+                await PlayerHttpClient.Save(_player);
+
+                if (_qty > 1)
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }

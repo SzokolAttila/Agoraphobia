@@ -12,7 +12,9 @@ namespace AgoraphobiaAPI.Mappers
             return new ConsumableSaleDto
             {
                 Consumable = consumableSale.Consumable!.ToConsumableDto(),
-                Quantity = consumableSale.Quantity
+                Quantity = consumableSale.Quantity,
+                ConsumableId = consumableSale.ConsumableId,
+                MerchantId = consumableSale.MerchantId,
             };
         }
         public static UpdateConsumableSaleRequestDto ToUpdateConsumableSaleRequestDto(this ConsumableSale consumableSale)
