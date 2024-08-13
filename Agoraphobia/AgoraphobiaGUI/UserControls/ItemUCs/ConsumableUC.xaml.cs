@@ -16,6 +16,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaAPI.HttpClients;
 using static AgoraphobiaGUI.UserControls.ItemListUC;
 
 namespace AgoraphobiaGUI.UserControls.ItemUCs
@@ -118,21 +119,21 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             }
         }
 
-        public void PickupConsumable(object sender, MouseButtonEventArgs e)
+        public async void PickupConsumable(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                int _idx = _player.Room.Consumables.FindIndex(x => x.Consumable.Id == _consumable.Id);
-
-                ConsumableInventory picked = new ConsumableInventory();
-                picked.ConsumableId = _consumable.Id;
-                picked.Consumable = _player.Room.PickupConsumable(_idx);
-                picked.PlayerId = _player.Id;
-                picked.Player = _player;
-                picked.Quantity = 1;
+                var picked = new ConsumableInventory()
+                {
+                    ConsumableId = _consumable.Id,
+                    Consumable = _consumable,
+                    PlayerId = _player.Id,
+                    Quantity = 1
+                };
                 _player += picked;
+                await ConsumableInventoryHttpClient.AddItem(_player.Id, _consumable.Id);
 
-                if (_player.Room.Consumables.Select(x => x.Consumable.Id).Contains(_consumable.Id))
+                if (_qty > 1)
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }
@@ -147,8 +148,9 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             }
         }
 
-        public void DropConsumable(object sender, MouseButtonEventArgs e)
+        public async void DropConsumable(object sender, MouseButtonEventArgs e)
         {
+            await ConsumableInventoryHttpClient.RemoveItem(_player.Id, _consumable.Id);
             if (_player.DropConsumable(_consumable))
             {
                 Qty.Text = (int.Parse(Qty.Text) - 1).ToString();

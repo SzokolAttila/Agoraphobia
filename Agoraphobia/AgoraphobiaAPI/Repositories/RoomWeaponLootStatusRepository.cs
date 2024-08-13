@@ -80,16 +80,6 @@ namespace AgoraphobiaAPI.Repositories
             await _context.SaveChangesAsync();
             return status;
         }
-        public async Task<RoomWeaponLootStatus?> DeleteAsync(RoomWeaponLootStatus status)
-        {
-            var statusModel = _context.RoomWeaponLootStatus.FirstOrDefault(
-                x => x.WeaponId == status.WeaponId && x.PlayerId == status.PlayerId && x.RoomId == status.RoomId);
-            if (statusModel is null)
-                return null;
-            _context.RoomWeaponLootStatus.Remove(status);
-            await _context.SaveChangesAsync();
-            return statusModel;
-        }
 
         public async Task<RoomWeaponLootStatus?> RemoveOneAsync(WeaponLootStatusRequestDto update)
         {

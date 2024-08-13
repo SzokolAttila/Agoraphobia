@@ -10,7 +10,10 @@ public static class ConsumableInventoryMapper
         return new ConsumableInventoryDto
         {
             Consumable = consumableInventory.Consumable!.ToConsumableDto(),
-            Quantity = consumableInventory.Quantity
+            Quantity = consumableInventory.Quantity,
+            PlayerId = consumableInventory.PlayerId,
+            ConsumableId = consumableInventory.ConsumableId,
+            Id = consumableInventory.Id
         };
     }
 

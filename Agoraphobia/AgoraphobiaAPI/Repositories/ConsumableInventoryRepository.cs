@@ -39,6 +39,13 @@ public class ConsumableInventoryRepository : IConsumableInventoryRepository
         return consumableInventory;
     }
 
+    public async Task<ConsumableInventory?> GetByIdAsync(int id)
+    {
+        return await _context.ConsumableInventories
+            .Include(x => x.Consumable)
+            .ThenInclude(x => x.Effects)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
     public async Task<ConsumableInventory?> DeleteAsync(ConsumableInventory consumableInventory)
     {
         var consumableInventoryModel = _context.ConsumableInventories.FirstOrDefault(

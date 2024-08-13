@@ -36,16 +36,5 @@ namespace AgoraphobiaAPI.HttpClients
             var response = await HttpClient.DeleteAsync($"{ROUTE}weaponInventories/{weaponInventory.Id}");
             response.EnsureSuccessStatusCode();
         }
-        public static async Task<List<WeaponInventory>> GetWeapons(int playerId)
-        {
-            var weaponsResp = await HttpClient
-                .GetAsync($"{ROUTE}weaponInventories/{playerId}");
-            weaponsResp.EnsureSuccessStatusCode();
-            var weaponsJson = await weaponsResp.Content.ReadAsStringAsync();
-            var weapons = JsonConvert.DeserializeObject<List<WeaponInventory>>(weaponsJson);
-            if (weapons is null)
-                throw new ArgumentException("Player not found");
-            return weapons;
-        }
     }
 }

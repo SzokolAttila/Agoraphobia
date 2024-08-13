@@ -66,24 +66,21 @@ public class ConsumableInventoryController : ControllerBase
         return Created("agoraphobia/consumableInventories", consumableInventory.ToUpdateConsumableInventoryRequestDto());
     }
     
-    [HttpDelete]
-    public async Task<IActionResult> RemoveFromConsummableInventory([FromBody] ConsumableInventoryRequestDto consumableInventoryRequestDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromConsummableInventory([FromRoute] int id)
     {
-        var player = await _playerRepository.GetByIdAsync(consumableInventoryRequestDto.PlayerId);
-        var consumable = await _consumableRepository.GetByIdAsync(consumableInventoryRequestDto.ConsumableId);
-        if (player is null)
-            return BadRequest("Player not found");
-        if (consumable is null)
-            return BadRequest("Consumable not found");
-
-        var consumableInventories = await _consumableInventoryRepository.GetConsumableInventoriesAsync(player.Id);
-        var consumableInventory = consumableInventories.FirstOrDefault(x => x.ConsumableId == consumable.Id);
+        var consumableInventory = await _consumableInventoryRepository.GetByIdAsync(id);
         if (consumableInventory is null)
             return NotFound();
         
         if (consumableInventory.Quantity > 1)
         {
-            var updated = await _consumableInventoryRepository.RemoveOneAsync(consumableInventoryRequestDto);
+            var updated = await _consumableInventoryRepository
+                .RemoveOneAsync(new ConsumableInventoryRequestDto()
+            {
+                ConsumableId = consumableInventory.ConsumableId,
+                PlayerId = consumableInventory.PlayerId
+            });
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
             return Ok(updated.ToUpdateConsumableInventoryRequestDto());
