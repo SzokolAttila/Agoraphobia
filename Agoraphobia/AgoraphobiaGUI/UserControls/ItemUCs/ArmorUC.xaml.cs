@@ -1,5 +1,6 @@
 ﻿using AgoraphobiaAPI.Repositories;
 using AgoraphobiaLibrary;
+using AgoraphobiaLibrary.Exceptions.Armor;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using System;
 using System.Collections.Generic;
@@ -76,18 +77,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                int _idx = _player.Room.Merchant.ArmorSales.FindIndex(x => x.Armor.Id == _armor.Id);
-                _player.DreamCoins -= _armor.Price;
-
-                ArmorInventory bought = new ArmorInventory();
-                bought.ArmorId = _armor.Id;
-                bought.Armor = _player.Room.Merchant.BuyArmor(_idx);
-                bought.PlayerId = _player.Id;
-                bought.Player = _player;
-                bought.Quantity = 1;
-                _player += bought;
-
-                if (_player.Room.Merchant.ArmorSales.Select(x => x.Armor.Id).Contains(_armor.Id))
+                if (_player.Room.Merchant.BuyArmor(_armor, _player))
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }

@@ -150,7 +150,7 @@ public class Player : INotifyPropertyChanged
     private const double BASE_ATTACK = 4.5;
     private const double BASE_DEFENSE = 5.2;
     private const int BASE_DREAMCOINS = 100;
-    private const int INVENTORY_CAPACITY = 50;
+    private const int INVENTORY_CAPACITY = 2;
     private const int MAX_SANITY = 120;
 
     public int InventoryCount
@@ -355,6 +355,7 @@ public class Player : INotifyPropertyChanged
         ConsumableInventories.Remove(consumableOfPlayer);
         return false;
     }
+
 
     //For MVVM binding
     public event PropertyChangedEventHandler? PropertyChanged;
