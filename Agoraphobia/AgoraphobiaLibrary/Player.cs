@@ -184,7 +184,7 @@ public class Player : INotifyPropertyChanged
         }
         else
         {
-            Health -= (target.Attack - Defense);
+            Health = (target.Attack - Defense) > 0 ? Math.Round(Health - (target.Attack - Defense), 1) : Health;
         }
 
         List<Effect> effects = new List<Effect>();
@@ -197,8 +197,8 @@ public class Player : INotifyPropertyChanged
             effect.CurrentDuration--;
             if (effect.CurrentDuration<=0)
             {
-                Defense -= effect.Consumable.Defense;
-                Attack -= effect.Consumable.Attack;
+                Defense = Math.Round(Defense - effect.Consumable.Defense, 1);
+                Attack = Math.Round(Attack - effect.Consumable.Attack);
                 Effects.Remove(effect);
             }
         }
