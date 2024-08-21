@@ -47,6 +47,7 @@ public class ConsumableRepository : IConsumableRepository
         consumableModel.Defense = consumableDto.Defense;
         consumableModel.Attack = consumableDto.Attack;
         consumableModel.Duration = consumableDto.Duration;
+        consumableModel.Sanity = consumableDto.Sanity;
         await _context.SaveChangesAsync();
         return consumableModel;
     }

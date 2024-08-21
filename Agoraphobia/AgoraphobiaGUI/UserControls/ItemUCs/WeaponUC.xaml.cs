@@ -81,8 +81,10 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                _player.AttackEnemy(_enemy, _weapon);
-                await ConsumableInventoryHttpClient.DecreaseDuration(_player.Id);
+                if (!_player.AttackEnemy(_enemy, _weapon))
+                {
+                    await ConsumableInventoryHttpClient.DecreaseDuration(_player.Id);
+                }
                 await PlayerHttpClient.Save(_player);
                 await RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
             }

@@ -51,31 +51,41 @@ namespace AgoraphobiaGUI
             { "Door1", "asd" },//Rooms.First(x=>x.Id==Exits[0]).Select(x=>$"{x.Name}\n{x.Description}") },
             { "Door2", "asd" },//Rooms.First(x=>x.Id==Exits[1]).Select(x=>$"{x.Name}\n{x.Description}") },
             { "Door3", "asd" },//Rooms.First(x=>x.Id==Exits[2]).Select(x=>$"{x.Name}\n{x.Description}") },
-            { "Loot", "Some tasty loot!"  }
+            { "Loot", "Some tasty loot!"  },
+            { "Merchant", ""  },
+            { "Enemy", ""  }
         };
 
         public GameWindow(Account account, Player player, MainWindow window)
         {
+            InitializeComponent();
             _account = account;
             _window = window;
             _player = player;
-            _enemy = player.Room!.Enemy!;
-                
-            InitializeComponent();
+            PlayerHttpClient.Save(_player);
+            InitializeRoom();
+        }
+
+        private async void InitializeRoom()
+        {
+            _player = await PlayerHttpClient.LoadPlayer(_account.Id, _player.SlotId);
+            _player.DeathOccured += PlayerDeath;
+            _enemy = _player.Room!.Enemy!;
+
             DataContext = new
             {
                 player = _player,
                 enemy = _enemy
             };
-            
-            infoTxt.Add("Merchant", $"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}");
-            infoTxt.Add("Enemy", $"{_enemy.Name}\n{_player.Room.Enemy.Description}");
 
+            infoTxt["Merchant"] =  $"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}";
+            infoTxt["Enemy"] = $"{_enemy.Name}\n{_player.Room.Enemy.Description}";
             LoadData();
         }
 
         private async Task LoadData()
         {
+
             var roomEnemyStatus = await RoomEnemyStatusHttpClient.GetEnemyStatus(_player.Id, _player.RoomId);
             if (roomEnemyStatus != null)
                 _enemy.Hp = roomEnemyStatus.EnemyHp;
@@ -204,7 +214,8 @@ namespace AgoraphobiaGUI
             List<UserControl> weapons = new List<UserControl>();
             foreach (var weapon in _player.WeaponInventories)
             {
-                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Enemy, 0));
+                WeaponUC weaponUC = new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Enemy, 0);
+                weapons.Add(weaponUC);
             }
 
             ItemListUC items = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Price"});
@@ -249,6 +260,19 @@ namespace AgoraphobiaGUI
             nested.UpdateLayout();
 
             PlaceUCToMouse(nested);
+        }
+
+        public void PlayerDeath(object sender, EventArgs e)
+        {
+            _player.Death();
+            ConsumableInventoryHttpClient.RemoveAllEffects(_player.Id);
+            PlayerHttpClient.Save(_player);
+            RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
+            MessageBox.Show("Unfortunately you have deceased, but don't you worry. " +
+                "As you're dreaming you can't die permanently. " +
+                "However, don't do this too frequently because you'll go insane eventually.", "In memoriam",
+                MessageBoxButton.OK, MessageBoxImage.Error);
+            InitializeRoom();
         }
 
         public void CheckEnemyAlive(object sender, RoutedEventArgs e)

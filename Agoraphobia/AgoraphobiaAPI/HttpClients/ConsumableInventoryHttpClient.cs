@@ -4,6 +4,7 @@ using AgoraphobiaAPI.Dtos.ConsumableInventory;
 using AgoraphobiaAPI.Dtos.Effect;
 using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.JoinTables.Consumables;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace AgoraphobiaAPI.HttpClients
@@ -72,6 +73,25 @@ namespace AgoraphobiaAPI.HttpClients
             {
                 var response = await HttpClient.DeleteAsync($"{ROUTE}effects/{effect.Id}");
                 response.EnsureSuccessStatusCode();
+            }
+        }
+
+        public static async Task RemoveAllEffects(int playerId)
+        {
+            var effectsResp = await HttpClient
+                .GetAsync($"{ROUTE}effects/{playerId}");
+            effectsResp.EnsureSuccessStatusCode();
+            var effectsJson = await effectsResp.Content.ReadAsStringAsync();
+            var effects = JsonConvert.DeserializeObject<List<Effect>>(effectsJson);
+            if (effects is null)
+                throw new ArgumentException("Player not found");
+            foreach (var effect in effects)
+            {
+                for(int i = 0; i<effect.CurrentDuration; i++)
+                {
+                    var response = await HttpClient.DeleteAsync($"{ROUTE}effects/{effect.Id}");
+                    response.EnsureSuccessStatusCode();
+                }
             }
         }
     }
