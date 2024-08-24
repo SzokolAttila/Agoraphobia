@@ -122,17 +122,17 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <Grid Grid.Row="0" Grid.Column="0" Margin="10" Width="50" Height="100" x:Name="Door1" MouseEnter="ShowInfo" MouseLeave="HideInfo">
+                        <Grid Grid.Row="0" Grid.Column="0" Margin="10" Width="50" Height="100" MouseLeftButtonDown="OpenADoor" x:Name="Door0" MouseEnter="ShowInfo" MouseLeave="HideInfo">
                             <Rectangle Fill="SaddleBrown"/>
-                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Exit #1 (Bad)</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Exit #1</TextBlock>
                         </Grid>
-                        <Grid Grid.Row="0" Grid.Column="1" Margin="10" Width="50" Height="100" x:Name="Door2" MouseEnter="ShowInfo" MouseLeave="HideInfo">
+                        <Grid Grid.Row="0" Grid.Column="1" Margin="10" Width="50" Height="100" MouseLeftButtonDown="OpenADoor" x:Name="Door1" MouseEnter="ShowInfo" MouseLeave="HideInfo">
                             <Rectangle Fill="SaddleBrown"/>
-                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Exit #2 (Neutral)</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Exit #2</TextBlock>
                         </Grid>
-                        <Grid Grid.Row="0" Grid.Column="2" Margin="10" Width="50" Height="100" x:Name="Door3" MouseEnter="ShowInfo" MouseLeave="HideInfo">
+                        <Grid Grid.Row="0" Grid.Column="2" Margin="10" Width="50" Height="100" MouseLeftButtonDown="OpenADoor" x:Name="Door2" MouseEnter="ShowInfo" MouseLeave="HideInfo">
                             <Rectangle Fill="SaddleBrown"/>
-                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Exit #3 (Good)</TextBlock>
+                            <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">Exit #3</TextBlock>
                         </Grid>
                         <Grid Grid.Row="1" Grid.Column="0" Margin="10" Width="100" Height="100" x:Name="Merchant" MouseEnter="ShowInfo" MouseLeave="HideInfo" MouseLeftButtonDown="TradeWindow">
                             <Rectangle Fill="ForestGreen"/>

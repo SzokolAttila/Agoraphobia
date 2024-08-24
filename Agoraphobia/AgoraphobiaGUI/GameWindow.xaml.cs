@@ -30,6 +30,7 @@ using System.Windows.Shapes;
 using System.Xaml;
 using AgoraphobiaAPI.HttpClients;
 using static AgoraphobiaGUI.UserControls.ItemListUC;
+using static AgoraphobiaLibrary.Room;
 
 namespace AgoraphobiaGUI
 {
@@ -38,20 +39,21 @@ namespace AgoraphobiaGUI
     /// </summary>
     public partial class GameWindow : Window
     {
+        private Random r = new();
         private Player _player;
         private Account _account;
         private MainWindow _window;
-        public List<int> Exits;
+        public List<Room> Exits;
         private Enemy _enemy;
         Dictionary<string, string> infoTxt = new Dictionary<string, string>()
         {
             { "Defense", "Surprisingly if you hit an enemy, they're going to fight you back. Defense reduces the damage you suffer from the hit, so you should keep that number high enough." },
             { "Attack", "The higher attack you have, the harder you hit your target. Building on that stat is fun, believe me!" },
             { "DreamCoins", "This is the official currency of the game. Merchants give you stuff for DreamCoins, it's that simple." },
-            { "Door1", "asd" },//Rooms.First(x=>x.Id==Exits[0]).Select(x=>$"{x.Name}\n{x.Description}") },
-            { "Door2", "asd" },//Rooms.First(x=>x.Id==Exits[1]).Select(x=>$"{x.Name}\n{x.Description}") },
-            { "Door3", "asd" },//Rooms.First(x=>x.Id==Exits[2]).Select(x=>$"{x.Name}\n{x.Description}") },
             { "Loot", "Some tasty loot!"  },
+            { "Door0", "" },
+            { "Door1", "" },
+            { "Door2", "" },
             { "Merchant", ""  },
             { "Enemy", ""  }
         };
@@ -68,6 +70,7 @@ namespace AgoraphobiaGUI
 
         private async void InitializeRoom()
         {
+            Exits = new List<Room>();
             _player = await PlayerHttpClient.LoadPlayer(_account.Id, _player.SlotId);
             _player.DeathOccured += PlayerDeath;
             _enemy = _player.Room!.Enemy!;
@@ -78,8 +81,18 @@ namespace AgoraphobiaGUI
                 enemy = _enemy
             };
 
+            Exits.Add(await RandomRoomOfOrientation(RoomOrientation.Good));
+            Exits.Add(await RandomRoomOfOrientation(RoomOrientation.Neutral));
+            Exits.Add(await RandomRoomOfOrientation(RoomOrientation.Evil));
+            Exits = RandomizeExits(Exits);
+
+            for(int i = 0; i < Exits.Count; i++)
+            {
+                infoTxt[$"Door{i}"] = $"{Exits[i].Name}\n{Exits[i].Description}";
+            }
             infoTxt["Merchant"] =  $"{_player.Room.Merchant.Name}\n{_player.Room.Merchant.Description}";
             infoTxt["Enemy"] = $"{_enemy.Name}\n{_player.Room.Enemy.Description}";
+            
             LoadData();
         }
 
@@ -94,6 +107,29 @@ namespace AgoraphobiaGUI
             await WeaponSaleStatusHttpClient.CopyWeapons(_player.Id, _player.RoomId, _player.Room!.MerchantId);
             await ConsumableSaleStatusHttpClient.CopyConsumables(_player.Id, _player.RoomId, _player.Room!.MerchantId);
         }
+
+        private async Task<Room> RandomRoomOfOrientation(RoomOrientation orientation)
+        {
+            List<Room> rooms = await RoomHttpClient.RoomsByOrientation(orientation);
+            if (_player.Room.Orientation == orientation)
+            {
+                rooms.Remove(rooms.Where(x=>x.Id == _player.Room.Id).First());
+            }
+            return rooms[r.Next(0, rooms.Count)];
+        } 
+
+        private List<Room> RandomizeExits(List<Room> exits)
+        {
+            List<Room> temp = new();
+            while(exits.Count>0)
+            {
+                Room randomRoom = exits[r.Next(0, exits.Count)];
+                temp.Add(randomRoom);
+                exits.Remove(randomRoom);
+            }
+            return temp;
+        }
+
         public void Back(object sender, RoutedEventArgs e)
         {
             new MainWindow(_account).Show();
@@ -273,6 +309,26 @@ namespace AgoraphobiaGUI
                 "However, don't do this too frequently because you'll go insane eventually.", "In memoriam",
                 MessageBoxButton.OK, MessageBoxImage.Error);
             InitializeRoom();
+        }
+
+        public void OpenADoor(object sender, MouseEventArgs e)
+        {
+            if (_enemy.Hp <= 0)
+            {
+                if (MessageBox.Show("Do you really want to live this place behind and go to the next room?", "Leave room",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    int idx = int.Parse(((FrameworkElement)sender).Name.Replace("Door", ""));
+                    _player.RoomId = Exits[idx].Id;
+                    PlayerHttpClient.Save(_player);
+                    InitializeRoom();
+                }
+            }
+            else
+            {
+                MessageBox.Show("The enemy is standing in your way, so you cannot proceed to the next room" +
+                    " until you end its life.", "Enemy's still alive", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void CheckEnemyAlive(object sender, RoutedEventArgs e)
