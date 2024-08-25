@@ -68,5 +68,10 @@ namespace AgoraphobiaAPI.HttpClients
                 return await AddNewPlayer(accountId, slotId);
             return player;
         }
+
+        public static async Task DeletePlayer(Player player)
+        {
+            await HttpClient.DeleteAsync($"{ROUTE}players/{player.Id}");
+        }
     }
 }

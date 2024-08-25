@@ -6,10 +6,10 @@
         xmlns:local="clr-namespace:AgoraphobiaGUI"
         mc:Ignorable="d"
         Background="{StaticResource BackgroundNoBook}"
-        Title="Agoraphobia" WindowState="Maximized" MinHeight="600" MinWidth="600" MouseDown="IntroClicked">
+        Title="Agoraphobia" WindowState="Maximized" MinHeight="600" MinWidth="600" MouseDown="CutsceneClicked">
     <Grid x:Name="Container">
-        <StackPanel Width="350" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="IntroBox" Visibility="Visible">
-            <TextBlock Margin="20" x:Name="IntroText"></TextBlock>
+        <StackPanel Width="350" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="CutsceneBox" Visibility="Visible">
+            <TextBlock Margin="20" x:Name="CutsceneText"></TextBlock>
             <TextBlock Margin="10">Click to move on...</TextBlock>
         </StackPanel>
         <Canvas x:Name="Main">

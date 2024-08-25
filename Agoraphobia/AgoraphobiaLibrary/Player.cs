@@ -61,11 +61,9 @@ public class Player : INotifyPropertyChanged
         get => _sanity;
         set
         {
-            if (value > MAX_SANITY)
-                _sanity = MAX_SANITY;
-            else if (value < 0)
-                _sanity = 0;
-            else _sanity = value;
+            _sanity = value;
+            if ((value >= MAX_SANITY || value <= 0) && SanityOver != null)
+                SanityOver(this, new EventArgs());
             OnPropertyChanged("Sanity");
         }
     }
@@ -146,6 +144,8 @@ public class Player : INotifyPropertyChanged
 
     [JsonIgnore]
     public EventHandler DeathOccured;
+    [JsonIgnore]
+    public EventHandler SanityOver;
 
     private const double BASE_SANITY = 30;
     private const double BASE_HEALTH = 42;
@@ -154,7 +154,7 @@ public class Player : INotifyPropertyChanged
     private const double BASE_DEFENSE = 5.2;
     private const int BASE_DREAMCOINS = 100;
     private const int INVENTORY_CAPACITY = 50;
-    private const int MAX_SANITY = 120;
+    private const int MAX_SANITY = 100;
 
     public int InventoryCount
     {
