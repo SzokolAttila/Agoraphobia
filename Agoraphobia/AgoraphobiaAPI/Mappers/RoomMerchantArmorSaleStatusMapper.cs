@@ -13,7 +13,10 @@ namespace AgoraphobiaAPI.Mappers
                 Armor = status.Armor!.ToArmorDto(),
                 Quantity = status.Quantity,
                 PlayerId = status.PlayerId,
-                Room = status.Room!.ToRoomDto()
+                ArmorId = status.ArmorId,
+                Id = status.Id,
+                MerchantId = status.MerchantId, 
+                RoomId = status.RoomId
             };
         }
     }

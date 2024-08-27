@@ -108,6 +108,7 @@ namespace AgoraphobiaGUI
             await ArmorLootStatusHttpClient.CopyArmors(_player.Id, _player.RoomId);
             await WeaponSaleStatusHttpClient.CopyWeapons(_player.Id, _player.RoomId, _player.Room!.MerchantId);
             await ConsumableSaleStatusHttpClient.CopyConsumables(_player.Id, _player.RoomId, _player.Room!.MerchantId);
+            await ArmorSaleStatusHttpClient.CopyArmors(_player.Id, _player.RoomId, _player.Room!.MerchantId);
         }
 
         private async Task<Room> RandomRoomOfOrientation(RoomOrientation orientation)
@@ -223,7 +224,9 @@ namespace AgoraphobiaGUI
             ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Price", "Qty" });
 
             List<UserControl> armors = new List<UserControl>();
-            foreach (var armor in _player.Room.Merchant.ArmorSales)
+            var armorSaleStatusList =
+                await ArmorSaleStatusHttpClient.GetArmors(_player.Id, _player.RoomId, _player.Room!.MerchantId);
+            foreach (var armor in armorSaleStatusList.Where(x => x.Quantity > 0))
             {
                 armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Merchant, armor.Quantity));
             }

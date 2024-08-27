@@ -77,7 +77,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                if (_player.Room.Merchant.BuyArmor(_armor, _player))
+                if (_player.Room!.Merchant!.BuyArmor(_armor, _player))
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }
@@ -85,6 +85,8 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 {
                     Visibility = Visibility.Collapsed;
                 }
+                await ArmorSaleStatusHttpClient
+                    .RemoveItem(_player.Id, _armor.Id, _player.RoomId, _player.Room!.MerchantId);
                 await ArmorInventoryHttpClient.AddItem(_player.Id, _armor.Id);
                 await PlayerHttpClient.Save(_player);
             }

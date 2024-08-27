@@ -10,7 +10,7 @@ namespace AgoraphobiaAPI.Interfaces
         public Task<List<RoomMerchantArmorSaleStatus>> GetArmorSalesAsync(int playerId);
         public Task<RoomMerchantArmorSaleStatus> CreateAsync(RoomMerchantArmorSaleStatus status);
         public Task<RoomMerchantArmorSaleStatus?> AddOneAsync(ArmorSaleStatusRequestDto update);
-        public Task<RoomMerchantArmorSaleStatus?> DeleteAsync(RoomMerchantArmorSaleStatus status);
+        public Task<RoomMerchantArmorSaleStatus?> GetByIdAsync (int id);
         public Task<RoomMerchantArmorSaleStatus?> RemoveOneAsync(ArmorSaleStatusRequestDto update);
 
     }
