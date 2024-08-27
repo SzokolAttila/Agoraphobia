@@ -98,16 +98,16 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                int _idx = _player.Room.Armors.FindIndex(x=>x.Armor.Id == _armor.Id);
-
-                ArmorInventory picked = new ArmorInventory();
-                picked.ArmorId = _armor.Id;
-                picked.Armor = _player.Room.PickupArmor(_idx);
-                picked.PlayerId = _player.Id;
-                picked.Player = _player;
-                picked.Quantity = 1;
+                var picked = new ArmorInventory
+                {
+                    ArmorId = _armor.Id,
+                    Armor = _armor,
+                    PlayerId = _player.Id,
+                    Quantity = 1
+                };
                 _player += picked;
 
+                await ArmorLootStatusHttpClient.RemoveItem(_player.Id, _armor.Id, _player.RoomId);
                 await ArmorInventoryHttpClient.AddItem(_player.Id, _armor.Id);
                 await PlayerHttpClient.Save(_player);
                 if (_qty > 1)
@@ -130,6 +130,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             try
             {
                 await ArmorInventoryHttpClient.RemoveItem(_player.Id, _armor.Id);
+                await ArmorLootStatusHttpClient.AddItem(_player.Id, _armor.Id, _player.RoomId);
                 if (_player.DropArmor(_armor))
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();

@@ -218,7 +218,7 @@ namespace AgoraphobiaAPI.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
 
-            builder.Entity<RoomArmorLootStatus>(x => x.HasKey(y => new { y.PlayerId, y.RoomId, y.ArmorId }));
+            builder.Entity<RoomArmorLootStatus>(x => x.HasKey(y => y.Id));
             builder.Entity<RoomArmorLootStatus>()
                 .HasOne(x => x.Room)
                 .WithMany(x => x.RoomArmorLootStatus)

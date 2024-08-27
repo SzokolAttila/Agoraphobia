@@ -75,34 +75,28 @@ namespace AgoraphobiaAPI.Controllers
             await _armorStatusRepository.CreateAsync(status);
             return Created("agoraphobia/roomArmorLootStatus", status.ToRoomArmorLootStatusDto());
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromArmorLoot([FromBody] ArmorLootStatusRequestDto statusDto)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveFromArmorLoot([FromRoute] int id)
         {
-                  var player = await _playerRepository.GetByIdAsync(statusDto.PlayerId);
-            var room = await _roomRepository.GetByIdAsync(statusDto.RoomId);
-            var armor = await _armorRepository.GetByIdAsync(statusDto.ArmorId);
-            if (player is null)
-                return BadRequest("Player not found");
-            if (room is null)
-                return BadRequest("Room not found");
-            if (armor is null)
-                return BadRequest("Armor not found");
-
-            var lootStatuses = await _armorStatusRepository.GetRoomArmorLootStatusesAsync(player.Id);
-            var lootStatus = lootStatuses.FirstOrDefault(x => x.RoomId == room.Id && x.ArmorId == armor.Id);
+            var lootStatus = await _armorStatusRepository.GetByIdAsync(id);
             if (lootStatus is null)
                 return NotFound();
 
-            if (lootStatus.Quantity > 1)
+            if (lootStatus.Quantity > 0)
             {
-                var updated = await _armorStatusRepository.RemoveOneAsync(statusDto);
+                var updated = await _armorStatusRepository.RemoveOneAsync(
+                    new ArmorLootStatusRequestDto()
+                {
+                    RoomId = lootStatus.RoomId,
+                    ArmorId = lootStatus.ArmorId,
+                    PlayerId = lootStatus.PlayerId
+                });
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
                 return Ok(updated.ToRoomArmorLootStatusDto());
             }
 
-            await _armorStatusRepository.DeleteAsync(lootStatus);
-            return NoContent();
+            return BadRequest("Armor not found in room");
         }
     }
 }

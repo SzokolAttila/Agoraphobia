@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
 using AgoraphobiaLibrary.JoinTables.Rooms;
@@ -95,24 +90,10 @@ namespace AgoraphobiaLibrary
             MerchantId = merchantId;
         }
 
-        public Armor PickupArmor(int index)
-        {
-            ArmorLoot armor = Armors.ElementAt(index);
-            if (armor.Quantity == 1)
-            {
-                Armors.RemoveAt(index);
-            }
-            else
-            {
-                armor.Quantity--;
-            }
-            return armor.Armor;
-        }
-
         public void DropWeapon(Weapon weapon)
         {
             List<WeaponLoot> wls = Weapons.Where(x => x.Weapon.Id == weapon.Id).ToList();
-            if (wls.Count() == 0)
+            if (wls.Count == 0)
             {
                 WeaponLoot wl = new WeaponLoot()
                 {

@@ -76,15 +76,11 @@ namespace AgoraphobiaAPI.Repositories
             return status;
         }
 
-        public async Task<RoomArmorLootStatus?> DeleteAsync(RoomArmorLootStatus status)
+        public async Task<RoomArmorLootStatus?> GetByIdAsync(int id)
         {
-            var statusModel = _context.RoomArmorLootStatus.FirstOrDefault(
-                x => x.ArmorId == status.ArmorId && x.PlayerId == status.PlayerId && x.RoomId == status.RoomId );
-            if (statusModel is null)
-                return null;
-            _context.RoomArmorLootStatus.Remove(status);
-            await _context.SaveChangesAsync();
-            return statusModel;
+            return await _context.RoomArmorLootStatus
+                .Include(x => x.Armor)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<RoomArmorLootStatus?> RemoveOneAsync(ArmorLootStatusRequestDto update)

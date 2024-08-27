@@ -10,7 +10,9 @@ public static class ArmorLootMapper
         return new ArmorLootDto
         {
             Quantity = armorLoot.Quantity,
-            Armor = armorLoot.Armor!.ToArmorDto()
+            Armor = armorLoot.Armor!.ToArmorDto(),
+            RoomId = armorLoot.RoomId,
+            ArmorId = armorLoot.ArmorId
         };
     }
 
