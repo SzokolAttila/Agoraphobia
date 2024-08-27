@@ -65,24 +65,20 @@ public class ArmorInventoryController : ControllerBase
         return Created("agoraphobia/armorInventories", armorInventory.ToUpdateArmorInventoryRequestDto());
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> RemoveFromArmorInventory([FromBody] ArmorInventoryRequestDto armorInventoryRequestDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromArmorInventory([FromRoute] int id)
     {
-        var player = await _playerRepository.GetByIdAsync(armorInventoryRequestDto.PlayerId);
-        var armor = await _armorRepository.GetByIdAsync(armorInventoryRequestDto.ArmorId);
-        if (player is null)
-            return BadRequest("Player not found");
-        if (armor is null)
-            return BadRequest("Armor not found");
-
-        var armorInventories = await _armorInventoryRepository.GetArmorInventoriesAsync(player.Id);
-        var armorInventory = armorInventories.FirstOrDefault(x => x.ArmorId == armor.Id);
+        var armorInventory = await _armorInventoryRepository.GetByIdAsync(id);
         if (armorInventory is null)
             return NotFound();
         
         if (armorInventory.Quantity > 1)
         {
-            var updated = await _armorInventoryRepository.RemoveOneAsync(armorInventoryRequestDto);
+            var updated = await _armorInventoryRepository.RemoveOneAsync(new ()
+            {
+                ArmorId = armorInventory.ArmorId,
+                PlayerId = armorInventory.PlayerId,
+            });
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
             return Ok(updated.ToUpdateArmorInventoryRequestDto());

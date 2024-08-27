@@ -45,7 +45,7 @@ namespace AgoraphobiaAPI.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<ArmorInventory>(x => x.HasKey(y => new { y.PlayerId, y.ArmorId }));
+            builder.Entity<ArmorInventory>(x => x.HasKey(y => y.Id));
             builder.Entity<ArmorInventory>()
                 .HasOne(x => x.Player)
                 .WithMany(x => x.ArmorInventories)

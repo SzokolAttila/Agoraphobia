@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AgoraphobiaAPI.HttpClients;
 using static AgoraphobiaGUI.UserControls.ItemListUC;
 
 namespace AgoraphobiaGUI.UserControls.ItemUCs
@@ -55,7 +56,6 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     break;
             }
         }
-
         private void HaveQty()
         {
             Qty.Visibility = Visibility.Visible;
@@ -72,7 +72,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
         }
 
-        public void BuyArmor(object sender, MouseButtonEventArgs e)
+        public async void BuyArmor(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -87,7 +87,9 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 bought.Quantity = 1;
                 _player += bought;
 
-                if (_player.Room.Merchant.ArmorSales.Select(x => x.Armor.Id).Contains(_armor.Id))
+                await ArmorInventoryHttpClient.AddItem(_player.Id, _armor.Id);
+                await PlayerHttpClient.Save(_player);
+                if (_qty > 1)
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }
@@ -102,7 +104,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             }
         }
 
-        public void PickupArmor(object sender, MouseButtonEventArgs e)
+        public async void PickupArmor(object sender, MouseButtonEventArgs e)
         {
             try
             {
@@ -116,7 +118,9 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 picked.Quantity = 1;
                 _player += picked;
 
-                if (_player.Room.Armors.Select(x=>x.Armor.Id).Contains(_armor.Id))
+                await ArmorInventoryHttpClient.AddItem(_player.Id, _armor.Id);
+                await PlayerHttpClient.Save(_player);
+                if (_qty > 1)
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }
@@ -131,15 +135,24 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             }
         }
 
-        public void DropArmor(object sender, MouseButtonEventArgs e)
+        public async void DropArmor(object sender, MouseButtonEventArgs e)
         {
-            if (_player.DropArmor(_armor))
+            try
             {
-                Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                await ArmorInventoryHttpClient.RemoveItem(_player.Id, _armor.Id);
+                if (_player.DropArmor(_armor))
+                {
+                    Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                }
+                else
+                {
+                    Visibility = Visibility.Collapsed;
+                }
+                await PlayerHttpClient.Save(_player);
             }
-            else
+            catch (Exception ex)
             {
-                Visibility = Visibility.Collapsed;
+                MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

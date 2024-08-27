@@ -10,7 +10,10 @@ public static class ArmorInventoryMapper
         return new ArmorInventoryDto
         {
             Armor = armorInventory.Armor!.ToArmorDto(),
-            Quantity = armorInventory.Quantity
+            Quantity = armorInventory.Quantity,
+            ArmorId = armorInventory.ArmorId,
+            Id = armorInventory.Id,
+            PlayerId = armorInventory.PlayerId
         };
     }
 

@@ -25,6 +25,13 @@ public class ArmorInventoryRepository : IArmorInventoryRepository
         return armorInventory;
     }
 
+    public async Task<ArmorInventory?> GetByIdAsync(int id)
+    {
+        return await _context.ArmorInventories
+            .Include(x => x.Armor)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<ArmorInventory?> DeleteAsync(ArmorInventory armorInventory)
     {
         var armorInventoryModel = _context.ArmorInventories.FirstOrDefault(
