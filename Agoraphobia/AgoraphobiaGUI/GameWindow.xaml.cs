@@ -39,7 +39,6 @@ namespace AgoraphobiaGUI
     /// </summary>
     public partial class GameWindow : Window
     {
-        private Random r = new();
         private Player _player;
         private Account _account;
         private MainWindow _window;
@@ -117,7 +116,7 @@ namespace AgoraphobiaGUI
             {
                 rooms.Remove(rooms.Where(x=>x.Id == _player.Room.Id).First());
             }
-            return rooms[r.Next(0, rooms.Count)];
+            return rooms[Random.Shared.Next(0, rooms.Count)];
         } 
 
         private List<Room> RandomizeExits(List<Room> exits)
@@ -125,7 +124,7 @@ namespace AgoraphobiaGUI
             List<Room> temp = new();
             while(exits.Count>0)
             {
-                Room randomRoom = exits[r.Next(0, exits.Count)];
+                Room randomRoom = exits[Random.Shared.Next(0, exits.Count)];
                 temp.Add(randomRoom);
                 exits.Remove(randomRoom);
             }
@@ -313,19 +312,19 @@ namespace AgoraphobiaGUI
                 " However, don't do this too frequently because you recieve penalties and you'll go insane eventually." });
         }
 
-        public void OpenADoor(object sender, MouseEventArgs e)
+        public async void OpenADoor(object sender, MouseEventArgs e)
         {
             if (_enemy.Hp <= 0)
             {
-                if (MessageBox.Show("Do you really want to live this place behind and go to the next room?", "Leave room",
+                if (MessageBox.Show("Do you really want to leave this place behind and go to the next room?", "Leave room",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     int idx = int.Parse(((FrameworkElement)sender).Name.Replace("Door", ""));
                     _player.RoomId = Exits[idx].Id;
-                    PlayerHttpClient.Save(_player);
+                    await PlayerHttpClient.Save(_player);
                     InitializeRoom();
 
-                    PlayCutscene(new List<string>() { "As you open the door, you sense chaos emerging from the room." });
+                    await PlayCutscene(new List<string>() { "As you open the door, you sense chaos emerging from the room." });
                 }
             }
             else

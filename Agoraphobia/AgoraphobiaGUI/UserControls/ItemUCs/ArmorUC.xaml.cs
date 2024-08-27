@@ -85,6 +85,8 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 {
                     Visibility = Visibility.Collapsed;
                 }
+                await ArmorInventoryHttpClient.AddItem(_player.Id, _armor.Id);
+                await PlayerHttpClient.Save(_player);
             }
             catch (Exception ex)
             {
