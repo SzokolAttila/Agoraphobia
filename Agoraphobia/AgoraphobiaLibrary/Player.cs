@@ -61,11 +61,9 @@ public class Player : INotifyPropertyChanged
         get => _sanity;
         set
         {
-            if (value > MAX_SANITY)
-                _sanity = MAX_SANITY;
-            else if (value < 0)
-                _sanity = 0;
-            else _sanity = value;
+            _sanity = value;
+            if ((value >= MAX_SANITY || value <= 0) && SanityOver != null)
+                SanityOver(this, new EventArgs());
             OnPropertyChanged("Sanity");
         }
     }
@@ -84,8 +82,8 @@ public class Player : INotifyPropertyChanged
         {
             if (value > MaxHealth)
                 _health = MaxHealth;
-            else if (value < 0)
-                _health = 0;
+            else if (value <= 0)
+                DeathOccured(this, new EventArgs());
             else _health = value;
             OnPropertyChanged("Health");
         }
@@ -144,6 +142,11 @@ public class Player : INotifyPropertyChanged
     public List<Effect> Effects { get; set; } = new();
     public List<ArmorInventory> ArmorInventories { get; set; }
 
+    [JsonIgnore]
+    public EventHandler DeathOccured;
+    [JsonIgnore]
+    public EventHandler SanityOver;
+
     private const double BASE_SANITY = 30;
     private const double BASE_HEALTH = 42;
     private const int BASE_ENERGY = 3;
@@ -151,7 +154,7 @@ public class Player : INotifyPropertyChanged
     private const double BASE_DEFENSE = 5.2;
     private const int BASE_DREAMCOINS = 100;
     private const int INVENTORY_CAPACITY = 50;
-    private const int MAX_SANITY = 120;
+    private const int MAX_SANITY = 100;
 
     public int InventoryCount
     {
@@ -174,9 +177,11 @@ public class Player : INotifyPropertyChanged
         }
     }
 
-    public void AttackEnemy(Enemy target, Weapon weapon)
+    public bool AttackEnemy(Enemy target, Weapon weapon) // returns true if player dies
     {
-        double dmg = (Random.Shared.NextDouble()*(weapon.MaxMultiplier-weapon.MinMultiplier)+weapon.MinMultiplier) * Attack;
+        double dmg = (Random.Shared.NextDouble()*
+                     (weapon.MaxMultiplier-weapon.MinMultiplier)+
+                     weapon.MinMultiplier) * Attack;
         Energy -= weapon.Energy;
         if (target.TakeHit(dmg))
         {
@@ -184,26 +189,64 @@ public class Player : INotifyPropertyChanged
         }
         else
         {
-            Health -= (target.Attack - Defense);
+            Health = (target.Attack - Defense) > 0 ? Math.Round(Health - (target.Attack - Defense), 1) : Health;
+            if (Health<=0)
+            {
+                return true;
+            }
         }
+        CheckEffects(false);
+        return false;
+    }
 
+    private void CheckEffects(bool onlyRemove)
+    {
         List<Effect> effects = new List<Effect>();
         foreach (var effect in Effects)
         {
             effects.Add(effect);
         }
+
         foreach (var effect in effects)
         {
-            effect.CurrentDuration--;
-            if (effect.CurrentDuration<=0)
+            if (onlyRemove)
             {
-                Defense -= effect.Consumable.Defense;
-                Attack -= effect.Consumable.Attack;
-                Effects.Remove(effect);
+                RemoveEffect(effect);
+            }
+            else
+            {
+                effect.CurrentDuration--;
+                if (effect.CurrentDuration <= 0)
+                {
+                    RemoveEffect(effect);
+                }
             }
         }
     }
 
+    private void RemoveEffect(Effect effect)
+    {
+        Defense = Math.Round(Defense - effect.Consumable.Defense, 1);
+        Attack = Math.Round(Attack - effect.Consumable.Attack);
+        Effects.Remove(effect);
+    }
+
+    public void Death()
+    {
+        CheckEffects(true);
+        Sanity -= Room.Enemy.Sanity;
+        RoomId = 1;
+        Energy = MaxEnergy;
+        Health = MaxHealth;
+        if (DreamCoins<=100)
+        {
+            DreamCoins = 0;
+        }
+        else
+        {
+            DreamCoins -= 100;
+        }
+    }
 
     public static Player operator +(Player player, ArmorInventory armor)
     {
@@ -327,21 +370,30 @@ public class Player : INotifyPropertyChanged
 
     public bool UseConsumable(Consumable consumable)
     {
-        Effect effect = new Effect();
-        effect.Consumable = consumable;
-        effect.ConsumableId = consumable.Id;
-        effect.Player = this;
-        effect.PlayerId = Id;
-        effect.CurrentDuration = consumable.Duration;
+        Effect effect = new Effect()
+        {
+            Consumable = consumable,
+            ConsumableId = consumable.Id,
+            Player = this,
+            PlayerId = Id,
+            CurrentDuration = consumable.Duration
+        };
         Effects.Add(effect);
 
+        if (Health < -consumable.Hp)
+        {
+            _sanity += Room.Enemy.Sanity; // modify private sanity field so player can't win from this
+        }
+
+        bool result = RemoveConsumable(consumable);
+
         Energy += consumable.Energy;
-        Health += consumable.Hp;
         Defense += consumable.Defense;
         Attack += consumable.Attack;
         Sanity += consumable.Sanity;
+        Health += consumable.Hp;
 
-        return RemoveConsumable(consumable);
+        return result;
     }
 
     private bool RemoveConsumable(Consumable consumable)
@@ -355,6 +407,7 @@ public class Player : INotifyPropertyChanged
         ConsumableInventories.Remove(consumableOfPlayer);
         return false;
     }
+
 
     //For MVVM binding
     public event PropertyChangedEventHandler? PropertyChanged;

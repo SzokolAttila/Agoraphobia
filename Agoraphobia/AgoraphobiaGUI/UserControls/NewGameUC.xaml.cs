@@ -22,6 +22,17 @@ namespace AgoraphobiaGUI.UserControls
     
     public partial class NewGameUC : UserControl
     {
+        List<string> intro = new List<string>()
+        {
+            "John Merta, a writer known all around the globe, is currently suffering from writer's block. ",
+            "This leaves him panicking, for he is in great need of a new book, due to his nearness to bankruptcy.",
+            "After a long day full of effort, he defeatedly lays is head onto his pillow whilst his notebook lays empty atop his desk, with dozens of crumpled pages scattered on the floor.",
+            "However, no matter how hopeless he might feel, for a last ray of hope seems to shine upon him.",
+            "After finally falling asleep, he finds himself in a queer dream full of bizarre creatures and uncanny but exhilarating adventures... and, most importantly, numerous things to write about.",
+            "As his mind starts producing countless ideas, each better than the last, his wretchedness starts to fade away, replaced by a welcomed feeling of triumph.",
+            "For it is this strange dream that might help him prevail and come up with an idea worthy of his name... he needs only survive."
+        };
+
         private readonly Grid _container;
         private readonly Account _account;
         private readonly MainWindow _window;
@@ -46,7 +57,7 @@ namespace AgoraphobiaGUI.UserControls
                     _container.Children.Remove(this);
                     _window.Close();
                     gameWindow.Show();
-                    gameWindow.PlayIntro();
+                    gameWindow.PlayCutscene(intro);
                 }
                 catch (Exception ex)
                 {

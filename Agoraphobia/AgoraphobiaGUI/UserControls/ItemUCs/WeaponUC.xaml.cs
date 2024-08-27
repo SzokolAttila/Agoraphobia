@@ -81,8 +81,10 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                _player.AttackEnemy(_enemy, _weapon);
-                await ConsumableInventoryHttpClient.DecreaseDuration(_player.Id);
+                if (!_player.AttackEnemy(_enemy, _weapon))
+                {
+                    await ConsumableInventoryHttpClient.DecreaseDuration(_player.Id);
+                }
                 await PlayerHttpClient.Save(_player);
                 await RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
             }
@@ -96,21 +98,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                _player.DreamCoins -= _weapon.Price;
-
-                var bought = new WeaponInventory()
-                {
-                    PlayerId = _player.Id,
-                    Quantity = 1,
-                    WeaponId = _weapon.Id,
-                    Weapon = _weapon
-                };
-                _player += bought;
-                await WeaponSaleStatusHttpClient
-                    .RemoveItem(_player.Id, _weapon.Id, _player.RoomId, _player.Room!.MerchantId);
-                await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
-                await PlayerHttpClient.Save(_player);
-                if (_qty > 1)
+                if (_player.Room.Merchant.BuyWeapon(_weapon, _player))
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }
@@ -118,6 +106,10 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 {
                     Visibility = Visibility.Collapsed;
                 }
+                await WeaponSaleStatusHttpClient
+                    .RemoveItem(_player.Id, _weapon.Id, _player.RoomId, _player.Room!.MerchantId);
+                await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
+                await PlayerHttpClient.Save(_player);
             }
             catch (Exception ex)
             {
@@ -136,13 +128,14 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     Quantity = 1,
                     Weapon = _weapon
                 };
+                _player += picked;
                 await RoomWeaponLootStatusHttpClient.RemoveItem(_player.Id, _weapon.Id, _player.RoomId);
                 await WeaponInventoryHttpClient.AddItem(_player.Id, _weapon.Id);
-                _player += picked;
 
                 if (_qty > 1)
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
+                    _qty--;
                 }
                 else
                 {

@@ -9,6 +9,8 @@ namespace AgoraphobiaAPI.Mappers
         {
             return new ArmorSaleDto
             {
+                MerchantId = armor.MerchantId,
+                ArmorId = armor.ArmorId,
                 Armor = armor.Armor!.ToArmorDto(),
                 Quantity = armor.Quantity
             };

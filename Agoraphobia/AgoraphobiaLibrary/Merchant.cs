@@ -3,6 +3,7 @@ using AgoraphobiaLibrary.JoinTables.Armors;
 using AgoraphobiaLibrary.JoinTables.Consumables;
 using Newtonsoft.Json;
 using AgoraphobiaLibrary.JoinTables.Rooms;
+using AgoraphobiaLibrary.Exceptions.Player;
 
 namespace AgoraphobiaLibrary
 {
@@ -42,46 +43,88 @@ namespace AgoraphobiaLibrary
             ConsumableSales = new();
         }
 
-        public Weapon BuyWeapon(int index)
+        public bool BuyWeapon(Weapon weapon, Player player)
         {
-            WeaponSale weapon = WeaponSales.ElementAt(index);
-            if (weapon.Quantity == 1)
+            if (player.DreamCoins < weapon.Price)
             {
-                WeaponSales.RemoveAt(index);
+                throw new NotEnoughDreamCoinsException();
             }
-            else
+
+            WeaponInventory bought = new()
             {
-                weapon.Quantity--;
+                Weapon = weapon,
+                WeaponId = weapon.Id,
+                Quantity = 1,
+                PlayerId = player.Id
+            };
+            player += bought;
+            player.DreamCoins -= weapon.Price;
+
+            WeaponSale weaponToSell = WeaponSales.Where(x => x.WeaponId == weapon.Id).First();
+            if (weaponToSell.Quantity == 1)
+            {
+                WeaponSales.Remove(weaponToSell);
+                return false;
             }
-            return weapon.Weapon;
+
+            weaponToSell.Quantity--;
+            return true;
         }
 
-        public Armor BuyArmor(int index)
+        public bool BuyArmor(Armor armor, Player player)
         {
-            ArmorSale armor = ArmorSales.ElementAt(index);
-            if (armor.Quantity == 1)
+            if (player.DreamCoins < armor.Price)
             {
-                ArmorSales.RemoveAt(index);
+                throw new NotEnoughDreamCoinsException();
             }
-            else
+
+            ArmorInventory bought = new()
             {
-                armor.Quantity--;
+                Armor = armor,
+                ArmorId = armor.Id,
+                Quantity = 1,
+                PlayerId = player.Id
+            };
+            player += bought;
+            player.DreamCoins -= armor.Price;
+
+            ArmorSale armorToSell = ArmorSales.Where(x => x.ArmorId == armor.Id).First();
+            if (armorToSell.Quantity == 1)
+            {
+                ArmorSales.Remove(armorToSell);
+                return false;
             }
-            return armor.Armor;
+
+            armorToSell.Quantity--;
+            return true;
         }
 
-        public Consumable BuyConsumable(int index)
+        public bool BuyConsumable(Consumable consumable, Player player)
         {
-            ConsumableSale consumable = ConsumableSales.ElementAt(index);
-            if (consumable.Quantity == 1)
+            if (player.DreamCoins < consumable.Price)
             {
-                ConsumableSales.RemoveAt(index);
+                throw new NotEnoughDreamCoinsException();
             }
-            else
+
+            ConsumableInventory bought = new()
             {
-                consumable.Quantity--;
+                Consumable = consumable,
+                ConsumableId = consumable.Id,
+                Quantity = 1,
+                PlayerId = player.Id
+            };
+            player += bought;
+            player.DreamCoins -= consumable.Price;
+
+            ConsumableSale consumableToSell = ConsumableSales.Where(x => x.ConsumableId == consumable.Id).First();
+            if (consumableToSell.Quantity == 1)
+            {
+                ConsumableSales.Remove(consumableToSell);
+                return false;
             }
-            return consumable.Consumable;
+
+            consumableToSell.Quantity--;
+            return true;
         }
 
         [JsonIgnore]

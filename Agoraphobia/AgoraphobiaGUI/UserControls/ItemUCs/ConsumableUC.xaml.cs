@@ -102,23 +102,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                _player.DreamCoins -= _consumable.Price;
-
-                var bought = new ConsumableInventory()
-                {
-                    ConsumableId = _consumable.Id,
-                    Consumable = _consumable,
-                    PlayerId = _player.Id,
-                    Quantity = 1
-                };
-                _player += bought;
-
-                await ConsumableSaleStatusHttpClient
-                    .RemoveItem(_player.Id, _consumable.Id, _player.RoomId, _player.Room!.MerchantId);
-                await ConsumableInventoryHttpClient.AddItem(_player.Id, _consumable.Id);
-                await PlayerHttpClient.Save(_player);
-
-                if (_qty > 1)
+                if (_player.Room.Merchant.BuyConsumable(_consumable, _player))
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();
                 }
@@ -126,6 +110,11 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 {
                     Visibility = Visibility.Collapsed;
                 }
+
+                await ConsumableSaleStatusHttpClient
+                    .RemoveItem(_player.Id, _consumable.Id, _player.RoomId, _player.Room!.MerchantId);
+                await ConsumableInventoryHttpClient.AddItem(_player.Id, _consumable.Id);
+                await PlayerHttpClient.Save(_player);
             }
             catch (Exception ex)
             {
@@ -144,9 +133,10 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                     PlayerId = _player.Id,
                     Quantity = 1
                 };
+
+                _player += picked;
                 await ConsumableLootStatusHttpClient.RemoveItem(_player.Id, _consumable.Id, _player.RoomId);
                 await ConsumableInventoryHttpClient.AddItem(_player.Id, _consumable.Id);
-                _player += picked;
 
                 if (_qty > 1)
                 {
