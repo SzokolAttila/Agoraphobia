@@ -11,7 +11,10 @@ public static class WeaponDroprateMapper
         return new WeaponDroprateDto
         {
             Weapon = weaponDroprate.Weapon!.ToWeaponDto(),
-            Droprate = weaponDroprate.Droprate
+            Droprate = weaponDroprate.Droprate,
+            EnemyId = weaponDroprate.EnemyId,
+            Id = weaponDroprate.Id,
+            WeaponId = weaponDroprate.WeaponId,
         };
     }
 

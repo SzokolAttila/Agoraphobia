@@ -26,14 +26,20 @@ public class WeaponDroprateRepository : IWeaponDroprateRepository
         return weaponDroprate;
     }
 
-    public async Task<WeaponDroprate?> DeleteAsync(WeaponDroprate weaponDroprate)
+    public async Task<WeaponDroprate?> DeleteAsync(int id)
     {
-        var weaponDroprateModel = _context.WeaponDroprates.FirstOrDefault(
-            x => x.EnemyId == weaponDroprate.EnemyId && x.WeaponId == weaponDroprate.WeaponId);
+        var weaponDroprateModel = _context.WeaponDroprates.FirstOrDefault(x => x.Id == id);
         if (weaponDroprateModel is null)
             return null;
         _context.WeaponDroprates.Remove(weaponDroprateModel);
         await _context.SaveChangesAsync();
         return weaponDroprateModel;
+    }
+
+    public async Task<WeaponDroprate?> GetByIdAsync(int id)
+    {
+        return await _context.WeaponDroprates
+            .Include(x => x.Weapon)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 }

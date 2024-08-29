@@ -8,6 +8,7 @@ namespace AgoraphobiaLibrary.JoinTables.Weapons
 {
     public class WeaponDroprate
     {
+        public int Id { get; set; }
         public int EnemyId { get; set; }
         public int WeaponId { get; set; }
         public double Droprate { get; set; }

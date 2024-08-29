@@ -58,22 +58,14 @@ public class WeaponDroprateController : ControllerBase
         return Created("agoraphobia/weaponDroprates", weaponDroprate.ToUpdateWeaponDroprateRequestDto());
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> RemoveFromWeaponDroprate([FromBody] WeaponDroprateRequestDto weaponDroprateRequestDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromWeaponDroprate([FromRoute] int id)
     {
-        var enemy = await _enemyRepository.GetByIdAsync(weaponDroprateRequestDto.EnemyId);
-        var weapon = await _weaponRepository.GetByIdAsync(weaponDroprateRequestDto.WeaponId);
-        if (enemy is null)
-            return BadRequest("Enemy not found");
-        if (weapon is null)
-            return BadRequest("Weapon not found");
-
-        var weaponDroprates = await _weaponDroprateRepository.GetWeaponDropratesAsync(enemy.Id);
-        var weaponDroprate = weaponDroprates.FirstOrDefault(x => x.WeaponId == weapon.Id);
+        var weaponDroprate = await _weaponDroprateRepository.GetByIdAsync(id);
         if (weaponDroprate is null)
             return NotFound();
 
-        await _weaponDroprateRepository.DeleteAsync(weaponDroprate);
+        await _weaponDroprateRepository.DeleteAsync(id);
         return NoContent();
     }
 }
