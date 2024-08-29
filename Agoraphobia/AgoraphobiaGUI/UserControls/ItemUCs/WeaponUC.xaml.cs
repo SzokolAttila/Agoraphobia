@@ -87,7 +87,10 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
                 }
 
                 if (_enemy.Hp <= 0)
+                {
                     await WeaponDroprateHttpClient.DropWeapons(_enemy.Id, _player.Id, _player.RoomId);
+                    await ConsumableDroprateHttpClient.DropConsumables(_enemy.Id, _player.Id, _player.RoomId);
+                }
                 await PlayerHttpClient.Save(_player);
                 await RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
             }

@@ -10,7 +10,10 @@ public static class ConsumableDroprateMapper
         return new ConsumableDroprateDto
         {
             Consumable = consumableDroprate.Consumable!.ToConsumableDto(),
-            Droprate = consumableDroprate.Droprate
+            Droprate = consumableDroprate.Droprate,
+            ConsumableId = consumableDroprate.ConsumableId,
+            EnemyId = consumableDroprate.EnemyId,
+            Id = consumableDroprate.Id,
         };
     }
 

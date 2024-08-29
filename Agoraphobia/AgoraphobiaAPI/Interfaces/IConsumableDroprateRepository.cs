@@ -7,5 +7,6 @@ public interface IConsumableDroprateRepository
 {
     public Task<List<ConsumableDroprate>> GetConsumableDropratesAsync(int id);
     public Task<ConsumableDroprate> CreateAsync(ConsumableDroprate consumableDroprate);
-    public Task<ConsumableDroprate?> DeleteAsync(ConsumableDroprate consumableDroprate);
+    public Task<ConsumableDroprate?> GetByIdAsync(int id);
+    public Task<ConsumableDroprate?> DeleteAsync(int id);
 }

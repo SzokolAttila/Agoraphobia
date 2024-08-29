@@ -25,10 +25,16 @@ public class ConsumableDroprateRepository : IConsumableDroprateRepository
         return consumableDroprate;
     }
 
-    public async Task<ConsumableDroprate?> DeleteAsync(ConsumableDroprate consumableDroprate)
+    public async Task<ConsumableDroprate?> GetByIdAsync(int id)
     {
-        var consumableDroprateModel = _context.ConsumableDroprates.FirstOrDefault(
-            x => x.EnemyId == consumableDroprate.EnemyId && x.ConsumableId == consumableDroprate.ConsumableId);
+        return await _context.ConsumableDroprates
+            .Include(x => x.Consumable)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ConsumableDroprate?> DeleteAsync(int id)
+    {
+        var consumableDroprateModel = _context.ConsumableDroprates.FirstOrDefault(x => x.Id == id);
         if (consumableDroprateModel is null)
             return null;
         _context.ConsumableDroprates.Remove(consumableDroprateModel);

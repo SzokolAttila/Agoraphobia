@@ -8,6 +8,7 @@ namespace AgoraphobiaLibrary.JoinTables.Consumables
 {
     public class ConsumableDroprate
     {
+        public int Id { get; set; }
         public int EnemyId { get; set; }
         public int ConsumableId { get; set; }
         public double Droprate { get; set; }
