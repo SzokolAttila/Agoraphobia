@@ -45,7 +45,6 @@ public class ArmorDroprateController : ControllerBase
         if (armor is null)
             return BadRequest("Armor not found");
         
-        var armorDroprates = await _armorDroprateRepository.GetArmorDropratesAsync(armorDroprateRequestDto.EnemyId);
         var armorDroprate = new ArmorDroprate
         {
             EnemyId = armorDroprateRequestDto.EnemyId,
@@ -58,22 +57,14 @@ public class ArmorDroprateController : ControllerBase
         return Created("agoraphobia/armorDroprates", armorDroprate.ToUpdateArmorDroprateRequestDto());
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> RemoveFromArmorDroprate([FromBody] ArmorDroprateRequestDto armorDroprateRequestDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromArmorDroprate([FromRoute] int id)
     {
-        var enemy = await _enemyRepository.GetByIdAsync(armorDroprateRequestDto.EnemyId);
-        var armor = await _armorRepository.GetByIdAsync(armorDroprateRequestDto.ArmorId);
-        if (enemy is null)
-            return BadRequest("Enemy not found");
-        if (armor is null)
-            return BadRequest("Armor not found");
-
-        var armorDroprates = await _armorDroprateRepository.GetArmorDropratesAsync(enemy.Id);
-        var armorDroprate = armorDroprates.FirstOrDefault(x => x.ArmorId == armor.Id);
+        var armorDroprate = await _armorDroprateRepository.GetByIdAsync(id);
         if (armorDroprate is null)
             return NotFound();
 
-        await _armorDroprateRepository.DeleteAsync(armorDroprate);
+        await _armorDroprateRepository.DeleteAsync(id);
         return NoContent();
     }
 }

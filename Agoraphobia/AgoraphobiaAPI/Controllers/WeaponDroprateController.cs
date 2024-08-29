@@ -45,7 +45,6 @@ public class WeaponDroprateController : ControllerBase
         if (weapon is null)
             return BadRequest("Weapon not found");
         
-        var weaponDroprates = await _weaponDroprateRepository.GetWeaponDropratesAsync(weaponDroprateRequestDto.EnemyId);
         var weaponDroprate = new WeaponDroprate
         {
             EnemyId = weaponDroprateRequestDto.EnemyId,

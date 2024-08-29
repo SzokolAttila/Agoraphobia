@@ -45,7 +45,6 @@ public class ConsumableDroprateController : ControllerBase
         if (consumable is null)
             return BadRequest("Consumable not found");
         
-        var consumableDroprates = await _consumableDroprateRepository.GetConsumableDropratesAsync(consumableDroprateRequestDto.EnemyId);
         var consumableDroprate = new ConsumableDroprate
         {
             EnemyId = consumableDroprateRequestDto.EnemyId,

@@ -25,10 +25,15 @@ public class ArmorDroprateRepository : IArmorDroprateRepository
         return armorDroprate;
     }
 
-    public async Task<ArmorDroprate?> DeleteAsync(ArmorDroprate armorDroprate)
+    public async Task<ArmorDroprate?> GetByIdAsync(int id)
     {
-        var armorDroprateModel = _context.ArmorDroprates.FirstOrDefault(
-            x => x.EnemyId == armorDroprate.EnemyId && x.ArmorId == armorDroprate.ArmorId);
+        return await _context.ArmorDroprates
+            .Include(x => x.Armor)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+    public async Task<ArmorDroprate?> DeleteAsync(int id)
+    {
+        var armorDroprateModel = _context.ArmorDroprates.FirstOrDefault(x => x.Id == id);
         if (armorDroprateModel is null)
             return null;
         _context.ArmorDroprates.Remove(armorDroprateModel);

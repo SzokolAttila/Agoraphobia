@@ -10,7 +10,10 @@ public static class ArmorDroprateMapper
         return new ArmorDroprateDto
         {
             Armor = armorDroprate.Armor!.ToArmorDto(),
-            Droprate = armorDroprate.Droprate
+            Droprate = armorDroprate.Droprate,
+            ArmorId = armorDroprate.ArmorId,
+            EnemyId = armorDroprate.EnemyId,
+            Id = armorDroprate.Id,
         };
     }
 
