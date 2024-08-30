@@ -54,7 +54,7 @@ public class EffectController : ControllerBase
             Consumable = consumable
         };
         await _effectRepository.CreateAsync(newEffect);
-        return Created("agoraphobia/effects", newEffect.ToUpdateEffectRequestDto());
+        return Created("agoraphobia/effects", newEffect.ToEffectDto());
     }
     
     [HttpDelete("{id}")]
@@ -69,10 +69,10 @@ public class EffectController : ControllerBase
             var updated = await _effectRepository.RemoveOneAsync(id);
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
-            return Ok(updated.ToUpdateEffectRequestDto());
+            return Ok(updated.ToEffectDto());
         }
 
-        await _effectRepository.DeleteAsync(effect);
+        await _effectRepository.DeleteAsync(id);
         return NoContent();
     }
 }

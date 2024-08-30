@@ -33,10 +33,9 @@ public class EffectRepository : IEffectRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Effect?> DeleteAsync(Effect effect)
+    public async Task<Effect?> DeleteAsync(int id)
     {
-        var effectModel = _context.Effects.FirstOrDefault(
-            x => x.PlayerId == effect.PlayerId && x.ConsumableId == effect.ConsumableId);
+        var effectModel = _context.Effects.FirstOrDefault(x => x.Id == id);
         if (effectModel is null)
             return null;
         _context.Effects.Remove(effectModel);

@@ -1,6 +1,4 @@
 ﻿using AgoraphobiaAPI.Dtos.WeaponSale;
-using AgoraphobiaAPI.Dtos.WeaponSale;
-using AgoraphobiaLibrary.JoinTables.Weapons;
 using AgoraphobiaLibrary.JoinTables.Weapons;
 
 namespace AgoraphobiaAPI.Interfaces

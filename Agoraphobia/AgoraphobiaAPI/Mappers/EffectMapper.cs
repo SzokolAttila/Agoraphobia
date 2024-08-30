@@ -16,14 +16,4 @@ public static class EffectMapper
             Id = effect.Id
         };
     }
-
-    public static UpdateEffectRequestDto ToUpdateEffectRequestDto(this Effect effect)
-    {
-        return new UpdateEffectRequestDto
-        {
-            Consumable = effect.Consumable!.ToConsumableDto(),
-            PlayerId = effect.PlayerId,
-            CurrentDuration = effect.CurrentDuration
-        };
-    }
 }

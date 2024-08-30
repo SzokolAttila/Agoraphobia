@@ -216,10 +216,10 @@ namespace AgoraphobiaGUI
             Main.Children.Remove(Main.Children.OfType<ItemNestedListUC>().FirstOrDefault());
             List<UserControl> weapons = new List<UserControl>();
             var weaponSaleStatusList = await WeaponSaleStatusHttpClient
-                .GetWeapons(_player.Id, _player.RoomId, _player.Room.MerchantId);
+                .GetWeapons(_player.Id, _player.RoomId, _player.Room!.MerchantId);
             foreach (var weapon in weaponSaleStatusList.Where(x => x.Quantity > 0))
             {
-                weapons.Add(new WeaponUC(weapon.Weapon, ref _player, ref _enemy, ListType.Merchant, weapon.Quantity));
+                weapons.Add(new WeaponUC(weapon.Weapon!, ref _player, ref _enemy, ListType.Merchant, weapon.Quantity));
             }
             ItemListUC weaponList = new ItemListUC(weapons, new List<string>() { "Name", "Min Atk", "Max Atk", "Energy", "Price", "Qty" });
 
@@ -228,16 +228,16 @@ namespace AgoraphobiaGUI
                 await ArmorSaleStatusHttpClient.GetArmors(_player.Id, _player.RoomId, _player.Room!.MerchantId);
             foreach (var armor in armorSaleStatusList.Where(x => x.Quantity > 0))
             {
-                armors.Add(new ArmorUC(armor.Armor, ref _player, ListType.Merchant, armor.Quantity));
+                armors.Add(new ArmorUC(armor.Armor!, ref _player, ListType.Merchant, armor.Quantity));
             }
             ItemListUC armorList = new ItemListUC(armors, new List<string>() { "Name", "Hp", "Defense", "Type", "Price", "Qty" });
 
             List<UserControl> consumables = new List<UserControl>();
             var consumableSaleStatusList = await ConsumableSaleStatusHttpClient
-                .GetConsumables(_player.Id, _player.RoomId, _player.Room.MerchantId);
+                .GetConsumables(_player.Id, _player.RoomId, _player.Room!.MerchantId);
             foreach (var consumable in consumableSaleStatusList.Where(x => x.Quantity > 0))
             {
-                consumables.Add(new ConsumableUC(consumable.Consumable, ref _player, ListType.Merchant, consumable.Quantity));
+                consumables.Add(new ConsumableUC(consumable.Consumable!, ref _player, ListType.Merchant, consumable.Quantity));
             }
             ItemListUC consumableList = new ItemListUC(consumables, new List<string>() { "Name", "Energy", "Hp", "Defense", "Atk", "Sanity", "Duration", "Price", "Qty" });
 
@@ -304,15 +304,15 @@ namespace AgoraphobiaGUI
             PlaceUCToMouse(nested);
         }
 
-        public void PlayerDeath(object sender, EventArgs e)
+        public async void PlayerDeath(object sender, EventArgs e)
         {
             _player.Death();
-            ConsumableInventoryHttpClient.RemoveAllEffects(_player.Id);
-            PlayerHttpClient.Save(_player);
-            RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
+            await EffectHttpClient.RemoveAllEffects(_player.Id);
+            await PlayerHttpClient.Save(_player);
+            await RoomEnemyStatusHttpClient.UpdateEnemyHealth(_player.Id, _player.RoomId, _enemy.Hp);
             InitializeRoom();
 
-            PlayCutscene(new List<string>() { "Unfortunately you have deceased, but don't you worry." +
+            await PlayCutscene(new List<string>() { "Unfortunately you have deceased, but don't you worry." +
                 " As you're in a dream you can't die permanently." +
                 " However, don't do this too frequently because you recieve penalties and you'll go insane eventually." });
         }
