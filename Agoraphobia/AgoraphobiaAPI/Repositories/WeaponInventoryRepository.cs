@@ -26,17 +26,16 @@ public class WeaponInventoryRepository : IWeaponInventoryRepository
         return weaponInventory;
     }
 
-    public async Task<WeaponInventory?> GetByIdAsync(int weaponInventoryId)
+    public async Task<WeaponInventory?> GetByIdAsync(int id)
     {
         return await _context.WeaponInventories
             .Include(x => x.Weapon)
-            .FirstOrDefaultAsync(x => x.Id == weaponInventoryId);
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<WeaponInventory?> AddOneAsync(WeaponInventoryRequestDto update)
+    public async Task<WeaponInventory?> AddOneAsync(int id)
     {
-        var weaponInventory = await _context.WeaponInventories.FirstOrDefaultAsync(
-            x => x.WeaponId == update.WeaponId && x.PlayerId == update.PlayerId);
+        var weaponInventory = await _context.WeaponInventories.FirstOrDefaultAsync(x => x.Id == id);
         if (weaponInventory is null)
             return null;
         
@@ -45,10 +44,9 @@ public class WeaponInventoryRepository : IWeaponInventoryRepository
         return weaponInventory;
     }
 
-    public async Task<WeaponInventory?> DeleteAsync(WeaponInventory weaponInventory)
+    public async Task<WeaponInventory?> DeleteAsync(int id)
     {
-        var weaponInventoryModel = _context.WeaponInventories.FirstOrDefault(
-            x => x.PlayerId == weaponInventory.PlayerId && x.WeaponId == weaponInventory.WeaponId);
+        var weaponInventoryModel = _context.WeaponInventories.FirstOrDefault(x => x.Id == id);
         if (weaponInventoryModel is null)
             return null;
         _context.WeaponInventories.Remove(weaponInventoryModel);
@@ -56,10 +54,9 @@ public class WeaponInventoryRepository : IWeaponInventoryRepository
         return weaponInventoryModel;
     }
 
-    public async Task<WeaponInventory?> RemoveOneAsync(WeaponInventoryRequestDto update)
+    public async Task<WeaponInventory?> RemoveOneAsync(int id)
     {
-        var weaponInventory = await _context.WeaponInventories.FirstOrDefaultAsync(
-            x => x.WeaponId == update.WeaponId && x.PlayerId == update.PlayerId);
+        var weaponInventory = await _context.WeaponInventories.FirstOrDefaultAsync(x => x.Id  == id);
         if (weaponInventory is null)
             return null;
         

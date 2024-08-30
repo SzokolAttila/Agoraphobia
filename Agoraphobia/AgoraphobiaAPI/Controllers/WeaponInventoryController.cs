@@ -47,12 +47,13 @@ public class WeaponInventoryController : ControllerBase
             return BadRequest("Weapon not found");
         
         var weaponInventories = await _weaponInventoryRepository.GetWeaponInventoriesAsync(player.Id);
-        if (weaponInventories.Exists(x => x.WeaponId == weapon.Id))
+        var createdInventory = weaponInventories.Find(x => x.WeaponId == weapon.Id);
+        if (createdInventory != null)
         {
-            var updated = await _weaponInventoryRepository.AddOneAsync(weaponInventoryRequestDto);
+            var updated = await _weaponInventoryRepository.AddOneAsync(createdInventory.Id);
             if (updated is null)
                 return BadRequest("Something unexpected happened");
-            return Ok(updated.ToUpdateWeaponInventoryRequestDto());
+            return Ok(updated.ToWeaponInventoryDto());
         }
         var weaponInventory = new WeaponInventory()
         {
@@ -63,29 +64,25 @@ public class WeaponInventoryController : ControllerBase
             Weapon = weapon
         };
         await _weaponInventoryRepository.CreateAsync(weaponInventory);
-        return Created("agoraphobia/weaponInventories", weaponInventory.ToUpdateWeaponInventoryRequestDto());
+        return Created("agoraphobia/weaponInventories", weaponInventory.ToWeaponInventoryDto());
     }
     
-    [HttpDelete("{weaponInventoryId}")]
-    public async Task<IActionResult> RemoveFromWeaponInventory([FromRoute] int weaponInventoryId)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromWeaponInventory([FromRoute] int id)
     {
-        var weaponInventory = await _weaponInventoryRepository.GetByIdAsync(weaponInventoryId);
+        var weaponInventory = await _weaponInventoryRepository.GetByIdAsync(id);
         if (weaponInventory is null)
             return NotFound();
         
         if (weaponInventory.Quantity > 1)
         {
-            var updated = await _weaponInventoryRepository.RemoveOneAsync(new WeaponInventoryRequestDto()
-            {
-                WeaponId = weaponInventory.WeaponId,
-                PlayerId = weaponInventory.PlayerId
-            });
+            var updated = await _weaponInventoryRepository.RemoveOneAsync(id);
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
-            return Ok(updated.ToUpdateWeaponInventoryRequestDto());
+            return Ok(updated.ToWeaponInventoryDto());
         }
 
-        await _weaponInventoryRepository.DeleteAsync(weaponInventory);
+        await _weaponInventoryRepository.DeleteAsync(id);
         return NoContent();
     }
 }

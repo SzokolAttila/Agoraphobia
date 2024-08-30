@@ -83,7 +83,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
             {
                 if (!_player.AttackEnemy(_enemy, _weapon))
                 {
-                    await ConsumableInventoryHttpClient.DecreaseDuration(_player.Id);
+                    await EffectHttpClient.DecreaseDuration(_player.Id);
                 }
 
                 if (_enemy.Hp <= 0)

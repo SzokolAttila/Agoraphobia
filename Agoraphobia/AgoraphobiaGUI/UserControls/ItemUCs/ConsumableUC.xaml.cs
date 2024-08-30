@@ -81,7 +81,7 @@ namespace AgoraphobiaGUI.UserControls.ItemUCs
         {
             try
             {
-                await ConsumableInventoryHttpClient.ApplyEffect(_player.Id, _consumable.Id);
+                await EffectHttpClient.ApplyEffect(_player.Id, _consumable.Id);
                 if (_player.UseConsumable(_consumable))
                 {
                     Qty.Text = (int.Parse(Qty.Text) - 1).ToString();

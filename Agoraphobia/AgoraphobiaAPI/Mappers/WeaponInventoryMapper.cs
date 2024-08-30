@@ -17,14 +17,4 @@ public static class WeaponInventoryMapper
             WeaponId = weaponInventory.WeaponId,
         };
     }
-
-    public static UpdateWeaponInventoryRequestDto ToUpdateWeaponInventoryRequestDto(this WeaponInventory weaponInventory)
-    {
-        return new UpdateWeaponInventoryRequestDto
-        {
-            Weapon = weaponInventory.Weapon!.ToWeaponDto(),
-            PlayerId = weaponInventory.PlayerId,
-            Quantity = weaponInventory.Quantity
-        };
-    }
 }
