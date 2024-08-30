@@ -16,15 +16,4 @@ public static class ConsumableInventoryMapper
             Id = consumableInventory.Id
         };
     }
-
-    public static UpdateConsumableInventoryRequestDto ToUpdateConsumableInventoryRequestDto(
-        this ConsumableInventory consumableInventory)
-    {
-        return new UpdateConsumableInventoryRequestDto
-        {
-            Quantity = consumableInventory.Quantity,
-            Consumable = consumableInventory.Consumable!.ToConsumableDto(),
-            PlayerId = consumableInventory.PlayerId
-        };
-    }
 }

@@ -87,7 +87,7 @@ namespace AgoraphobiaAPI.HttpClients
                 throw new ArgumentException("Player not found");
             foreach (var effect in effects)
             {
-                for(int i = 0; i<effect.CurrentDuration; i++)
+                for(var i = 0; i < effect.CurrentDuration; i++)
                 {
                     var response = await HttpClient.DeleteAsync($"{ROUTE}effects/{effect.Id}");
                     response.EnsureSuccessStatusCode();

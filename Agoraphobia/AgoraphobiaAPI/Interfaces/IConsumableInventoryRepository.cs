@@ -5,9 +5,9 @@ namespace AgoraphobiaAPI.Interfaces;
 
 public interface IConsumableInventoryRepository
 {
-    public Task<List<ConsumableInventory>> GetConsumableInventoriesAsync(int id);
+    public Task<List<ConsumableInventory>> GetConsumableInventoriesAsync(int playerId);
     public Task<ConsumableInventory> CreateAsync(ConsumableInventory consumableInventory);
-    public Task<ConsumableInventory?> AddOneAsync(ConsumableInventoryRequestDto update);
+    public Task<ConsumableInventory?> AddOneAsync(int id);
     public Task<ConsumableInventory?> GetByIdAsync(int id);
-    public Task<ConsumableInventory?> DeleteAsync(ConsumableInventory consumableInventory);
-    public Task<ConsumableInventory?> RemoveOneAsync(ConsumableInventoryRequestDto update);}
+    public Task<ConsumableInventory?> DeleteAsync(int id);
+    public Task<ConsumableInventory?> RemoveOneAsync(int id);}

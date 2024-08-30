@@ -27,10 +27,10 @@ public class ConsumableInventoryRepository : IConsumableInventoryRepository
         return consumableInventory;
     }
 
-    public async Task<ConsumableInventory?> AddOneAsync(ConsumableInventoryRequestDto update)
+    public async Task<ConsumableInventory?> AddOneAsync(int id)
     {
-        var consumableInventory = await _context.ConsumableInventories.FirstOrDefaultAsync(
-            x => x.ConsumableId == update.ConsumableId && x.PlayerId == update.PlayerId);
+        var consumableInventory = await _context.ConsumableInventories
+            .FirstOrDefaultAsync(x => x.ConsumableId == id);
         if (consumableInventory is null)
             return null;
         
@@ -43,13 +43,12 @@ public class ConsumableInventoryRepository : IConsumableInventoryRepository
     {
         return await _context.ConsumableInventories
             .Include(x => x.Consumable)
-            .ThenInclude(x => x.Effects)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
-    public async Task<ConsumableInventory?> DeleteAsync(ConsumableInventory consumableInventory)
+    public async Task<ConsumableInventory?> DeleteAsync(int id)
     {
-        var consumableInventoryModel = _context.ConsumableInventories.FirstOrDefault(
-            x => x.PlayerId == consumableInventory.PlayerId && x.ConsumableId == consumableInventory.ConsumableId);
+        var consumableInventoryModel = _context.ConsumableInventories
+            .FirstOrDefault(x => x.Id == id);
         if (consumableInventoryModel is null)
             return null;
         _context.ConsumableInventories.Remove(consumableInventoryModel);
@@ -57,10 +56,10 @@ public class ConsumableInventoryRepository : IConsumableInventoryRepository
         return consumableInventoryModel;
     }
 
-    public async Task<ConsumableInventory?> RemoveOneAsync(ConsumableInventoryRequestDto update)
+    public async Task<ConsumableInventory?> RemoveOneAsync(int id)
     {
-        var consumableInventory = await _context.ConsumableInventories.FirstOrDefaultAsync(
-            x => x.ConsumableId == update.ConsumableId && x.PlayerId == update.PlayerId);
+        var consumableInventory = await _context.ConsumableInventories
+            .FirstOrDefaultAsync(x => x.ConsumableId == id);
         if (consumableInventory is null)
             return null;
         

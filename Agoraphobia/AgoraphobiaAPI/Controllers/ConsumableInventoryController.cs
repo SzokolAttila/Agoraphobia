@@ -47,9 +47,10 @@ public class ConsumableInventoryController : ControllerBase
             return BadRequest("Consumable not found");
         
         var consumableInventories = await _consumableInventoryRepository.GetConsumableInventoriesAsync(player.Id);
-        if (consumableInventories.Exists(x => x.ConsumableId == consumable.Id))
+        var createdInventory = consumableInventories.Find(x => x.ConsumableId == consumable.Id);
+        if (createdInventory != null)
         {
-            var updated = await _consumableInventoryRepository.AddOneAsync(consumableInventoryRequest);
+            var updated = await _consumableInventoryRepository.AddOneAsync(createdInventory.Id);
             if (updated is null)
                 return BadRequest("Something unexpected happened");
             return Ok(updated.ToConsumableInventoryDto());
@@ -58,16 +59,15 @@ public class ConsumableInventoryController : ControllerBase
         {
             ConsumableId = consumable.Id,
             PlayerId = player.Id,
-            Player = player,
             Consumable = consumable,
             Quantity = 1
         };
         await _consumableInventoryRepository.CreateAsync(consumableInventory);
-        return Created("agoraphobia/consumableInventories", consumableInventory.ToUpdateConsumableInventoryRequestDto());
+        return Created("agoraphobia/consumableInventories", consumableInventory.ToConsumableInventoryDto());
     }
     
     [HttpDelete("{id}")]
-    public async Task<IActionResult> RemoveFromConsummableInventory([FromRoute] int id)
+    public async Task<IActionResult> RemoveFromConsumableInventory([FromRoute] int id)
     {
         var consumableInventory = await _consumableInventoryRepository.GetByIdAsync(id);
         if (consumableInventory is null)
@@ -75,18 +75,13 @@ public class ConsumableInventoryController : ControllerBase
         
         if (consumableInventory.Quantity > 1)
         {
-            var updated = await _consumableInventoryRepository
-                .RemoveOneAsync(new ConsumableInventoryRequestDto()
-            {
-                ConsumableId = consumableInventory.ConsumableId,
-                PlayerId = consumableInventory.PlayerId
-            });
+            var updated = await _consumableInventoryRepository.RemoveOneAsync(id);
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
-            return Ok(updated.ToUpdateConsumableInventoryRequestDto());
+            return Ok(updated.ToConsumableInventoryDto());
         }
 
-        await _consumableInventoryRepository.DeleteAsync(consumableInventory);
+        await _consumableInventoryRepository.DeleteAsync(id);
         return NoContent();
     }
 }
