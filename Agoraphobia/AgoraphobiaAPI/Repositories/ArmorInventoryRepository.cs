@@ -1,5 +1,4 @@
 ﻿using AgoraphobiaAPI.Data;
-using AgoraphobiaAPI.Dtos.ArmorInventory;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using Microsoft.EntityFrameworkCore;

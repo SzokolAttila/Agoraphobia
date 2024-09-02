@@ -4,8 +4,6 @@ using AgoraphobiaAPI.Mappers;
 using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.Exceptions.Account;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Web.Http;
 
 namespace AgoraphobiaAPI.Controllers
 {
@@ -38,25 +36,10 @@ namespace AgoraphobiaAPI.Controllers
             var accounts = await _accountRepository.GetAllAsync();
             if (accounts.Exists(x => x.Username == account.Username))
                 throw new NonUniqueUsernameException();
-            var foo = new Account(account.Username, account.Passwd, account.IsPasswordHashed);
-            var accountModel = account.ToAccountFromCreateDto();
+            var accountModel = new Account(account.Username, account.Passwd, account.IsPasswordHashed);
             await _accountRepository.CreateAsync(accountModel);
             return CreatedAtAction(nameof(GetById), new { id = accountModel.Id }, accountModel.ToAccountDto());
         }
-
-        [HttpPut]
-        [Route("{id}")]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateAccountRequestDto account)
-        {
-            var accounts = await _accountRepository.GetAllAsync();
-            if (accounts.Exists(x => x.Username == account.Username && x.Id != id))
-                throw new NonUniqueUsernameException();
-            var accountModel = await _accountRepository.UpdateAsync(id, account);
-            if (accountModel is null)
-                return NotFound();
-            return Ok(accountModel.ToAccountDto());
-        }
-
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)

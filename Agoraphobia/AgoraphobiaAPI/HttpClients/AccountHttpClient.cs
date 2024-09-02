@@ -12,7 +12,8 @@ namespace AgoraphobiaAPI.HttpClients
         public static async Task<Account> Register(string username, string password, bool isPasswordHashed)
         {
             var accounts = await HttpClient.GetAsync($"{ROUTE}accounts");
-            if (accounts.Content.ReadFromJsonAsync<List<AccountDto>>().Result!.Exists(x => x.Username == username))
+            if (accounts.Content.ReadFromJsonAsync<List<AccountDto>>().Result!
+                .Exists(x => x.Username == username))
                 throw new NonUniqueUsernameException();
             var account = new Account(username, password, isPasswordHashed);
             var content = new StringContent(JsonConvert.SerializeObject(new CreateAccountRequestDto
@@ -29,8 +30,9 @@ namespace AgoraphobiaAPI.HttpClients
         public static async Task<Account> LogIn(string username, string password, bool isPasswordHashed)
         {
             var accounts = await HttpClient.GetAsync($"{ROUTE}accounts");
-            var account = accounts.Content.ReadFromJsonAsync<List<AccountDto>>().Result!.FirstOrDefault(x =>
-                x.Username == username && x.Password == new Password(password, isPasswordHashed).Passwd);
+            var account = accounts.Content.ReadFromJsonAsync<List<AccountDto>>().Result!
+                .Find(x => 
+                    x.Username == username && x.Password == new Password(password, isPasswordHashed).Passwd);
             if (account is null)
                 throw new InvalidLoginException();
             return new Account(account.Id, username, password, isPasswordHashed);
