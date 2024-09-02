@@ -16,23 +16,4 @@ public static class ArmorDroprateMapper
             Id = armorDroprate.Id,
         };
     }
-
-    public static ArmorDroprate ToArmorDroprate(this ArmorDroprateDto armorDroprateDto)
-    {
-        return new ArmorDroprate
-        {
-            Armor = armorDroprateDto.Armor.ToArmorFromArmorDto(),
-            Droprate = armorDroprateDto.Droprate
-        };
-    }
-
-    public static UpdateArmorDroprateRequestDto ToUpdateArmorDroprateRequestDto(this ArmorDroprate armorDroprate)
-    {
-        return new UpdateArmorDroprateRequestDto
-        {
-            EnemyId = armorDroprate.EnemyId,
-            Armor = armorDroprate.Armor!.ToArmorDto(),
-            Droprate = armorDroprate.Droprate
-        };
-    }
 }

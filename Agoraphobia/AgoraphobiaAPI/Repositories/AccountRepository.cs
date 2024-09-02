@@ -34,18 +34,6 @@ public class AccountRepository : IAccountRepository
         return accountModel;
     }
 
-    public async Task<Account?> UpdateAsync(int id, UpdateAccountRequestDto accountDto)
-    {
-        var accountModel = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);
-        if (accountModel is null)
-            return null;
-        
-        accountModel.Username = accountDto.Username;
-        accountModel.Password.ChangePassword(accountDto.OldPassword, accountDto.NewPassword);
-        await _context.SaveChangesAsync();
-        return accountModel;
-    }
-
     public async Task<Account?> DeleteAsync(int id)
     {
         var accountModel = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == id);

@@ -12,7 +12,6 @@ namespace AgoraphobiaAPI.Interfaces
         Task<List<Account>> GetAllAsync();
         Task<Account?> GetByIdAsync(int id);
         Task<Account> CreateAsync(Account accountModel);
-        Task<Account?> UpdateAsync(int id, UpdateAccountRequestDto accountDto);
         Task<Account?> DeleteAsync(int id);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AgoraphobiaAPI.Dtos.ArmorDroprate;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
-using AgoraphobiaLibrary;
 using AgoraphobiaLibrary.JoinTables.Armors;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,11 +49,10 @@ public class ArmorDroprateController : ControllerBase
             EnemyId = armorDroprateRequestDto.EnemyId,
             ArmorId = armorDroprateRequestDto.ArmorId,
             Droprate = armorDroprateRequestDto.Droprate,
-            Enemy = enemy,
             Armor = armor
         };
         await _armorDroprateRepository.CreateAsync(armorDroprate);
-        return Created("agoraphobia/armorDroprates", armorDroprate.ToUpdateArmorDroprateRequestDto());
+        return Created("agoraphobia/armorDroprates", armorDroprate.ToArmorDroprateDto());
     }
 
     [HttpDelete("{id}")]
