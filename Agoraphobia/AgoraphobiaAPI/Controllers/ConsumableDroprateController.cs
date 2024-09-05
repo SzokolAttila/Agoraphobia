@@ -50,11 +50,10 @@ public class ConsumableDroprateController : ControllerBase
             EnemyId = consumableDroprateRequestDto.EnemyId,
             ConsumableId = consumableDroprateRequestDto.ConsumableId,
             Droprate = consumableDroprateRequestDto.Droprate,
-            Enemy = enemy,
             Consumable = consumable
         };
         await _consumableDroprateRepository.CreateAsync(consumableDroprate);
-        return Created("agoraphobia/consumableDroprates", consumableDroprate.ToUpdateConsumableDroprateRequestDto());
+        return Created("agoraphobia/consumableDroprates", consumableDroprate.ToConsumableDroprateDto());
     }
 
     [HttpDelete("{id}")]

@@ -12,17 +12,8 @@ public static class ArmorLootMapper
             Quantity = armorLoot.Quantity,
             Armor = armorLoot.Armor!.ToArmorDto(),
             RoomId = armorLoot.RoomId,
-            ArmorId = armorLoot.ArmorId
-        };
-    }
-
-    public static UpdateArmorLootRequestDto ToUpdateArmorLootRequestDto(this ArmorLoot armorLoot)
-    {
-        return new UpdateArmorLootRequestDto
-        {
-            Armor = armorLoot.Armor!.ToArmorDto(),
-            RoomId = armorLoot.RoomId,
-            Quantity = armorLoot.Quantity
+            ArmorId = armorLoot.ArmorId,
+            Id = armorLoot.Id,
         };
     }
 }

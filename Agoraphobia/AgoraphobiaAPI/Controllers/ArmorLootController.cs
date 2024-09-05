@@ -47,12 +47,13 @@ public class ArmorLootController : ControllerBase
             return BadRequest("Armor not found");
         
         var armorLoots = await _armorLootRepository.GetArmorLootsAsync(room.Id);
-        if (armorLoots.Exists(x => x.ArmorId == armor.Id))
+        var createdLoot = armorLoots.Find(x => x.ArmorId == armor.Id);
+        if (createdLoot != null)
         {
-            var updated = await _armorLootRepository.AddOneAsync(armorLootRequestDto);
+            var updated = await _armorLootRepository.AddOneAsync(createdLoot.Id);
             if (updated is null)
                 return BadRequest("Something unexpected happened");
-            return Ok(updated.ToUpdateArmorLootRequestDto());
+            return Ok(updated.ToArmorLootDto());
         }
         var armorLoot = new ArmorLoot()
         {
@@ -60,36 +61,27 @@ public class ArmorLootController : ControllerBase
             ArmorId = armor.Id,
             Quantity = 1,
             Room = room,
-            Armor = armor
         };
         await _armorLootRepository.CreateAsync(armorLoot);
-        return Created("agoraphobia/armorLoots", armorLoot.ToUpdateArmorLootRequestDto());
+        return Created("agoraphobia/armorLoots", armorLoot.ToArmorLootDto());
     }
     
-    [HttpDelete]
-    public async Task<IActionResult> RemoveFromArmorLoot([FromBody] ArmorLootRequestDto armorLootRequestDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromArmorLoot([FromRoute] int id)
     {
-        var room = await _roomRepository.GetByIdAsync(armorLootRequestDto.RoomId);
-        var armor = await _armorRepository.GetByIdAsync(armorLootRequestDto.ArmorId);
-        if (room is null)
-            return BadRequest("Room not found");
-        if (armor is null)
-            return BadRequest("Armor not found");
-
-        var armorLoots = await _armorLootRepository.GetArmorLootsAsync(room.Id);
-        var armorLoot = armorLoots.FirstOrDefault(x => x.ArmorId == armor.Id);
+        var armorLoot = await _armorLootRepository.GetByIdAsync(id);
         if (armorLoot is null)
             return NotFound();
         
         if (armorLoot.Quantity > 1)
         {
-            var updated = await _armorLootRepository.RemoveOneAsync(armorLootRequestDto);
+            var updated = await _armorLootRepository.RemoveOneAsync(id);
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
-            return Ok(updated.ToUpdateArmorLootRequestDto());
+            return Ok(updated.ToArmorLootDto());
         }
 
-        await _armorLootRepository.DeleteAsync(armorLoot);
+        await _armorLootRepository.DeleteAsync(id);
         return NoContent();
     }
 }

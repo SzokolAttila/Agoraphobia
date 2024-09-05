@@ -4,6 +4,7 @@ namespace AgoraphobiaAPI.Dtos.ArmorLoot;
 
 public class ArmorLootDto
 {
+    public int Id { get; set; }
     public int ArmorId { get; set; }
     public ArmorDto Armor { get; set; } = new();
     public int RoomId { get; set; }

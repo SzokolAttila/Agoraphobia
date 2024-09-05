@@ -16,7 +16,9 @@ public class ArmorLootRepository : IArmorLootRepository
     }
     public async Task<List<ArmorLoot>> GetArmorLootsAsync(int roomId)
     {
-        return await _context.ArmorLoots.Where(x => x.RoomId == roomId).ToListAsync();
+        return await _context.ArmorLoots
+            .Include(x => x.Armor)
+            .Where(x => x.RoomId == roomId).ToListAsync();
     }
 
     public async Task<ArmorLoot> CreateAsync(ArmorLoot armorLoot)
@@ -26,10 +28,15 @@ public class ArmorLootRepository : IArmorLootRepository
         return armorLoot;
     }
 
-    public async Task<ArmorLoot?> AddOneAsync(ArmorLootRequestDto update)
+    public async Task<ArmorLoot?> GetByIdAsync(int id)
     {
-        var armorLoot = await _context.ArmorLoots.FirstOrDefaultAsync(
-            x => x.ArmorId == update.ArmorId && x.RoomId == update.RoomId);
+        return await _context.ArmorLoots
+            .Include(x => x.Armor)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+    public async Task<ArmorLoot?> AddOneAsync(int id)
+    {
+        var armorLoot = await _context.ArmorLoots.FirstOrDefaultAsync(x => x.Id == id);
         if (armorLoot is null)
             return null;
         
@@ -38,10 +45,9 @@ public class ArmorLootRepository : IArmorLootRepository
         return armorLoot;
     }
 
-    public async Task<ArmorLoot?> DeleteAsync(ArmorLoot armorLoot)
+    public async Task<ArmorLoot?> DeleteAsync(int id)
     {
-        var armorLootModel = _context.ArmorLoots.FirstOrDefault(
-            x => x.RoomId == armorLoot.RoomId && x.ArmorId == armorLoot.ArmorId);
+        var armorLootModel = _context.ArmorLoots.FirstOrDefault(x => x.Id == id);
         if (armorLootModel is null)
             return null;
         _context.ArmorLoots.Remove(armorLootModel);
@@ -49,10 +55,9 @@ public class ArmorLootRepository : IArmorLootRepository
         return armorLootModel;
     }
 
-    public async Task<ArmorLoot?> RemoveOneAsync(ArmorLootRequestDto update)
+    public async Task<ArmorLoot?> RemoveOneAsync(int id)
     {
-        var armorLoot = await _context.ArmorLoots.FirstOrDefaultAsync(
-            x => x.ArmorId == update.ArmorId && x.RoomId == update.RoomId);
+        var armorLoot = await _context.ArmorLoots.FirstOrDefaultAsync(x => x.Id == id);
         if (armorLoot is null)
             return null;
         
