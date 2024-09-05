@@ -8,6 +8,7 @@ namespace AgoraphobiaLibrary.JoinTables.Armors
 {
     public class ArmorSale
     {
+        public int Id { get; set; }
         public int ArmorId { get; set; }
         public Armor? Armor { get; set; }
         public int MerchantId { get; set; }

@@ -45,12 +45,13 @@ namespace AgoraphobiaAPI.Controllers
                 return BadRequest("Armor not found");
 
             var armorSales = await _armorSaleRepository.GetArmorSalesAsync(armorSaleRequestDto.MerchantId);
-            if (armorSales.Exists(x => x.ArmorId == armor.Id))
+            var createdSale = armorSales.Find(x => x.ArmorId == armor.Id);
+            if (createdSale != null)
             {
-                var updated = await _armorSaleRepository.AddOneAsync(armorSaleRequestDto);
+                var updated = await _armorSaleRepository.AddOneAsync(createdSale.Id);
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
-                return Ok(updated.ToUpdateArmorSaleRequestDto());
+                return Ok(updated.ToArmorSaleDto());
             }
             var armorSale = new ArmorSale
             {
@@ -61,32 +62,24 @@ namespace AgoraphobiaAPI.Controllers
                 Armor = armor
             };
             await _armorSaleRepository.CreateAsync(armorSale);
-            return Created("agoraphobia/armorSales", armorSale.ToUpdateArmorSaleRequestDto());
+            return Created("agoraphobia/armorSales", armorSale.ToArmorSaleDto());
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromArmorSales([FromBody] ArmorSaleRequestDto armorSaleRequestDto)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveFromArmorSales([FromRoute] int id)
         {
-            var merchant = await _merchantRepository.GetByIdAsync(armorSaleRequestDto.MerchantId);
-            var armor = await _armorRepository.GetByIdAsync(armorSaleRequestDto.ArmorId);
-            if (merchant is null)
-                return BadRequest("Merchant not found");
-            if (armor is null)
-                return BadRequest("Armor not found");
-
-            var armorInventories = await _armorSaleRepository.GetArmorSalesAsync(merchant.Id);
-            var armorSale = armorInventories.FirstOrDefault(x => x.ArmorId == armor.Id);
+            var armorSale = await _armorSaleRepository.GetByIdAsync(id);
             if (armorSale is null)
                 return NotFound();
 
             if (armorSale.Quantity > 1)
             {
-                var updated = await _armorSaleRepository.RemoveOneAsync(armorSaleRequestDto);
+                var updated = await _armorSaleRepository.RemoveOneAsync(id);
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
-                return Ok(updated.ToUpdateArmorSaleRequestDto());
+                return Ok(updated.ToArmorSaleDto());
             }
 
-            await _armorSaleRepository.DeleteAsync(armorSale);
+            await _armorSaleRepository.DeleteAsync(id);
             return NoContent();
         }
     }
