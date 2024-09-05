@@ -19,7 +19,9 @@ namespace AgoraphobiaAPI.Repositories
         }
         public async Task<List<ConsumableSale>> GetConsumableSalesAsync(int merchantId)
         {
-            return await _context.ConsumableSales.Where(x => x.MerchantId == merchantId).ToListAsync();
+            return await _context.ConsumableSales
+                .Include(x => x.Consumable)
+                .Where(x => x.MerchantId == merchantId).ToListAsync();
         }
         public async Task<ConsumableSale> CreateAsync(ConsumableSale consumableSale)
         {
@@ -28,10 +30,9 @@ namespace AgoraphobiaAPI.Repositories
             return consumableSale;
         }
 
-        public async Task<ConsumableSale?> AddOneAsync(ConsumableSaleRequestDto update)
+        public async Task<ConsumableSale?> AddOneAsync(int id)
         {
-            var consumableSale = await _context.ConsumableSales.FirstOrDefaultAsync(
-                x => x.ConsumableId == update.ConsumableId && x.MerchantId == update.MerchantId);
+            var consumableSale = await _context.ConsumableSales.FirstOrDefaultAsync(x => x.Id == id);
             if (consumableSale is null)
                 return null;
 
@@ -39,20 +40,25 @@ namespace AgoraphobiaAPI.Repositories
             await _context.SaveChangesAsync();
             return consumableSale;
         }
-        public async Task<ConsumableSale?> DeleteAsync(ConsumableSale consumableSale)
+        public async Task<ConsumableSale?> DeleteAsync(int id)
         {
-            var consumableSaleModel = _context.ConsumableSales.FirstOrDefault(
-                x => x.MerchantId == consumableSale.MerchantId && x.ConsumableId == consumableSale.ConsumableId);
+            var consumableSaleModel = _context.ConsumableSales.FirstOrDefault(x => x.Id == id);
             if (consumableSaleModel is null)
                 return null;
-            _context.ConsumableSales.Remove(consumableSale);
+            _context.ConsumableSales.Remove(consumableSaleModel);
             await _context.SaveChangesAsync();
             return consumableSaleModel;
         }
-        public async Task<ConsumableSale?> RemoveOneAsync(ConsumableSaleRequestDto update)
+
+        public async Task<ConsumableSale?> GetByIdAsync(int id)
         {
-            var consumableSale = await _context.ConsumableSales.FirstOrDefaultAsync(
-                x => x.ConsumableId == update.ConsumableId && x.MerchantId == update.MerchantId);
+            return await _context.ConsumableSales
+                .Include(x => x.Consumable)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public async Task<ConsumableSale?> RemoveOneAsync(int id)
+        {
+            var consumableSale = await _context.ConsumableSales.FirstOrDefaultAsync(x => x.Id == id);
             if (consumableSale is null)
                 return null;
 

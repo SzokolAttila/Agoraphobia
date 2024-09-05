@@ -41,49 +41,42 @@ namespace AgoraphobiaAPI.Controllers
             if (consumable is null)
                 return BadRequest("Consumable not found");
 
-            var consumableSales = await _consumableSaleRepository.GetConsumableSalesAsync(consumableSaleRequestDto.MerchantId);
-            if (consumableSales.Exists(x => x.ConsumableId == consumable.Id))
+            var consumableSales = await _consumableSaleRepository
+                .GetConsumableSalesAsync(consumableSaleRequestDto.MerchantId);
+            var createdSale = consumableSales.Find(x => x.ConsumableId == consumable.Id);
+            if (createdSale != null)
             {
-                var updated = await _consumableSaleRepository.AddOneAsync(consumableSaleRequestDto);
+                var updated = await _consumableSaleRepository.AddOneAsync(createdSale.Id);
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
-                return Ok(updated.ToUpdateConsumableSaleRequestDto());
+                return Ok(updated.ToConsumableSaleDto());
             }
             var consumableSale = new ConsumableSale
             {
                 MerchantId = consumableSaleRequestDto.MerchantId,
                 ConsumableId = consumableSaleRequestDto.ConsumableId,
                 Quantity = 1,
-                Merchant = merchant,
                 Consumable = consumable
             };
             await _consumableSaleRepository.CreateAsync(consumableSale);
-            return Created("agoraphobia/consumableSales", consumableSale.ToUpdateConsumableSaleRequestDto());
+            return Created("agoraphobia/consumableSales", consumableSale.ToConsumableSaleDto());
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromConsumableSales([FromBody] ConsumableSaleRequestDto consumableSaleRequestDto)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveFromConsumableSales([FromRoute] int id)
         {
-            var merchant = await _merchantRepository.GetByIdAsync(consumableSaleRequestDto.MerchantId);
-            var consumable = await _consumableRepository.GetByIdAsync(consumableSaleRequestDto.ConsumableId);
-            if (merchant is null)
-                return BadRequest("Merchant not found");
-            if (consumable is null)
-                return BadRequest("Consumable not found");
-
-            var consumableInventories = await _consumableSaleRepository.GetConsumableSalesAsync(merchant.Id);
-            var consumableSale = consumableInventories.FirstOrDefault(x => x.ConsumableId == consumable.Id);
+            var consumableSale = await _consumableSaleRepository.GetByIdAsync(id);
             if (consumableSale is null)
                 return NotFound();
 
             if (consumableSale.Quantity > 1)
             {
-                var updated = await _consumableSaleRepository.RemoveOneAsync(consumableSaleRequestDto);
+                var updated = await _consumableSaleRepository.RemoveOneAsync(id);
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
-                return Ok(updated.ToUpdateConsumableSaleRequestDto());
+                return Ok(updated.ToConsumableSaleDto());
             }
 
-            await _consumableSaleRepository.DeleteAsync(consumableSale);
+            await _consumableSaleRepository.DeleteAsync(id);
             return NoContent();
         }
     }

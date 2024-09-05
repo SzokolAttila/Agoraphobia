@@ -15,15 +15,7 @@ namespace AgoraphobiaAPI.Mappers
                 Quantity = consumableSale.Quantity,
                 ConsumableId = consumableSale.ConsumableId,
                 MerchantId = consumableSale.MerchantId,
-            };
-        }
-        public static UpdateConsumableSaleRequestDto ToUpdateConsumableSaleRequestDto(this ConsumableSale consumableSale)
-        {
-            return new UpdateConsumableSaleRequestDto
-            {
-                MerchantId = consumableSale.MerchantId,
-                Consumable = consumableSale.Consumable!.ToConsumableDto(),
-                Quantity = consumableSale.Quantity
+                Id = consumableSale.Id
             };
         }
     }

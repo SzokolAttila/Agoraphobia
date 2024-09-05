@@ -8,6 +8,7 @@ namespace AgoraphobiaLibrary.JoinTables.Consumables
 {
     public class ConsumableSale
     {
+        public int Id { get; set; }
         public int ConsumableId { get; set; }
         public Consumable? Consumable { get; set; }
         public int MerchantId { get; set; }
