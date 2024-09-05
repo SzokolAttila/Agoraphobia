@@ -15,7 +15,9 @@ public class ArmorDroprateRepository : IArmorDroprateRepository
     }
     public async Task<List<ArmorDroprate>> GetArmorDropratesAsync(int enemyId)
     {
-        return await _context.ArmorDroprates.Where(x => x.EnemyId == enemyId).ToListAsync();
+        return await _context.ArmorDroprates
+            .Include(x => x.Armor)
+            .Where(x => x.EnemyId == enemyId).ToListAsync();
     }
 
     public async Task<ArmorDroprate> CreateAsync(ArmorDroprate armorDroprate)

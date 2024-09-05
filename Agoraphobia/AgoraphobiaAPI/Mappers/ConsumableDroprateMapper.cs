@@ -16,23 +16,4 @@ public static class ConsumableDroprateMapper
             Id = consumableDroprate.Id,
         };
     }
-
-    public static ConsumableDroprate ToConsumableDroprate(this ConsumableDroprateDto consumableDroprateDto)
-    {
-        return new ConsumableDroprate
-        {
-            Consumable = consumableDroprateDto.Consumable.ToConsumableFromConsumableDto(),
-            Droprate = consumableDroprateDto.Droprate
-        };
-    }
-
-    public static UpdateConsumableDroprateRequestDto ToUpdateConsumableDroprateRequestDto(this ConsumableDroprate consumableDroprate)
-    {
-        return new UpdateConsumableDroprateRequestDto
-        {
-            EnemyId = consumableDroprate.EnemyId,
-            Consumable = consumableDroprate.Consumable!.ToConsumableDto(),
-            Droprate = consumableDroprate.Droprate
-        };
-    }
 }

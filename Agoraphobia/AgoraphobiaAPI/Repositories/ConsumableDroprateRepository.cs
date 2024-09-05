@@ -15,7 +15,9 @@ public class ConsumableDroprateRepository : IConsumableDroprateRepository
     }
     public async Task<List<ConsumableDroprate>> GetConsumableDropratesAsync(int enemyId)
     {
-        return await _context.ConsumableDroprates.Where(x => x.EnemyId == enemyId).ToListAsync();
+        return await _context.ConsumableDroprates
+            .Include(x => x.Consumable)
+            .Where(x => x.EnemyId == enemyId).ToListAsync();
     }
 
     public async Task<ConsumableDroprate> CreateAsync(ConsumableDroprate consumableDroprate)

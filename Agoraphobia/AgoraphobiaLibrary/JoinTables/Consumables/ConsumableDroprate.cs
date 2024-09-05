@@ -14,6 +14,5 @@ namespace AgoraphobiaLibrary.JoinTables.Consumables
         public double Droprate { get; set; }
         public Enemy? Enemy { get; set; }
         public Consumable? Consumable { get; set; }
-        public ConsumableDroprate() { }
     }
 }
