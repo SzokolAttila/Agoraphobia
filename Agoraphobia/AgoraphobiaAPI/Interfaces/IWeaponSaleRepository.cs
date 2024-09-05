@@ -7,8 +7,9 @@ namespace AgoraphobiaAPI.Interfaces
     {
         public Task<List<WeaponSale>> GetWeaponSalesAsync(int merchantId);
         public Task<WeaponSale> CreateAsync(WeaponSale weaponSale);
-        public Task<WeaponSale?> AddOneAsync(WeaponSaleRequestDto update);
-        public Task<WeaponSale?> DeleteAsync(WeaponSale weaponSale);
-        public Task<WeaponSale?> RemoveOneAsync(WeaponSaleRequestDto update);
+        public Task<WeaponSale?> AddOneAsync(int id);
+        public Task<WeaponSale?> GetByIdAsync(int id);
+        public Task<WeaponSale?> DeleteAsync(int id);
+        public Task<WeaponSale?> RemoveOneAsync(int id);
     }
 }

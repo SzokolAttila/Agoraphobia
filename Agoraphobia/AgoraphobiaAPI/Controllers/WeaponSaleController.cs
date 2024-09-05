@@ -43,49 +43,42 @@ namespace AgoraphobiaAPI.Controllers
             if (weapon is null)
                 return BadRequest("Weapon not found");
 
-            var weaponSales = await _weaponSaleRepository.GetWeaponSalesAsync(weaponSaleRequestDto.MerchantId);
-            if (weaponSales.Exists(x => x.WeaponId == weapon.Id))
+            var weaponSales = await _weaponSaleRepository
+                .GetWeaponSalesAsync(weaponSaleRequestDto.MerchantId);
+            var createdSale = weaponSales.Find(x => x.WeaponId == weapon.Id);
+            if (createdSale != null)
             {
-                var updated = await _weaponSaleRepository.AddOneAsync(weaponSaleRequestDto);
+                var updated = await _weaponSaleRepository.AddOneAsync(createdSale.Id);
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
-                return Ok(updated.ToUpdateWeaponSaleRequestDto());
+                return Ok(updated.ToWeaponSaleDto());
             }
             var weaponSale = new WeaponSale
             {
                 MerchantId = weaponSaleRequestDto.MerchantId,
                 WeaponId = weaponSaleRequestDto.WeaponId,
                 Quantity = 1,
-                Merchant = merchant,
                 Weapon = weapon
             };
             await _weaponSaleRepository.CreateAsync(weaponSale);
-            return Created("agoraphobia/weaponSales", weaponSale.ToUpdateWeaponSaleRequestDto());
+            return Created("agoraphobia/weaponSales", weaponSale.ToWeaponSaleDto());
         }
-        [HttpDelete]
-        public async Task<IActionResult> RemoveFromWeaponSales([FromBody] WeaponSaleRequestDto weaponSaleRequestDto)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveFromWeaponSales([FromRoute] int id)
         {
-            var merchant = await _merchantRepository.GetByIdAsync(weaponSaleRequestDto.MerchantId);
-            var weapon = await _weaponRepository.GetByIdAsync(weaponSaleRequestDto.WeaponId);
-            if (merchant is null)
-                return BadRequest("Merchant not found");
-            if (weapon is null)
-                return BadRequest("Weapon not found");
-
-            var weaponInventories = await _weaponSaleRepository.GetWeaponSalesAsync(merchant.Id);
-            var weaponSale = weaponInventories.FirstOrDefault(x => x.WeaponId == weapon.Id);
+            var weaponSale = await _weaponSaleRepository.GetByIdAsync(id);
             if (weaponSale is null)
                 return NotFound();
 
             if (weaponSale.Quantity > 1)
             {
-                var updated = await _weaponSaleRepository.RemoveOneAsync(weaponSaleRequestDto);
+                var updated = await _weaponSaleRepository.RemoveOneAsync(id);
                 if (updated is null)
                     return BadRequest("Something unexpected happened");
-                return Ok(updated.ToUpdateWeaponSaleRequestDto());
+                return Ok(updated.ToWeaponSaleDto());
             }
 
-            await _weaponSaleRepository.DeleteAsync(weaponSale);
+            await _weaponSaleRepository.DeleteAsync(id);
             return NoContent();
         }
     }

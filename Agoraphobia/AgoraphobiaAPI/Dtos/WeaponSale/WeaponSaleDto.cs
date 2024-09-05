@@ -4,6 +4,7 @@ namespace AgoraphobiaAPI.Dtos.WeaponSale
 {
     public class WeaponSaleDto
     {
+        public int Id { get; set; }
         public int WeaponId { get; set; }
         public int MerchantId { get; set; }
         public WeaponDto Weapon { get; set; } = new();

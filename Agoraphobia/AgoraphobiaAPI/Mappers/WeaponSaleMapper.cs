@@ -14,16 +14,8 @@ namespace AgoraphobiaAPI.Mappers
                 Weapon = weaponSale.Weapon!.ToWeaponDto(),
                 Quantity = weaponSale.Quantity,
                 MerchantId = weaponSale.MerchantId,
-                WeaponId = weaponSale.WeaponId
-            };
-        }
-        public static UpdateWeaponSaleRequestDto ToUpdateWeaponSaleRequestDto(this WeaponSale weaponSale)
-        {
-            return new UpdateWeaponSaleRequestDto
-            {
-                MerchantId = weaponSale.MerchantId,
-                Weapon = weaponSale.Weapon!.ToWeaponDto(),
-                Quantity = weaponSale.Quantity
+                WeaponId = weaponSale.WeaponId,
+                Id = weaponSale.Id,
             };
         }
     }

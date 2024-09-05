@@ -19,7 +19,9 @@ namespace AgoraphobiaAPI.Repositories
         }
         public async Task<List<WeaponSale>> GetWeaponSalesAsync(int merchantId)
         {
-            return await _context.WeaponSales.Where(x => x.MerchantId == merchantId).ToListAsync();
+            return await _context.WeaponSales
+                .Include(x => x.Weapon)
+                .Where(x => x.MerchantId == merchantId).ToListAsync();
         }
         public async Task<WeaponSale> CreateAsync(WeaponSale weaponSale)
         {
@@ -28,10 +30,9 @@ namespace AgoraphobiaAPI.Repositories
             return weaponSale;
         }
 
-        public async Task<WeaponSale?> AddOneAsync(WeaponSaleRequestDto update)
+        public async Task<WeaponSale?> AddOneAsync(int id)
         {
-            var weaponSale = await _context.WeaponSales.FirstOrDefaultAsync(
-                x => x.WeaponId == update.WeaponId && x.MerchantId == update.MerchantId);
+            var weaponSale = await _context.WeaponSales.FirstOrDefaultAsync(x => x.Id == id);
             if (weaponSale is null)
                 return null;
 
@@ -39,20 +40,25 @@ namespace AgoraphobiaAPI.Repositories
             await _context.SaveChangesAsync();
             return weaponSale;
         }
-        public async Task<WeaponSale?> DeleteAsync(WeaponSale weaponSale)
+        public async Task<WeaponSale?> DeleteAsync(int id)
         {
-            var weaponSaleModel = _context.WeaponSales.FirstOrDefault(
-                x => x.MerchantId == weaponSale.MerchantId && x.WeaponId == weaponSale.WeaponId);
+            var weaponSaleModel = _context.WeaponSales.FirstOrDefault(x => x.Id == id);
             if (weaponSaleModel is null)
                 return null;
-            _context.WeaponSales.Remove(weaponSale);
+            _context.WeaponSales.Remove(weaponSaleModel);
             await _context.SaveChangesAsync();
             return weaponSaleModel;
         }
-        public async Task<WeaponSale?> RemoveOneAsync(WeaponSaleRequestDto update)
+
+        public async Task<WeaponSale?> GetByIdAsync(int id)
         {
-            var weaponSale = await _context.WeaponSales.FirstOrDefaultAsync(
-                x => x.WeaponId == update.WeaponId && x.MerchantId == update.MerchantId);
+            return await _context.WeaponSales
+                .Include(x => x.Weapon)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+        public async Task<WeaponSale?> RemoveOneAsync(int id)
+        {
+            var weaponSale = await _context.WeaponSales.FirstOrDefaultAsync(x => x.Id == id);
             if (weaponSale is null)
                 return null;
 
