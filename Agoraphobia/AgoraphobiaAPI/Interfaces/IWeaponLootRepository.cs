@@ -8,7 +8,8 @@ public interface IWeaponLootRepository
 {
     public Task<List<WeaponLoot>> GetWeaponLootsAsync(int id);
     public Task<WeaponLoot> CreateAsync(WeaponLoot weaponLoot);
-    public Task<WeaponLoot?> AddOneAsync(WeaponLootRequestDto update);
-    public Task<WeaponLoot?> DeleteAsync(WeaponLoot weaponLoot);
-    public Task<WeaponLoot?> RemoveOneAsync(WeaponLootRequestDto update);
+    public Task<WeaponLoot?> AddOneAsync(int id);
+    public Task<WeaponLoot?> GetByIdAsync(int id);
+    public Task<WeaponLoot?> DeleteAsync(int id);
+    public Task<WeaponLoot?> RemoveOneAsync(int id);
 }

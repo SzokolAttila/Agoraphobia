@@ -2,6 +2,7 @@
 
 public class WeaponLoot
 {
+    public int Id { get; set; }
     public int RoomId { get; set; }
     public int WeaponId { get; set; }
     public int Quantity { get; set; }

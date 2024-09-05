@@ -13,17 +13,8 @@ public static class WeaponLootMapper
             Quantity = weaponLoot.Quantity,
             Weapon = weaponLoot.Weapon!.ToWeaponDto(),
             RoomId = weaponLoot.RoomId,
-            WeaponId = weaponLoot.WeaponId
-        };
-    }
-
-    public static UpdateWeaponLootRequestDto ToUpdateWeaponLootRequestDto(this WeaponLoot weaponLoot)
-    {
-        return new UpdateWeaponLootRequestDto
-        {
-            Weapon = weaponLoot.Weapon!.ToWeaponDto(),
-            RoomId = weaponLoot.RoomId,
-            Quantity = weaponLoot.Quantity
+            WeaponId = weaponLoot.WeaponId,
+            Id = weaponLoot.Id
         };
     }
 }

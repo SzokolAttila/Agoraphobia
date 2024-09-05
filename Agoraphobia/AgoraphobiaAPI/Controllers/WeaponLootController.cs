@@ -1,4 +1,5 @@
-﻿using AgoraphobiaAPI.Dtos.WeaponLoot;
+﻿using System.IO.Enumeration;
+using AgoraphobiaAPI.Dtos.WeaponLoot;
 using AgoraphobiaAPI.Interfaces;
 using AgoraphobiaAPI.Mappers;
 using AgoraphobiaLibrary;
@@ -47,49 +48,41 @@ public class WeaponLootController : ControllerBase
             return BadRequest("Weapon not found");
         
         var weaponLoots = await _weaponLootRepository.GetWeaponLootsAsync(room.Id);
-        if (weaponLoots.Exists(x => x.WeaponId == weapon.Id))
+        var createdLoot = weaponLoots.Find(x => x.WeaponId == weapon.Id);
+        if (createdLoot != null)
         {
-            var updated = await _weaponLootRepository.AddOneAsync(weaponLootRequestDto);
+            var updated = await _weaponLootRepository.AddOneAsync(createdLoot.Id);
             if (updated is null)
                 return BadRequest("Something unexpected happened");
-            return Ok(updated.ToUpdateWeaponLootRequestDto());
+            return Ok(updated.ToWeaponLootDto());
         }
         var weaponLoot = new WeaponLoot()
         {
             RoomId = room.Id,
             WeaponId = weapon.Id,
             Quantity = 1,
-            Room = room,
             Weapon = weapon
         };
         await _weaponLootRepository.CreateAsync(weaponLoot);
-        return Created("agoraphobia/weaponLoots", weaponLoot.ToUpdateWeaponLootRequestDto());
+        return Created("agoraphobia/weaponLoots", weaponLoot.ToWeaponLootDto());
     }
     
-    [HttpDelete]
-    public async Task<IActionResult> RemoveFromWeaponLoot([FromBody] WeaponLootRequestDto weaponLootRequestDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromWeaponLoot([FromRoute] int id)
     {
-        var room = await _roomRepository.GetByIdAsync(weaponLootRequestDto.RoomId);
-        var weapon = await _weaponRepository.GetByIdAsync(weaponLootRequestDto.WeaponId);
-        if (room is null)
-            return BadRequest("Room not found");
-        if (weapon is null)
-            return BadRequest("Weapon not found");
-
-        var weaponLoots = await _weaponLootRepository.GetWeaponLootsAsync(room.Id);
-        var weaponLoot = weaponLoots.FirstOrDefault(x => x.WeaponId == weapon.Id);
+        var weaponLoot = await _weaponLootRepository.GetByIdAsync(id);
         if (weaponLoot is null)
             return NotFound();
         
         if (weaponLoot.Quantity > 1)
         {
-            var updated = await _weaponLootRepository.RemoveOneAsync(weaponLootRequestDto);
+            var updated = await _weaponLootRepository.RemoveOneAsync(id);
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
-            return Ok(updated.ToUpdateWeaponLootRequestDto());
+            return Ok(updated.ToWeaponLootDto());
         }
 
-        await _weaponLootRepository.DeleteAsync(weaponLoot);
+        await _weaponLootRepository.DeleteAsync(id);
         return NoContent();
     }
 }

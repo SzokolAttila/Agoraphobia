@@ -17,7 +17,9 @@ public class WeaponLootRepository : IWeaponLootRepository
     }
     public async Task<List<WeaponLoot>> GetWeaponLootsAsync(int roomId)
     {
-        return await _context.WeaponLoots.Where(x => x.RoomId == roomId).ToListAsync();
+        return await _context.WeaponLoots
+            .Include(x => x.Weapon)
+            .Where(x => x.RoomId == roomId).ToListAsync();
     }
 
     public async Task<WeaponLoot> CreateAsync(WeaponLoot weaponLoot)
@@ -27,10 +29,9 @@ public class WeaponLootRepository : IWeaponLootRepository
         return weaponLoot;
     }
 
-    public async Task<WeaponLoot?> AddOneAsync(WeaponLootRequestDto update)
+    public async Task<WeaponLoot?> AddOneAsync(int id)
     {
-        var weaponLoot = await _context.WeaponLoots.FirstOrDefaultAsync(
-            x => x.WeaponId == update.WeaponId && x.RoomId == update.RoomId);
+        var weaponLoot = await _context.WeaponLoots.FirstOrDefaultAsync(x => x.Id == id);
         if (weaponLoot is null)
             return null;
         
@@ -39,10 +40,9 @@ public class WeaponLootRepository : IWeaponLootRepository
         return weaponLoot;
     }
 
-    public async Task<WeaponLoot?> DeleteAsync(WeaponLoot weaponLoot)
+    public async Task<WeaponLoot?> DeleteAsync(int id)
     {
-        var weaponLootModel = _context.WeaponLoots.FirstOrDefault(
-            x => x.RoomId == weaponLoot.RoomId && x.WeaponId == weaponLoot.WeaponId);
+        var weaponLootModel = _context.WeaponLoots.FirstOrDefault(x => x.Id == id);
         if (weaponLootModel is null)
             return null;
         _context.WeaponLoots.Remove(weaponLootModel);
@@ -50,10 +50,15 @@ public class WeaponLootRepository : IWeaponLootRepository
         return weaponLootModel;
     }
 
-    public async Task<WeaponLoot?> RemoveOneAsync(WeaponLootRequestDto update)
+    public async Task<WeaponLoot?> GetByIdAsync(int id)
     {
-        var weaponLoot = await _context.WeaponLoots.FirstOrDefaultAsync(
-            x => x.WeaponId == update.WeaponId && x.RoomId == update.RoomId);
+        return await _context.WeaponLoots
+            .Include(x => x.Weapon)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+    public async Task<WeaponLoot?> RemoveOneAsync(int id)
+    {
+        var weaponLoot = await _context.WeaponLoots.FirstOrDefaultAsync(x => x.Id == id);
         if (weaponLoot is null)
             return null;
         
