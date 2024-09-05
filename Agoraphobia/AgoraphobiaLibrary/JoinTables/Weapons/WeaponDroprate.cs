@@ -14,6 +14,5 @@ namespace AgoraphobiaLibrary.JoinTables.Weapons
         public double Droprate { get; set; }
         public Enemy? Enemy { get; set; }
         public Weapon? Weapon { get; set; }
-        public WeaponDroprate() { }
     }
 }

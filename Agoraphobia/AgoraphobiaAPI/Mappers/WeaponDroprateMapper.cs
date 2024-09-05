@@ -17,23 +17,4 @@ public static class WeaponDroprateMapper
             WeaponId = weaponDroprate.WeaponId,
         };
     }
-
-    public static WeaponDroprate ToWeaponDroprate(this WeaponDroprateDto weaponDroprateDto)
-    {
-        return new WeaponDroprate
-        {
-            Weapon = weaponDroprateDto.Weapon.ToWeaponFromWeaponDto(),
-            Droprate = weaponDroprateDto.Droprate
-        };
-    }
-
-    public static UpdateWeaponDroprateRequestDto ToUpdateWeaponDroprateRequestDto(this WeaponDroprate weaponDroprate)
-    {
-        return new UpdateWeaponDroprateRequestDto
-        {
-            EnemyId = weaponDroprate.EnemyId,
-            Weapon = weaponDroprate.Weapon!.ToWeaponDto(),
-            Droprate = weaponDroprate.Droprate
-        };
-    }
 }

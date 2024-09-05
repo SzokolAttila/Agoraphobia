@@ -50,11 +50,10 @@ public class WeaponDroprateController : ControllerBase
             EnemyId = weaponDroprateRequestDto.EnemyId,
             WeaponId = weaponDroprateRequestDto.WeaponId,
             Droprate = weaponDroprateRequestDto.Droprate,
-            Enemy = enemy,
             Weapon = weapon
         };
         await _weaponDroprateRepository.CreateAsync(weaponDroprate);
-        return Created("agoraphobia/weaponDroprates", weaponDroprate.ToUpdateWeaponDroprateRequestDto());
+        return Created("agoraphobia/weaponDroprates", weaponDroprate.ToWeaponDroprateDto());
     }
 
     [HttpDelete("{id}")]
