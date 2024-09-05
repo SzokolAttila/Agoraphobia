@@ -47,49 +47,41 @@ public class ConsumableLootController : ControllerBase
             return BadRequest("Consumable not found");
         
         var consumableLoots = await _consumableLootRepository.GetConsumableLootsAsync(room.Id);
-        if (consumableLoots.Exists(x => x.ConsumableId == consumable.Id))
+        var createdLoot = consumableLoots.Find(x => x.ConsumableId == consumable.Id);
+        if (createdLoot != null)
         {
-            var updated = await _consumableLootRepository.AddOneAsync(consumableLootRequestDto);
+            var updated = await _consumableLootRepository.AddOneAsync(createdLoot.Id);
             if (updated is null)
                 return BadRequest("Something unexpected happened");
-            return Ok(updated.ToUpdateConsumableLootRequestDto());
+            return Ok(updated.ToConsumableLootDto());
         }
         var consumableLoot = new ConsumableLoot()
         {
             RoomId = room.Id,
             ConsumableId = consumable.Id,
             Quantity = 1,
-            Room = room,
             Consumable = consumable
         };
         await _consumableLootRepository.CreateAsync(consumableLoot);
-        return Created("agoraphobia/consumableLoots", consumableLoot.ToUpdateConsumableLootRequestDto());
+        return Created("agoraphobia/consumableLoots", consumableLoot.ToConsumableLootDto());
     }
     
-    [HttpDelete]
-    public async Task<IActionResult> RemoveFromConsumableLoot([FromBody] ConsumableLootRequestDto consumableLootRequestDto)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveFromConsumableLoot([FromRoute] int id)
     {
-        var room = await _roomRepository.GetByIdAsync(consumableLootRequestDto.RoomId);
-        var consumable = await _consumableRepository.GetByIdAsync(consumableLootRequestDto.ConsumableId);
-        if (room is null)
-            return BadRequest("Room not found");
-        if (consumable is null)
-            return BadRequest("Consumable not found");
-
-        var consumableLoots = await _consumableLootRepository.GetConsumableLootsAsync(room.Id);
-        var consumableLoot = consumableLoots.FirstOrDefault(x => x.ConsumableId == consumable.Id);
+        var consumableLoot = await _consumableLootRepository.GetByIdAsync(id);
         if (consumableLoot is null)
             return NotFound();
         
         if (consumableLoot.Quantity > 1)
         {
-            var updated = await _consumableLootRepository.RemoveOneAsync(consumableLootRequestDto);
+            var updated = await _consumableLootRepository.RemoveOneAsync(id);
             if (updated is null)
                 return BadRequest("Something unexpected happened"); 
-            return Ok(updated.ToUpdateConsumableLootRequestDto());
+            return Ok(updated.ToConsumableLootDto());
         }
 
-        await _consumableLootRepository.DeleteAsync(consumableLoot);
+        await _consumableLootRepository.DeleteAsync(id);
         return NoContent();
     }
 }

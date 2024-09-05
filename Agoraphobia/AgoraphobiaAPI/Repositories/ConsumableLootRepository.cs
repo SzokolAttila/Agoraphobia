@@ -16,7 +16,9 @@ public class ConsumableLootRepository : IConsumableLootRepository
     }
     public async Task<List<ConsumableLoot>> GetConsumableLootsAsync(int roomId)
     {
-        return await _context.ConsumableLoots.Where(x => x.RoomId == roomId).ToListAsync();
+        return await _context.ConsumableLoots
+            .Include(x => x.Consumable)
+            .Where(x => x.RoomId == roomId).ToListAsync();
     }
 
     public async Task<ConsumableLoot> CreateAsync(ConsumableLoot consumableLoot)
@@ -26,10 +28,16 @@ public class ConsumableLootRepository : IConsumableLootRepository
         return consumableLoot;
     }
 
-    public async Task<ConsumableLoot?> AddOneAsync(ConsumableLootRequestDto update)
+    public async Task<ConsumableLoot?> GetByIdAsync(int id)
     {
-        var consumableLoot = await _context.ConsumableLoots.FirstOrDefaultAsync(
-            x => x.ConsumableId == update.ConsumableId && x.RoomId == update.RoomId);
+        return await _context.ConsumableLoots
+            .Include(x => x.Consumable)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<ConsumableLoot?> AddOneAsync(int id)
+    {
+        var consumableLoot = await _context.ConsumableLoots.FirstOrDefaultAsync(x => x.Id == id);
         if (consumableLoot is null)
             return null;
         
@@ -38,10 +46,9 @@ public class ConsumableLootRepository : IConsumableLootRepository
         return consumableLoot;
     }
 
-    public async Task<ConsumableLoot?> DeleteAsync(ConsumableLoot consumableLoot)
+    public async Task<ConsumableLoot?> DeleteAsync(int id)
     {
-        var consumableLootModel = _context.ConsumableLoots.FirstOrDefault(
-            x => x.RoomId == consumableLoot.RoomId && x.ConsumableId == consumableLoot.ConsumableId);
+        var consumableLootModel = _context.ConsumableLoots.FirstOrDefault(x => x.Id == id);
         if (consumableLootModel is null)
             return null;
         _context.ConsumableLoots.Remove(consumableLootModel);
@@ -49,10 +56,9 @@ public class ConsumableLootRepository : IConsumableLootRepository
         return consumableLootModel;
     }
 
-    public async Task<ConsumableLoot?> RemoveOneAsync(ConsumableLootRequestDto update)
+    public async Task<ConsumableLoot?> RemoveOneAsync(int id)
     {
-        var consumableLoot = await _context.ConsumableLoots.FirstOrDefaultAsync(
-            x => x.ConsumableId == update.ConsumableId && x.RoomId == update.RoomId);
+        var consumableLoot = await _context.ConsumableLoots.FirstOrDefaultAsync(x => x.Id == id);
         if (consumableLoot is null)
             return null;
         

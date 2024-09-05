@@ -12,17 +12,8 @@ public static class ConsumableLootMapper
             Quantity = consumableLoot.Quantity,
             Consumable = consumableLoot.Consumable!.ToConsumableDto(),
             RoomId = consumableLoot.RoomId,
-            ConsumableId = consumableLoot.ConsumableId
-        };
-    }
-
-    public static UpdateConsumableLootRequestDto ToUpdateConsumableLootRequestDto(this ConsumableLoot consumableLoot)
-    {
-        return new UpdateConsumableLootRequestDto
-        {
-            Consumable = consumableLoot.Consumable!.ToConsumableDto(),
-            RoomId = consumableLoot.RoomId,
-            Quantity = consumableLoot.Quantity
+            ConsumableId = consumableLoot.ConsumableId,
+            Id = consumableLoot.Id
         };
     }
 }

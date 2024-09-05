@@ -103,7 +103,7 @@ namespace AgoraphobiaAPI.Data
                 .WithMany(x => x.WeaponLoots)
                 .HasForeignKey(x => x.WeaponId);
 
-            builder.Entity<ConsumableLoot>(x => x.HasKey(y => new { y.RoomId, y.ConsumableId }));
+            builder.Entity<ConsumableLoot>(x => x.HasKey(y => y.Id));
             builder.Entity<ConsumableLoot>()
                 .HasOne(x => x.Room)
                 .WithMany(x => x.Consumables)
